@@ -1,19 +1,27 @@
-# Markdown
+**<span style="font-size:3em;color:black">Markdown</span>**
+***
 
 [A good reference](https://www.markdownguide.org/basic-syntax/).
 [And advanced](https://www.markdownguide.org/extended-syntax/).
 
-## Links
+# Title
+Why waste the first header level on the title?
+```
+**<span style="font-size:3em;color:black">Markdown</span>**
+***
+```
+
+# Links
 
 ```
 My favorite website is [Example](https://example.com).
 ```
 
-## Ordered Lists
+# Ordered Lists
 
 Markdown corrects the numbering, so just use "1." for every entry, and Markdown will do the right thing.
 
-## Chrome Plugin: Markdown Preview Plus
+# Chrome Plugin: Markdown Preview Plus
 
 Works great!
 
