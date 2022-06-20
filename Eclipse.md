@@ -3,19 +3,21 @@
  
 # Shortcuts
 
-Breakpoint Toggle: Ctrl + <Shift> + B
+Breakpoint Toggle: \<Ctrl> + \<Shift> + B
 
-Debug as __: Alt + <Shift> + D
+Debug as __: \<Alt> + \<Shift> + D
    T → JUnit Test
    J → Java Application
 
-Open file (Resource) by name: Ctrl + <Shift> + R
+Open file (Resource) by name: \<Ctrl> + \<Shift> + R
 
 Split Editor Toggles:
-   Horizontal: Ctrl + <Shift> + _
-   Vertical: Ctrl + <Shift> + {
+   Horizontal: \<Ctrl> + \<Shift> + _
+   Vertical: \<Ctrl> + \<Shift> + {
 
-Maven Refresh: Alt+F5
+Refactor Rename: \<Alt> + \<Shift> + R
+
+Maven Refresh: \<Alt> + F5
 
 Note: https://rayfd.wordpress.com/2007/05/20/10-eclipse-navigation-shortcuts-every-java-programmer-should-know/
 

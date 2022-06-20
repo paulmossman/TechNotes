@@ -1,0 +1,20 @@
+# ASCII
+
+½
+
+→
+
+←
+
+↑
+
+↓
+
+↔
+
+https://theasciicode.com.ar/
+
+## Misc Arrows
+
+   https://www.alt-codes.net/arrow_alt_codes.php
+
