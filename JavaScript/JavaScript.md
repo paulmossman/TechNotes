@@ -1,21 +1,42 @@
-# JavaScript
+**<span style="font-size:3em;color:black">JavaScript</span>**
+***
 
 TODO: Copy over from old...
 
-## Find in an array:
+# Date
+
+## Add days
+```
+let date = new Date()
+date.setDate(date.getDate() + 1)
+console.log(date.toISOString().split('T')[0])
+```
+
+## Print YYY-MM-DD
+```
+let date = new Date()
+date.toISOString().split("T")[0]
+```
+
+# One-liner
+```
+node -e 'let date = new Date(); date.setDate(date.getDate() + 1); console.log(date.toISOString().split("T")[0])'
+```
+
+# Find in an array:
 
    let found = arrayofthings.find((element) => {
       return element.url == url;
    });
 
-## Pretty-print JSON
+# Pretty-print JSON
 
    With newlines: JSON.stringify(data, null, 3); 
    
    Single line: JSON.stringify(data, 3);
 
    
-## NextGen (ES6) JavaScript: 
+# NextGen (ES6) JavaScript: 
 
     1. 'let' replaces 'var'   (scoping is slightly different)
     2. 'const' 
