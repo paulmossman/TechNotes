@@ -23,3 +23,30 @@ Note: https://rayfd.wordpress.com/2007/05/20/10-eclipse-navigation-shortcuts-eve
 
 # Typical Setup
 
+## Formatter
+
+Windows: Window -> Preferences
+Mac: Eclipse -> Preferences
+
+    Java -> Code Style -> Formatter
+    
+    "New" -> "Modified from built-in"
+    
+        Indentation
+            Tab policy: Spaces only
+            Indentation size: 3
+            Tab sixe: 3
+    
+        Off/On Tags
+            Enable Off/On tags
+    
+    Editor -> Save Actions
+    
+        Perform the selected action on save
+        
+        Format source code
+ 
+
+## Dark Theme
+
+(Preferences) General -> Appearance -- Theme
