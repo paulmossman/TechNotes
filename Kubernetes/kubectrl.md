@@ -1,10 +1,11 @@
-# kubectl
+**<span style="font-size:3em;color:black">kubectl</span>**
+***
 
-## Reference
+# Reference
 
 https://kubernetes.io/docs/reference/
 
-## Top Level
+# Top Level
 Brief info:
 ```
 kubectl get <all / rs / po / deploy / __>
@@ -38,7 +39,12 @@ kubectl run <Name> --image=<Image>
 
 Explain YAML (including apiVersion):
 ```
-kubectl explain <rs / po / deploy / __>
+kubectl explain <rs / po / deploy / deploy.spec / __> [--recursive]
+```
+
+List of resources that can be explained:
+```
+kubectl api-resources
 ```
 
 Edit an existing (running) Resource:
@@ -56,7 +62,9 @@ Untaint a Node:
 kubectl taint nodes node1 key1=value1:NoSchedule-
 ```
 
-## Top Level Options
+# Top Level Options
+
+## Namespace
 ```
 --namespace=___
 ```
@@ -66,13 +74,19 @@ If omitted, then "default" is assumed.
 --all-namespaces
 ```
 
-## Resources
+## Help
+Very useful for seeign the options:
+```
+--help
+```
+
+# Resources
 Get a list of all supported resources, including their short names:
 ```
 kubectl api-resources
 ```
 
-## dry-run --> YAML
+# dry-run --> YAML
 ```
 kubectl <Options> --dry-run=client -o yaml > deployment.yaml
 ```
@@ -82,7 +96,16 @@ Example:
 kubectl create deployment --image=nginx nginx --replicas=4 --dry-run=client -o yaml > nginx-deployment.yaml
 ```
 
-## Frequent
+# Using Edit, and then Replace
+First use ```edit```, and change something that can't be changed.  Save fails, but creates a ```/tmp/kubectrl-edit-___.yaml```.
+
+Then run:
+```bash
+kubectl replace --force -f /tmp/kubectrl-edit-___.yaml
+```
+
+
+# Frequent
 ```
 kubectl get pods
 kubectl get pods -o wide  # Include IP and Node
@@ -104,7 +127,7 @@ kubectl delete replicaset \<ReplicaSet name\>
 kubectl edit replicaset \<ReplicaSet name\>
 
 ```
-## Kubernetes YML file
+# Kubernetes YML file
 
 All have 4 sections:
  - apiVersion:
@@ -112,7 +135,7 @@ All have 4 sections:
  - metadata: 
  - spec:
 
-## Create Pod YML
+# Create Pod YML
 ```
 kubectl run web-server --image=nginx --dry-run=client -o yaml > pod.yml
 ```
@@ -121,3 +144,8 @@ THEN use 'apply' to create
 # Create a Pod
 
 Prefer 'kubectl apply -f pod.yml' (vs. 'kubectl create ...'), so that 'apply' can subsequently be called without a warning.
+
+# Create a Secret
+```bash
+kubectl create secret generic prod-db-secret --from-literal=username=produser --from-literal=password=Y4nys7f11
+```
