@@ -45,3 +45,11 @@ docker run .... --network="host"
 docker exec -t -i my-container sh -c 'my-command; exit $?'
 ```
 
+## Check that the docker daemon is running, and that you have permission to use it.
+```
+docker info > /dev/null 2>&1
+if [ $? != "0" ]; then
+   echo ERROR: Docker daemon is not running, and/or you\'re not in the \'docker\' group.>&2
+   exit 1
+fi
+```

@@ -23,3 +23,13 @@ Delete all lines that start with GATEWAY:
 ```bash
 sed -i "/^GATEWAY.*$/d" <file>
 ```
+
+Convert to uppercase:
+```bash
+echo mossman | sed -e "s/[a-z]/\u&/g"
+```
+
+Convert to lowercase:
+```bash
+echo MOSSMAN | sed -e "s/[A-Z]/\l&/g"
+```
