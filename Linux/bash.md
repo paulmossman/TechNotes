@@ -16,6 +16,13 @@ number of arguments: $#
 script name:         $0
 first:               $1, etc...
 
+## Get script path and filename
+```
+SCRIPT=`realpath "$0"`
+SCRIPTPATH=`dirname "${SCRIPT}"`
+SCRIPTNAME=`basename "${SCRIPT}"`
+```
+
 ## Send both stderr and stdout to a file
 ```bash
 $ ls does-not-exist &> file.txt
