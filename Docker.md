@@ -34,6 +34,11 @@ docker run .... --network="host"
 
 # Small
 
+## Shell access
+```bash
+docker exec -it <mycontainer> bash
+```
+
 ## Using a Docker environment variable from a command required a shell.
 
    Works: docker exec -it ccc sh -c 'echo $MY_ENV_VAR'
