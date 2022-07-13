@@ -21,6 +21,11 @@ Abort:
 git cherry-pick --abort
 ```
 
+# Hard reset to remote branch content
+```bash
+git reset --hard origin/<branch>
+```
+
 # Merge
 
 Abort:
