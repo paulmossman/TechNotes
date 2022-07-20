@@ -71,3 +71,70 @@ for i in {1..5}; do
    echo $i
 done
 ```
+
+## String contains 
+Note double square brackets.
+```bash
+string='My string';
+if [[ "$string" == *My* ]]
+then
+  echo "It's there!";
+fi
+```
+
+## String not equals
+```bash
+if [ "$PHONE_TYPE" != "NORTEL" ] && [ "$PHONE_TYPE" != "NEC" ] && [ "$PHONE_TYPE" != "CISCO" ]
+```
+
+## String not empty - empty string
+```bash
+if [ -n "$pid" ]; then
+  echo "The string is not empty - $pid"
+fi
+
+if [ -z "$var" ]; then
+      echo "\$var is empty"
+else
+      echo "\$var is NOT empty"
+fi
+```
+
+## Conditionals
+```bash
+-ne
+    Not equals
+-gt
+    Greater than
+-lt
+    Less than
+-eq
+    Equals
+-a
+    AND
+-o
+    OR
+-a file
+    True if file exists.
+-s file
+    True if file exists and has a size greater than zero.
+-d file
+    True if file exists and is a directory.
+-f file
+    True if file exists and is a regular file.
+-h file
+    True if file exists and is a symbolic link.
+-r file
+    True if file exists and is readable.
+-w file
+    True if file exists and is writable.
+-x file
+    True if file exists and is executable.
+-N file
+    True if file exists and has been modified since it was last read.
+-z string
+    True if the length of string is zero.  (Empty string)
+-n string
+    True if the length of string is non-zero.
+```
+They can be combined, e.g. -fs → True for existing regular file with size greater than zero.
