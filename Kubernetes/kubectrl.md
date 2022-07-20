@@ -104,6 +104,10 @@ Then run:
 kubectl replace --force -f /tmp/kubectrl-edit-___.yaml
 ```
 
+# Retrieve all resources
+```bash
+kubectl get all --all-namespaces -o yaml > all.yml
+```
 
 # Frequent
 ```
