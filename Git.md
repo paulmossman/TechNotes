@@ -26,6 +26,11 @@ git cherry-pick --abort
 git reset --hard origin/<branch>
 ```
 
+# Delete a local branch
+```bash
+git branch --delete <name>
+```
+
 # Merge
 
 Abort:
@@ -64,5 +69,6 @@ git diff remotes/origin/develop remotes/origin/master
 ## For Unix line endings
 Use a `.gitattributes` file:
 ```
-* text=auto eol=lf
+<filename> text eol=lf
 ```
+```<filename>``` accepts wildcards.
