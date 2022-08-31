@@ -24,6 +24,7 @@ Common:
 fields @timestamp, @message, @logStream
     | limit 100
     | filter @message like /StringToSearchFor/
+    | filter @logStream like /StreamsToSearch/
 ```
 
 Wildcard:
@@ -41,6 +42,8 @@ fields @timestamp, @message, @latency, @status
    | filter @latency > 100 and @status = 200
    | sort @latency desc
 ```
+
+Note: "fields" is case insensitive, but "filter" is case sensitive.
 
 Parse a logged value:
 ```
