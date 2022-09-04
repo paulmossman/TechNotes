@@ -72,3 +72,7 @@ Use a `.gitattributes` file:
 <filename> text eol=lf
 ```
 ```<filename>``` accepts wildcards.
+
+
+## Three Git Configurations that Should Be the Default
+https://spin.atomicobject.com/2020/05/05/git-configurations-default/
