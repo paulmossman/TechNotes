@@ -75,7 +75,7 @@ public class ReservoirExample {
 	    	// Each Job's start adds one "level" to the reservoir.
 	    	reservoir.addEvent(job.getStartExpr(), 1);
 
-	    	// Each Job's start removes one "level" from the reservoir.
+	    	// Each Job's end removes one "level" from the reservoir.
 	    	reservoir.addEvent(job.getEndExpr(), -1);
 	    }
 

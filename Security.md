@@ -12,5 +12,9 @@
 
    https://en.wikipedia.org/wiki/Principle_of_least_privilege
 
+## Web Security Scans
 
+https://www.ssllabs.com/ssltest/ is a good site for testing TLS protocol/ciphers.
+
+https://securityheaders.com/ is a good site for testing security headers.
 
