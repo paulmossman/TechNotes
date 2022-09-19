@@ -45,9 +45,10 @@ fields @timestamp, @message, @latency, @status
 
 Note: "fields" is case insensitive, but "filter" is case sensitive.
 
-Parse a logged value:
+Parse a logged value, and filter on it:
 ```
 fields @message
    | filter @message like /1583791031847.+total execution time/
    | parse @message "total execution time : * milliseconds" as executiontime
+   | filter executiontime > 180000
 ```

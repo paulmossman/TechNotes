@@ -37,4 +37,12 @@ Pull all files (and sub-contents) in the specified S3 folder to local ```pwd```:
 aws s3 sync <S3 URI of folder> .
 ```
 
+# EC2
+
+## User Data
+Note: It's Base64 encoded...
+```bash
+aws ec2 describe-instance-attribute --instance-id ___ --attribute userData
+aws ec2 describe-launch-template-versions ---launch-template-name ___ --versions 1 | jq '.LaunchTemplateVersions[0].LaunchTemplateData.UserData'
+```
 

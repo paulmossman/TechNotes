@@ -26,6 +26,24 @@ Easy way to open the WSL shell's ```pwd``` in Windows Explorer:
 explorer.exe .
 ```
 
+# Password-less sudo
+```bash
+echo "`whoami` ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/`whoami` && sudo chmod 0440 /etc/sudoers.d/`whoami`
+```
+
+# Change default user
+Good get getting in as the root user to reset the regular user's password (for using 'sudo'.)  From Windows cmd:
+```shellscript
+ubuntu2004 config --default-user root
+```
+
+# Docker command-line
+It requires WSL version 2.  Otherwise you get:
+```bash
+docker: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+```
+AND in Docker -> Settigns - Resources: "Enable integration" for your distro.
+
 # Links
    
    https://docs.microsoft.com/en-us/windows/wsl/basic-commands
