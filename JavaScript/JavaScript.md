@@ -23,6 +23,11 @@ date.toISOString().split("T")[0]
 node -e 'let date = new Date(); date.setDate(date.getDate() + 1); console.log(date.toISOString().split("T")[0])'
 ```
 
+# Node.js verbose output
+```bash
+NODE_DEBUG=cluster,net,http,fs,tls,module,timers node app.js
+```
+
 # Find in an array:
 
    let found = arrayofthings.find((element) => {
