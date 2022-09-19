@@ -8,10 +8,35 @@ import java.util.Set;
 
 Set<String> set = new HashSet<String>(Arrays.asList("a", "b", "c"));
   
+ArrayList<String> orderedUserVisits = new ArrayList<String>(
+                Arrays.asList("a", "b", "c", "d"));
 
 ## Misc
 
-# TODO: Combine two Sets/Lists
+### Combine two Streams
+```java
+Stream<String> combinedStream = Stream.concat(
+  collectionA.stream(),
+  collectionB.stream());
+String[] stringArray = combinedStream.toArray(String[]::new);
+```
+
+### Sort a Stream
+```java
+List<String> sortedList = list.stream()
+			.sorted(___)
+			.collect(Collectors.toList());
+```
+___ is a Comparator...
+nothing - Natural Order
+Comparator.reverseOrder() - Reverse natural order
+Comparator.comparingInt(User::getAge) - Object method that returns int
+new Comparator<Integer>() {
+        @Override
+        public int compare(Integer a, Integer b) {
+            return Integer.compare(a, b);
+        }
+    })
 
 
 ## Imports that Eclipse has trouble auto-resolving
