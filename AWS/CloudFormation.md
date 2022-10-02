@@ -80,7 +80,28 @@ Into a String:
    !Sub ${<Parameter Name>} the rest of the string...
 ```
 
+# String Substitution / Join Strings
+```yaml
+   !Join [ delimiter, [ comma-delimited list of values ] ]
+```
+"delimitor" is often a blank string.
+For example:
+```yaml
+   !Join [ delimiter, [ comma-delimited list of values ] ]
+```
 
+# Psuedo Parameters Reference
+
+Region, Account ID, Stack Name, etc
+
+https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/pseudo-parameter-reference.html
+
+Example (role trust policy to explicitly trust the role itself):
+```yaml
+   ...
+   Principal:
+      AWS: !Sub arn:aws:iam::${AWS::AccountId}:role/${AWS::StackName}-lambda-role
+```
 
 # Former2 Tool
 Generate CloudFormation templates from AWS resources
