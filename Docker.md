@@ -34,6 +34,16 @@ docker run .... --network="host"
 
 # Small
 
+## Run, interactive command line, delete upon exit
+```bash
+docker run --rm -it alpine
+```
+
+## Run, with name
+```bash
+docker run --name alpine-today --rm -it alpine
+```
+
 ## Shell access
 ```bash
 docker exec -it <mycontainer> bash
