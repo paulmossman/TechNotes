@@ -21,3 +21,10 @@
 ## Run only one suite of tests, ignore others.
 
    Change "describe(.." to "fdescribe(.."
+   
+## Checkmark Pass vs. X Fail
+
+   ✓ vs. ✗
+
+ 
+
