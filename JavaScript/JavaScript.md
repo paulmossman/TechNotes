@@ -51,3 +51,13 @@ NODE_DEBUG=cluster,net,http,fs,tls,module,timers node app.js
             'One: ' + one +
             ' Two: ' + two)
          }
+         
+# Turn async function into sync
+
+https://www.npmjs.com/package/deasync
+
+For example:
+```javascript
+require('deasync').sleep(2000);
+```
+Warning: This might cause segmentation faults and or heap dumps.
