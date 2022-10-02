@@ -56,6 +56,11 @@ if [ ${RESULT} != "0" ]; then
 fi
 ```
 
+## One-liner if/else
+```bash
+if [ $? -eq 0 ]; then echo 1; else echo 0; fi
+```
+
 ## Cat multiple lines to a file
 ```bash
 cat <<EOF > print.sh
