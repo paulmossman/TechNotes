@@ -14,6 +14,7 @@ Note: The log ntries in the resulting files might not be sorted by time.
 
 # Logs Insights
 [Query Syntax](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax.html)
+[Sample Queries](https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/CWL_QuerySyntax-examples.html)
 
 Simiar to Regex.
 

@@ -53,3 +53,10 @@ aws ec2 describe-instance-attribute --instance-id ___ --attribute userData
 aws ec2 describe-launch-template-versions ---launch-template-name ___ --versions 1 | jq '.LaunchTemplateVersions[0].LaunchTemplateData.UserData'
 ```
 
+# ECS
+
+## Search for a string ("password") 'environment' JSON of all Task Definitions
+```bash
+tds=`aws ecs list-task-definitions | jq -cr '.taskDefinitionArns[]'`
+for td in ${tds}; do echo "$td" ; aws ecs describe-task-definition --task-definition "$td" | jq '.taskDefinition.containerDefinitions[0].environment' | grep -i password; done
+```

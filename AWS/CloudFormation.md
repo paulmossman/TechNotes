@@ -54,6 +54,15 @@ check_createstack_status_and_wait () {
 }
 ```
 
+## How to tell if a resource is part of a Stack
+```bash
+aws cloudformation describe-stack-resources --physical-resource-id ___
+```
+This means it isn't:
+```bash
+An error occurred (ValidationError) when calling the DescribeStackResources operation: Stack for ___ does not exist
+```
+
 ## Use jq to get Output values
 All (JSON):
 ```bash
