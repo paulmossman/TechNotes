@@ -14,6 +14,11 @@ cat tmp.json | jq '.'
 -r
 ```
 
+## Array entries output onto a single line (--compact-output)
+```bash
+aws ecs list-task-definitions | jq -c '.taskDefinitionArns[]'
+```
+
 ## Useful with AWS CLI output
 http://stackoverflow.com/questions/22704831/using-jq-to-parse-json-output-of-aws-cli-tools
 
