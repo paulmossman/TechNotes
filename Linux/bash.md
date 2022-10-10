@@ -40,9 +40,21 @@ Note: The ```2>&1``` must be *after* the stdout redirection.
 
 # Misc
 
-## One-liner: Run a single command until it succeeds
+## One-liners
+
+### Run a single command until it succeeds
 ```bash
 until redis-cli PING; do sleep 1; done
+```
+
+### For loop
+```bash
+for i in {1..5}; do echo "$i"; done
+```
+
+## if/else
+```bash
+if [ $? -eq 0 ]; then echo 1; else echo 0; fi
 ```
 
 # Misc script snippets
@@ -56,10 +68,7 @@ if [ ${RESULT} != "0" ]; then
 fi
 ```
 
-## One-liner if/else
-```bash
-if [ $? -eq 0 ]; then echo 1; else echo 0; fi
-```
+
 
 ## Cat multiple lines to a file
 ```bash

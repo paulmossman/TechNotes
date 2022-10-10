@@ -21,6 +21,7 @@ date '+%Y-%m-%d'
 ```bash
 sudo netstat -nap | grep 0:8080
 ```
+(This does not work under WSL.)
 
 ## DNS SRV - dig
 Look for "ANSWER SECTION"
