@@ -26,5 +26,11 @@
 
    ✓ vs. ✗
 
- 
+## Keep browser running after tests
+Add to jasmine.conf.js exports.config:
+```javascript
+onComplete: function() {
+   browser.sleep(2147483647);
+},
+```
 
