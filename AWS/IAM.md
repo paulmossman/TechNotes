@@ -58,6 +58,8 @@ Inline ```AllowManageOwnSecurityCredentials```:
     ]
 }
 ```
+TODO: Former2 farm these?  INto YML...
+
 
 Inline ```AllowManageOwnMFA``` (if you use MFA):
 ```json

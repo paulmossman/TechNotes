@@ -35,13 +35,38 @@ aws cognito-idp help
 
 # S3
 
-Note: s3 vs s3api
+Note: s3 vs s3api.  The s3 tool does not support the ```--output``` option.
 
-## sync (source --> destination)
+## Block all public access (at the Bucket level)
+```bash
+aws s3api put-public-access-block \
+    --bucket bucket-name \
+    --public-access-block-configuration "BlockPublicAcls=true,IgnorePublicAcls=true,BlockPublicPolicy=true,RestrictPublicBuckets=true"
+```
+
+## sync (source → destination)
 
 Pull all files (and sub-contents) in the specified S3 folder to local ```pwd```:
+```bash
+aws s3 sync s3://bucket-name .
 ```
-aws s3 sync <S3 URI of folder> .
+
+## Delete a bucket and contents
+Empty the bucket:
+```bash
+aws s3 rm s3://bucket-name --recursive
+```
+Without ```--recursive``` the ```rm``` command will silently fail on non-empty buckets.
+
+Then delete the bucket:
+```bash
+aws s3 rb s3://bucket-name
+```
+
+Together:
+```bash
+REMOVE_BUCKET=s3://bucket-name
+aws s3 rm ${REMOVE_BUCKET} --recursive ; aws s3 rb ${REMOVE_BUCKET}
 ```
 
 # EC2
