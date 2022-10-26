@@ -49,13 +49,21 @@ $ echo { \"array\": [{\"id\": \"A\"},{\"id\": \"B\"}]} | jq '.array[] | select(.
 
 ## Get the first/last element of an array
 ```bash
- echo { \"array\": [{\"id\": \"A\"},{\"id\": \"B\"},{\"id\": \"C\"}]} | jq '.array | first,last'
+echo { \"array\": [{\"id\": \"A\"},{\"id\": \"B\"},{\"id\": \"C\"}]} | jq '.array | first,last'
 {
   "id": "A"
 }
 {
   "id": "C"
 }
+```
+
+## Get the value of one attribute from every element in an array
+```bash
+echo { \"array\": [{\"id\": \"A\"},{\"id\": \"B\"},{\"id\": \"C\"}]} | jq '.array[] | .id' -r
+A
+B
+C
 ```
 
 ## How to manipulate JSON using jq
