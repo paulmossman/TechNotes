@@ -32,4 +32,17 @@ Windows + Shift + S   (Useful for capturing "hover" dialogs/popups.)
 
 # Task Scheduler
 
-What the task to keep running after your next password change?  Then select: "Do not store password. The task will only have access to local computer resources."
+Want the task to keep running after your next Windows password change?  Then select: "Do not store password. The task will only have access to local computer resources."
+
+# Paste without formatting
+Unlike MacOS, it depends on whether the application supports it.
+
+A neat trick is to use the Run dialog:
+```
+Win + R
+Ctrl + V
+Ctrl + A
+Ctrl + C
+Esc
+```
+
