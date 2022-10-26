@@ -47,6 +47,16 @@ $ echo { \"array\": [{\"id\": \"A\"},{\"id\": \"B\"}]} | jq '.array[] | select(.
 }
 ```
 
+## Get the first/last element of an array
+```bash
+ echo { \"array\": [{\"id\": \"A\"},{\"id\": \"B\"},{\"id\": \"C\"}]} | jq '.array | first,last'
+{
+  "id": "A"
+}
+{
+  "id": "C"
+}
+```
 
 ## How to manipulate JSON using jq
 https://geeksocket.in/posts/manipulate-json-jq/
