@@ -37,6 +37,11 @@ aws cognito-idp help
 
 Note: s3 vs s3api.  The s3 tool does not support the ```--output``` option.
 
+## Cat an S3 text file's contents to stdout
+```bash
+s3 cp s3://mybucket/stream.txt -
+```
+
 ## Block all public access (at the Bucket level)
 ```bash
 aws s3api put-public-access-block \

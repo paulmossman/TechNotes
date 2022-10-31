@@ -2,6 +2,11 @@
 ***
 It's like sed for JSON data.
 
+See also:
+- [Tutorial](https://stedolan.github.io/jq/tutorial/)
+- [Manual](https://stedolan.github.io/jq/manual/)
+- [Try Online](https://jqplay.org/)
+
 # Miscellaneous
 
 ## Simple pretty-print
@@ -31,6 +36,7 @@ Example:
 ```bash
 aws ec2 describe-subnets | jq -r '.Subnets[] | "\(.AvailabilityZone) - \(.DefaultForAz)"'
 ```
+This is also an example of [String interpolation](https://stedolan.github.io/jq/manual/#Stringinterpolation-%5C(foo)), which can be used to print two values on one line.
 
 Example:
 ```bash
