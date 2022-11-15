@@ -72,5 +72,21 @@ B
 C
 ```
 
-## How to manipulate JSON using jq
-https://geeksocket.in/posts/manipulate-json-jq/
+## Manipulate JSON
+```bash
+echo { \"array\": [{\"id\": \"A\", \"example\": \"bad value\"},{\"id\": \"B\", \"example\": \"good\"}]} | jq '(.array[] | select(.id=="A")).example = "replaced good"'{
+  "array": [
+    {
+      "id": "A",
+      "example": "replaced good"
+    },
+    {
+      "id": "B",
+      "example": "good"
+    }
+  ]
+}
+```
+
+See also: https://geeksocket.in/posts/manipulate-json-jq/
+

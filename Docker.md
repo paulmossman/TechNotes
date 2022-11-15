@@ -32,6 +32,12 @@ For example:
 docker run .... --network="host"
 ```
 
+## Publish Port
+```bash
+docker run .... -p 8080:80
+```
+The first port is Docker host, the second port is Docker container.
+
 # Small
 
 ## Run, interactive command line, delete upon exit
