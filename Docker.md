@@ -38,6 +38,20 @@ docker run .... -p 8080:80
 ```
 The first port is Docker host, the second port is Docker container.
 
+## Add an /etc/hosts entry
+```bash
+docker run --add-host=example.com:10.0.0.1 --rm -it alpine grep example.com /etc/hosts
+```
+
+# Volumes
+https://www.baeldung.com/ops/docker-volumes
+
+## Mount Windows volumes
+```bash
+docker run -v //c/:/c --rm -it alpine ls /c
+```
+
+
 # Small
 
 ## Run, interactive command line, delete upon exit
