@@ -5,6 +5,11 @@
 
 [Cheat Sheet](http://www.cheat-sheets.org/saved-copy/quarkus-cheat-sheet.pdf)
 
+## Run in Production mode
+```bash
+java -jar target/quarkus-app/quarkus-run.jar
+```
+
 ## Misc Maven
 
 Development mode:

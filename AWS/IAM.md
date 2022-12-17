@@ -59,31 +59,5 @@ Inline ```AllowManageOwnSecurityCredentials```:
 }
 ```
 
-Inline ```AllowManageOwnMFA``` (if you use MFA):
-```json
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "AllowManageOwnVirtualMFADevice",
-            "Effect": "Allow",
-            "Action": [
-                "iam:CreateVirtualMFADevice",
-                "iam:DeleteVirtualMFADevice"
-            ],
-            "Resource": "arn:aws:iam::*:mfa/${aws:username}"
-        },
-        {
-            "Sid": "AllowManageOwnUserMFA",
-            "Effect": "Allow",
-            "Action": [
-                "iam:DeactivateMFADevice",
-                "iam:EnableMFADevice",
-                "iam:ListMFADevices",
-                "iam:ResyncMFADevice"
-            ],
-            "Resource": "arn:aws:iam::*:user/${aws:username}"
-        }
-    ]
-}
-```
+Inline ```AllowManageOwnMFA``` (if you use MFA): See [AWS: Allows MFA-authenticated IAM users to manage their own MFA device on the My Security Credentials page](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_policies_examples_aws_my-sec-creds-self-manage-mfa-only.html).  But remove the ```DenyAllExceptListedIfNoMFA``` Sid if you need Access Keys operations to work.  (i.e. cmd-line and/or SDK, which don't use MFA.)
+

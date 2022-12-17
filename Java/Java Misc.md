@@ -1,5 +1,10 @@
 # Java Misc
 
+## String compare for value equality
+```java
+    new String("test").equals("test") // --> true 
+```
+
 ## Sort using a custom Comparator
 ```java
     Integer [] integers = ArrayUtils.toObject(toSort);
@@ -49,3 +54,8 @@ If you don't want the default behaviour then you have to override equals(), but 
 But really, use a 3rd-party implementation...
 
 [Full Explanation](https://www.baeldung.com/java-equals-hashcode-contracts)
+
+
+## AES encryption/decryption
+https://www.baeldung.com/java-aes-encryption-decryption
+https://mkyong.com/java/java-aes-encryption-and-decryption

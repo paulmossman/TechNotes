@@ -33,6 +33,12 @@ Why not simply ```cognito``` I don't know...
 aws cognito-idp help
 ```
 
+## List the ID and Name of all User Pools
+```bash
+aws cognito-idp list-user-pools --max-results 60 | jq -r '.UserPools[ ] | .Id+" - "+.Name'
+```
+
+
 # S3
 
 Note: s3 vs s3api.  The s3 tool does not support the ```--output``` option.

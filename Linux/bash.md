@@ -57,6 +57,13 @@ for i in {1..5}; do echo "$i"; done
 if [ $? -eq 0 ]; then echo 1; else echo 0; fi
 ```
 
+## Flatten multiple lines onto one line
+```bash
+ls -l | tr '\n' ' '
+ls -l | awk '{print}' ORS=' '
+ls -l | xargs
+```
+
 # Misc script snippets
 
 ## If the exit status of a command isn't success, then exit with that same status
