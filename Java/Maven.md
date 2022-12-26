@@ -28,6 +28,8 @@ Run Maven, even when Maven isn't installed.  (Still requires Java.)
 mvn -N wrapper:wrapper
 ```
 
+NOTE: Running this under Windows does update the 'mvnw' bash script.  Running it under Linux does not update the 'mvnw.cmd' Batch script.
+
 ## Parameters
 
 Don't show progress bars, good for non-interactive terminals:

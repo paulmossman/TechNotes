@@ -5,7 +5,7 @@
 
 ## Memory and CPU usage
 ```bash
-docker stat
+docker stats
 ```
 Like Linux ```top```
 

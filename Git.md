@@ -38,6 +38,19 @@ Abort:
 git merge --abort
 ```
 
+Effectively `git merge -s theirs <their branch>`:
+```bash
+git checkout -b tmp origin/develop
+git merge -s ours main
+git checkout master
+git checkout -b fix-merge-conflicts origin/main
+git merge tmp
+git push -u origin fix-merge-conflicts
+# Then PR fix-merge-conflicts -> main
+git branch -D tmp
+```
+
+
 # Fetch
 
 ## Fetch the latest from another branch without switching it
