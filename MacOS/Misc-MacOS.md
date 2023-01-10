@@ -25,5 +25,12 @@ https://appletoolbox.com/record-screen-internal-audio-mac/#:~:text=Press%20and%2
 
 And then of course to listen to the recorded audo, switch back to MacBook speakers.
 
+# Remote Desktop (without the $110 Apple Mac client) - VNC
 
+Note: Not encrypted (so trusted network only)
 
+On the client computer use [RealVNC viewer](https://www.realvnc.com/download/viewer/)
+
+On the server computer enable screen sharing: System Preferences → Sharing → select "Screen Sharing".
+
+ 
