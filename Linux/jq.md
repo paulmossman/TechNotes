@@ -44,6 +44,12 @@ aws cloudformation describe-stacks | jq -r '.Stacks[] | select(.StackName=="Toda
 aws cloudformation describe-stacks --stack-name Todays-Stack-Name | jq -r '.Stacks[0]'
 ```
 
+Example:
+```bash
+aws ec2 describe-instances --output json | \
+   jq -r '.Reservations[].Instances | "Instance ID: \(.[0].InstanceId)  State: \(.[0].State.Name)  Public FQDN: \(.[0].NetworkInterfaces[0].Association.PublicDnsName)" '
+```
+
 
 ## Select an array element by one of the object's values
 ```bash

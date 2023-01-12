@@ -38,6 +38,13 @@ aws cognito-idp help
 aws cognito-idp list-user-pools --max-results 60 | jq -r '.UserPools[ ] | .Id+" - "+.Name'
 ```
 
+# EC2
+
+## Get the ID and Public FQDN of all EC2 instances
+```bash
+aws ec2 describe-instances --output json | \
+   jq -r '.Reservations[].Instances | "Instance ID: \(.[0].InstanceId)  State: \(.[0].State.Name)  Public FQDN: \(.[0].NetworkInterfaces[0].Association.PublicDnsName)" '
+```
 
 # S3
 
