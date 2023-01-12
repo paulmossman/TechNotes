@@ -10,6 +10,11 @@ fun
 $ cat fun.txt
 fun
 ```
+echo into a priviledged file:
+```bash
+echo "<USERNAME> ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
+```
+
 
 # Command-line Arguments
 number of arguments: $#
@@ -29,6 +34,12 @@ $ ls does-not-exist &> file.txt
 $ cat file.txt
 ls: cannot access 'does-not-exist': No such file or directory
 ```
+
+## Send both stderr and stdout to /dev/null
+```bash
+ls . no-such-file > /dev/null 2>&1
+```bash
+
 
 ## Redirect stderr to stdout
 ```bash
