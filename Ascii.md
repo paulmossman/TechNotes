@@ -13,6 +13,10 @@
 
 ↔
 
+÷
+
+×
+
 https://theasciicode.com.ar/
 
 # Misc Arrows

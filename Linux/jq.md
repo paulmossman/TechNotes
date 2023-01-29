@@ -79,8 +79,13 @@ C
 ```
 
 ## Manipulate JSON
+
+See also: https://geeksocket.in/posts/manipulate-json-jq/
+
+### Change an existing attribute's value
 ```bash
-echo { \"array\": [{\"id\": \"A\", \"example\": \"bad value\"},{\"id\": \"B\", \"example\": \"good\"}]} | jq '(.array[] | select(.id=="A")).example = "replaced good"'{
+echo { \"array\": [{\"id\": \"A\", \"example\": \"bad value\"},{\"id\": \"B\", \"example\": \"good\"}]} | jq '(.array[] | select(.id=="A")).example = "replaced good"'
+{
   "array": [
     {
       "id": "A",
@@ -94,5 +99,19 @@ echo { \"array\": [{\"id\": \"A\", \"example\": \"bad value\"},{\"id\": \"B\", \
 }
 ```
 
-See also: https://geeksocket.in/posts/manipulate-json-jq/
-
+### Add an attribute
+Same syntax as changing an existing attribute, but it will add.
+```bash
+echo { \"array\": [{\"id\": \"A\"},{\"id\": \"B\"}]} | jq '(.array[] | select(.id=="A")).note = "The first letter"'
+{
+  "array": [
+    {
+      "id": "A",
+      "note": "The first letter"
+    },
+    {
+      "id": "B"
+    }
+  ]
+}
+```

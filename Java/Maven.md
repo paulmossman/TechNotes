@@ -79,7 +79,18 @@ Exclude specific test(s):
 ```
 -Dtest=\!TestNotToBeRun
 ```
-   
+
+## Java , e.g. --illegal-access=warn
+pom.xml
+```xml
+In <properties>:
+   <jvm.options>--illegal-access=warn</jvm.options>
+```
+or cmd-line:
+```bash
+MAVEN_OPTS=--illegal-access=warn
+```
+
 ## Profiles
 
 [Good reference](https://mkyong.com/maven/maven-profiles-example/)

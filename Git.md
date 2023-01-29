@@ -86,6 +86,10 @@ Use a `.gitattributes` file:
 ```
 ```<filename>``` accepts wildcards.
 
+## Get the repo's URL
+```bash
+git remote -v
+```
 
 ## Three Git Configurations that Should Be the Default
 https://spin.atomicobject.com/2020/05/05/git-configurations-default/
