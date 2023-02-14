@@ -59,6 +59,10 @@ mvn -f \<alternate pom.xml\>
 mvn help:evaluate -Dexpression=settings.localRepository
 ```
 
+### Upgrading Qurkus version?
+
+Consult: https://github.com/quarkusio/quarkus/wiki/Migration-Guides
+
 ## Tests
 Compile the tests, but don't execute them:
 ```
