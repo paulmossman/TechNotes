@@ -17,6 +17,32 @@ Development mode:
 mvn quarkus:dev
 ```
 
+## Debug in an IDE
+```java
+import io.quarkus.runtime.Quarkus;
+import io.quarkus.runtime.annotations.QuarkusMain;
+
+/**
+ * See: https://quarkus.io/guides/lifecycle
+ * 
+ * This class can be run/debugged inside an IDE.
+ */
+@QuarkusMain
+public class Main {
+
+   public static void main(String... args) {
+      Quarkus.run(args);
+   }
+}
+```
+
+Also useful, an application.properties addition:
+```
+# Makes the console output looks nice in Eclipse.
+quarkus.console.color=false
+```
+
+
 ### Extensions
 
    mvn quarkus:list-extensions

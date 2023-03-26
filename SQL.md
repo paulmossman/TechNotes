@@ -32,7 +32,8 @@ Selects record that have the same value in two tables.
 ```sql
 SELECT left.id, left.name, right.date FROM left
    INNER JOIN right
-   ON left.id = right.id;
+   ON left.id = right.id
+   WHERE left.customer = '100';
 ```
 
 ### FULL JOIN (aka FULL OUTER JOIN)

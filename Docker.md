@@ -9,6 +9,11 @@ docker stats
 ```
 Like Linux ```top```
 
+## Delete all stopped containers
+```bash
+docker container prune
+```
+
 # Dangling images
 
 i.e. Images with Name "<none>".

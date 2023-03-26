@@ -52,10 +52,21 @@ aws ec2 describe-instances --output json | \
 
 
 ## Select an array element by one of the object's values
+Exact match:
 ```bash
 $ echo { \"array\": [{\"id\": \"A\"},{\"id\": \"B\"}]} | jq '.array[] | select(.id=="A")'
 {
   "id": "A"
+}
+```
+Contains:
+```bash
+$ echo { \"array\": [{\"id\": \"AA\"},{\"id\": \"AB\"},{\"id\": \"BA\"}]} | jq '.array[] | select(.id | contains("B"))'
+{
+  "id": "AB"
+}
+{
+  "id": "BA"
 }
 ```
 

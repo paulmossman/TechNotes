@@ -44,7 +44,12 @@ aws cognito-idp list-user-pools --max-results 60 | jq -r '.UserPools[ ] | .Id+" 
 ## Get the ID and Public FQDN of all EC2 instances
 ```bash
 aws ec2 describe-instances --output json | \
-   jq -r '.Reservations[].Instances | "Instance ID: \(.[0].InstanceId)  State: \(.[0].State.Name)  Public FQDN: \(.[0].NetworkInterfaces[0].Association.PublicDnsName)" '
+   jq -r '.Reservations[].Instances[] | "Instance ID: \(.InstanceId)  State: \(.State.Name)  Public FQDN: \(.NetworkInterfaces[0].Association.PublicDnsName)" '
+```
+Running only:
+```bash
+aws ec2 describe-instances --output json | \
+   jq -r '.Reservations[].Instances[] | select(.State.Name=="running") | "Instance ID: \(.InstanceId)  Public FQDN: \(.NetworkInterfaces[0].Association.PublicDnsName)" '
 ```
 
 # S3
@@ -103,4 +108,15 @@ aws ec2 describe-launch-template-versions ---launch-template-name ___ --versions
 ```bash
 tds=`aws ecs list-task-definitions | jq -cr '.taskDefinitionArns[]'`
 for td in ${tds}; do echo "$td" ; aws ecs describe-task-definition --task-definition "$td" | jq '.taskDefinition.containerDefinitions[0].environment' | grep -i password; done
+```
+
+# SSM
+
+## Get the latest ID of a particular AWS AMI
+```bash
+aws ssm get-parameters-by-path --path /aws/service/ami-amazon-linux-latest --query "Parameters[]" | jq -r '.[] | select(.Name | contains("amzn2-ami-hvm-x86_64-gp2")) | .Value'
+```
+ECS-optimized specifically:
+```bash
+aws ssm get-parameters --names /aws/service/ecs/optimized-ami/amazon-linux-2/recommended
 ```
