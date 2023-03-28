@@ -49,6 +49,10 @@ quarkus.console.color=false
    
    mvn quarkus:add-extension -Dextensions="hibernate-validator"
 
+#### Pick extensions for a new application
+
+   https://code.quarkus.io/
+
 ### All Configuration Options
 
    https://quarkus.io/guides/all-config
