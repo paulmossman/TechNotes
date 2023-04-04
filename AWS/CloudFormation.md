@@ -112,7 +112,18 @@ Example (role trust policy to explicitly trust the role itself):
       AWS: !Sub arn:aws:iam::${AWS::AccountId}:role/${AWS::StackName}-lambda-role
 ```
 
-# Former2 Tool
+# Stack / Template Tools
+
+# Rain
+
+An alternative: https://github.com/aws-cloudformation/rain
+
+## Convert a YML template to JSON
+```bash
+rain format --json template.yml > template.json
+```
+
+## Former2 Tool
 Generate CloudFormation templates from AWS resources
 
 https://aws.amazon.com/blogs/opensource/accelerate-infrastructure-as-code-development-with-open-source-former2/
@@ -121,7 +132,9 @@ Though see: https://github.com/iann0036/former2/blob/master/RESOURCE_COVERAGE.md
 
 https://former2.com/ (But don't put your credentials into a 3rd-party website...)
 
-## Run Former2 locally
+
+
+### Run Former2 locally
 
 https://github.com/iann0036/former2/blob/master/HOSTING.md  (127.0.0.1 doesn't need extension)
 

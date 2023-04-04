@@ -70,6 +70,11 @@ $ echo { \"array\": [{\"id\": \"AA\"},{\"id\": \"AB\"},{\"id\": \"BA\"}]} | jq '
 }
 ```
 
+## Select array elements by the existence of a value in nested arrays
+```bash
+aws ec2 describe-security-groups --output json | jq -r '.SecurityGroups[] | select(.IpPermissionsEgress[].IpRanges[].CidrIp == "0.0.0.0/0") | "\(.VpcId) \(.GroupId) \(.GroupName) \(.Description)"'
+```
+
 ## Get the first/last element of an array
 ```bash
 echo { \"array\": [{\"id\": \"A\"},{\"id\": \"B\"},{\"id\": \"C\"}]} | jq '.array | first,last'

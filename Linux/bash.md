@@ -104,6 +104,12 @@ for i in {1..5}; do
 done
 ```
 
+## Loop over strings
+```bash
+strings=("a" "b" "c")
+for i in "${strings[@]}" ; do echo "$i"; done
+```
+
 ## String contains 
 Note double square brackets.
 ```bash

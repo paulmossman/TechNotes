@@ -39,6 +39,23 @@ aws cognito-idp help
 aws cognito-idp list-user-pools --max-results 60 | jq -r '.UserPools[ ] | .Id+" - "+.Name'
 ```
 
+# VPC
+
+## Show all resources in a Subnet
+```bash
+aws ec2 describe-network-interfaces --filters Name=subnet-id,Values=${SUBNET} | grep Description
+```
+
+## Show all Security Groups (in the specified VPC) with an egress rule containing "0.0.0.0/0"
+```bash
+aws ec2 describe-security-groups --filters Name=vpc-id,Values=${VPC_ID} --output json | jq -r '.SecurityGroups[] | select(.IpPermissionsEgress[].IpRanges[].CidrIp == "0.0.0.0/0") | "\(.GroupId) \(.GroupName) \(.Description)"'
+```
+
+## Show all Network Interfaces the use the specified Security Group
+```bash
+aws ec2 describe-network-interfaces --filters Name=group-name,Values=${SECURITY_GROUP_NAME} --output json | jq -r '.NetworkInterfaces[] | "\(.NetworkInterfaceId) \(.Attachment.InstanceOwnerId) \(.Description)"'
+```
+
 # EC2
 
 ## Get the ID and Public FQDN of all EC2 instances
