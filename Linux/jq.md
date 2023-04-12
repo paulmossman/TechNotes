@@ -40,8 +40,8 @@ This is also an example of [String interpolation](https://stedolan.github.io/jq/
 
 Example:
 ```bash
-aws cloudformation describe-stacks | jq -r '.Stacks[] | select(.StackName=="Todays-Stack-Name")'
-aws cloudformation describe-stacks --stack-name Todays-Stack-Name | jq -r '.Stacks[0]'
+aws cloudformation describe-stacks | jq -r '.Stacks[] | select(.StackName=="Stack-Name-A" or .StackName=="Stack-Name-B")'
+aws cloudformation describe-stacks --stack-name Stack-Name-A | jq -r '.Stacks[0]'
 ```
 
 Example:
