@@ -77,7 +77,6 @@ aws cloudformation describe-stacks --stack-name <Stack Name> | jq -r '.Stacks[0]
 # Parameters
 https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html
 
-
 ## Use a Parameter
 Alone:
 ```yaml
@@ -112,13 +111,33 @@ Example (role trust policy to explicitly trust the role itself):
       AWS: !Sub arn:aws:iam::${AWS::AccountId}:role/${AWS::StackName}-lambda-role
 ```
 
+# Miscellaneous
+
+## AWS::EC2::SecurityGroup - Do not allow any Outbound traffic
+You would expect this to work:
+```json
+"SecurityGroupEgress": []
+```
+But it results in two rules allowing ALL Outbound access, one each for IPv4 and IPv6.  Use this instead:
+```json
+"SecurityGroupEgress": [
+   {
+      "IpProtocol": "tcp",
+      "CidrIp": "0.0.0.0/32",
+      "FromPort": "1",
+      "ToPort": "1",
+      "Description": "Only to 0.0.0.0, which can never be a host."
+   }
+]
+```
+
 # Stack / Template Tools
 
-# Rain
+## Rain
 
-An alternative: https://github.com/aws-cloudformation/rain
+https://github.com/aws-cloudformation/rain
 
-## Convert a YML template to JSON
+### Convert a YML template to JSON
 ```bash
 rain format --json template.yml > template.json
 ```
