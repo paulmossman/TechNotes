@@ -176,3 +176,21 @@ fi
     True if the length of string is non-zero.
 ```
 They can be combined, e.g. -fs → True for existing regular file with size greater than zero.
+
+### Conditionals example
+```bash
+usage() {
+   echo "Usage: $0 <Mandatory Parameter> [Optional Parameter]">&2
+   exit 2
+}
+
+if [ "$#" -gt "2" -o "$#" -lt "1" ]; then
+   usage
+fi
+MANDATORY_PARAMETER=$1
+if [ "$#" -eq "2" ]; then
+   OPTIONAL_PARAMETER=$2
+else
+   OPTIONAL_PARAMETER="default"
+fi
+```
