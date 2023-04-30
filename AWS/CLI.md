@@ -46,15 +46,23 @@ aws cognito-idp list-user-pools --max-results 60 | jq -r '.UserPools[ ] | .Id+" 
 aws ec2 describe-network-interfaces --filters Name=subnet-id,Values=${SUBNET} | grep Description
 ```
 
-## Show all Security Groups (in the specified VPC) with an egress rule containing "0.0.0.0/0"
+## Security Groups
+
+### Show all Security Groups (in the specified VPC) with an egress rule containing "0.0.0.0/0"
 ```bash
 aws ec2 describe-security-groups --filters Name=vpc-id,Values=${VPC_ID} --output json | jq -r '.SecurityGroups[] | select(.IpPermissionsEgress[].IpRanges[].CidrIp == "0.0.0.0/0") | "\(.GroupId) \(.GroupName) \(.Description)"'
 ```
 
-## Show all Network Interfaces the use the specified Security Group
+### Show all Network Interfaces the use the specified Security Group
 ```bash
 aws ec2 describe-network-interfaces --filters Name=group-name,Values=${SECURITY_GROUP_NAME} --output json | jq -r '.NetworkInterfaces[] | "\(.NetworkInterfaceId) \(.Attachment.InstanceOwnerId) \(.Description)"'
 ```
+
+### 'Security group game' (GroupName) vs. 'Name' (Tag with Key=="Name")
+```bash
+aws ec2 describe-security-groups --output json | jq -r '.SecurityGroups[] |  select(.Tags!=null) | "\(.GroupName) \(.Tags[] | select(.Key == "Name") | .Value)"' 
+```
+Note: This only list those that have a Tag whose Key is "Name", which is optional.
 
 # EC2
 

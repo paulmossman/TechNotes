@@ -21,7 +21,7 @@
 
 ## HashSet with custom Objects
 
-If you don't want the default behaviour then you have to override equals(), but thenyou must also override hashCode().
+If you don't want the default behaviour then you have to override equals(), but then you must also override hashCode().
 
 ```java
     @Override
@@ -54,6 +54,8 @@ If you don't want the default behaviour then you have to override equals(), but 
 But really, use a 3rd-party implementation...
 
 [Full Explanation](https://www.baeldung.com/java-equals-hashcode-contracts)
+
+Use [EqualsVerifier](https://jqno.nl/equalsverifier/) to test equals() and hashCode().
 
 
 ## AES encryption/decryption
@@ -111,4 +113,45 @@ public class SSLCipherSuites {
       }
    }
 }
+```
+
+## Simple toString()
+```java
+   public String toString() {
+      StringBuilder result = new StringBuilder();
+      String newLine = System.getProperty("line.separator");
+
+      result.append( this.getClass().getName() );
+      result.append( " Object {" );
+      result.append(newLine);
+
+      //determine fields declared in this class only (no fields of superclass)
+      java.lang.reflect.Field[] fields = this.getClass().getDeclaredFields();
+
+      //print field names paired with their values
+      for ( java.lang.reflect.Field field : fields  ) {
+        result.append("  ");
+        try {
+          result.append( field.getName() );
+          result.append(": ");
+          //requires access to private field:
+          result.append( field.get(this) );
+        } catch ( IllegalAccessException ex ) {
+          System.out.println(ex);
+        }
+        result.append(newLine);
+      }
+      result.append("}");
+
+      return result.toString();
+    }
+```
+
+Modified from https://commons.apache.org/proper/commons-lang/apidocs/org/apache/commons/lang3/builder/ReflectionToStringBuilder.html
+```java
+   @Override
+   public String toString()
+   {
+      return org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString(this);
+   }
 ```

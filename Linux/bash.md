@@ -68,6 +68,11 @@ for i in {1..5}; do echo "$i"; done
 if [ $? -eq 0 ]; then echo 1; else echo 0; fi
 ```
 
+## While loop
+```bash
+while true; do ls -al; sleep 5; done
+```
+
 ## Flatten multiple lines onto one line
 ```bash
 ls -l | tr '\n' ' '

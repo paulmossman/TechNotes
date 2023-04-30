@@ -25,6 +25,13 @@ UPDATE table_name SET col = value WHERE condition;
 DROP TABLE table_name;
 ```
 
+## WITH clause - named sub-query block
+```sql
+WITH RowFromOtherTable AS (
+   SELECT id FROM other_table WHERE name = 'A')
+SELECT * FROM this_table WHERE other_id = (SELECT id FROM SpecifiedPlan);
+```
+
 ## Joins
 
 ### INNER JOIN
@@ -43,7 +50,7 @@ SELECT left.id, left.name, right.date FROM left
    FULL JOIN right
    ON left.id = right.id;
 ```
-Also support WHERE.
+Also supports WHERE.
 
 ## PostgreSQL specific
 
