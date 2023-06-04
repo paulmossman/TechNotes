@@ -1,7 +1,9 @@
-**<span style="font-size:3em;color:black">PostgreSQL pgAdmin</span>**
+**<span style="font-size:3em;color:black">PostgreSQL</span>**
 ***
 
-# Run in a Docker container with Web UI
+# pgAdmin
+
+## Run in a Docker container with Web UI
 
 ```bash
 docker run --name webui-pgadmin4 -p 5050:80 \
@@ -19,6 +21,10 @@ C:\pgAdmin\servers.json is optional, but can be exported from pgAdmin via Tools 
 
 References: https://www.pgadmin.org/download/pgadmin-4-container/ and https://hub.docker.com/r/dpage/pgadmin4/
 
+# Misc
 
-
-
+## Run client commands from a Docker container
+For example:
+```
+docker run --rm --network=host -v "//c/:/c" postgres pg_dump --format=custom -d db_name --verbose -f "/c/tmp/dump.backup"
+```

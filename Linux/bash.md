@@ -17,9 +17,9 @@ echo "<USERNAME> ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
 
 
 # Command-line Arguments
-number of arguments: $#
-script name:         $0
-first:               $1, etc...
+- number of arguments: $#
+- script name:         $0
+- first:               $1, etc...
 
 ## Get script path and filename
 ```
@@ -27,6 +27,58 @@ SCRIPT=`realpath "$0"`
 SCRIPTPATH=`dirname "${SCRIPT}"`
 SCRIPTNAME=`basename "${SCRIPT}"`
 ```
+
+## Parse
+```bash
+usage() {
+    echo "Usage: $0 -o|--one=<...> -t|--two=<...> -h|--three=<...>">&2
+    exit 2
+}
+
+PARAMS=""
+while (( "$#" )); do
+   case "$1" in
+      -o|--one)
+         if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+            ONE=$2
+            shift 2
+         else
+            echo "Error: Argument for $1 is missing" >&2
+            usage
+         fi
+         ;;
+      -t|--two)
+         if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+            TWO=$2
+            shift 2
+         else
+            echo "Error: Argument for $1 is missing" >&2
+            usage
+         fi
+         ;;
+      -h|--three)
+         if [ -n "$2" ] && [ ${2:0:1} != "-" ]; then
+            THREE=$2
+            shift 2
+         else
+            echo "Error: Argument for $1 is missing" >&2
+            usage
+         fi
+         ;;
+      -*|--*=) # unsupported flags
+         usage
+         ;;
+      *) # preserve positional arguments
+         PARAMS="$PARAMS $1"
+         shift
+         ;;
+   esac
+done
+
+
+```
+
+# Misc
 
 ## Send both stderr and stdout to a file
 ```bash
@@ -40,7 +92,6 @@ ls: cannot access 'does-not-exist': No such file or directory
 ls . no-such-file > /dev/null 2>&1
 ```bash
 
-
 ## Redirect stderr to stdout
 ```bash
 $ ls does-not-exist > file.txt 2>&1
@@ -48,8 +99,6 @@ $ cat file.txt
 ls: cannot access 'does-not-exist': No such file or directory
 ```
 Note: The ```2>&1``` must be *after* the stdout redirection.
-
-# Misc
 
 ## One-liners
 

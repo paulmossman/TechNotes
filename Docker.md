@@ -55,7 +55,10 @@ https://www.baeldung.com/ops/docker-volumes
 ```bash
 docker run -v //c/:/c --rm -it alpine ls /c
 ```
-
+PostgreSQL specific:
+```
+docker run --rm --network=host -v "//c/:/c" postgres pg_dump --format=custom -d db_name --verbose -f "/c/tmp/dump.backup"
+```
 
 # Small
 

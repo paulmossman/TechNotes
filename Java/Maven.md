@@ -59,6 +59,12 @@ mvn -f \<alternate pom.xml\>
 mvn help:evaluate -Dexpression=settings.localRepository
 ```
 
+### Simple archetype project
+```
+mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-simple -DarchetypeVersion=1.4
+```
+https://maven.apache.org/archetypes/maven-archetype-simple/
+
 ### Upgrading Qurkus version?
 
 Consult: https://github.com/quarkusio/quarkus/wiki/Migration-Guides

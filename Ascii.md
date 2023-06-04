@@ -21,6 +21,10 @@
 
 ∞
 
+✓
+
+✗
+
 Refresh: ⟳
 
 Vertical dots: ⋮
