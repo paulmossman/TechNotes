@@ -37,3 +37,21 @@ body("path.to.array",
     )
 )
 ```
+
+## Customization
+
+RequestSpecification and ResponseSpecification, with builders.
+
+```java
+ResponseSpecification customSpec;
+ResponseSpecBuilder customSpecBuilder = new ResponseSpecBuilder()...<common stuff, like path>;
+if (expectFieldA) {
+   customSpec = customSpecBuilder.expectBody("fieldA", equalTo("true")).build();
+} else {
+   customSpec = customSpecBuilder.build();
+}
+
+...
+when().get("/path").then().spec(customSpec);
+
+```

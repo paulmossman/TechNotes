@@ -37,3 +37,10 @@ dig -x <ip_address> | grep -b1 "ANSWER SECTION" | tail -1 | cut -f3 | sed -e "s/
 ```
 
 INSTALL: ```yum -y install bind-utils```
+
+# Scripting 
+
+## Arbitrary path
+```python
+#!/usr/bin/env python
+```

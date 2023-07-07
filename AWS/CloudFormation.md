@@ -131,6 +131,13 @@ But it results in two rules allowing ALL Outbound access, one each for IPv4 and 
 ]
 ```
 
+## An error occurred (InsufficientCapabilitiesException) when calling the CreateStack operation: Requires capabilities : [CAPABILITY_NAMED_IAM]
+Add:
+```bash
+--capabilities CAPABILITY_NAMED_IAM
+```
+
+
 # Stack / Template Tools
 
 ## Rain
@@ -140,6 +147,11 @@ https://github.com/aws-cloudformation/rain
 ### Convert a YML template to JSON
 ```bash
 rain format --json template.yml > template.json
+```
+
+### Convert a JSON template to YML
+```bash
+rain format template.json > template.yml
 ```
 
 ## Former2 Tool
