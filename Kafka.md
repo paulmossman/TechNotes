@@ -1,6 +1,8 @@
 **<span style="font-size:3em;color:black">Kafka</span>**
 ***
 
+A distributed event streaming platform.
+
 # Topic
 
 A stream of data, identified by its name.  The sequence of Messages sent to a Topic is a Data Stream.
@@ -18,6 +20,8 @@ Messages written to a Topic are split into Partitions.
 Messages are ordered **within** a Partition.  They are **not** ordered across Partitions.
 
 # Message
+
+aka Evemt, Record
 
 Offset: The ordered ID of Messages in a Topic **Partition**.  i.e. Different Partitions can used the same Offset.
 
@@ -122,6 +126,8 @@ To get all available Messages not yet committed by the Group, use ```--from-begi
 https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients - Official Low Level
 
 https://mvnrepository.com/artifact/org.apache.kafka/kafka-streams - Official Streams
+
+Quarkus: smallrye-reactive-messaging-kafka extension
 
 # Connect from remote to Kafka Broker running on WSL2
 In ```server.properties```:

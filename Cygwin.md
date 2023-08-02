@@ -16,7 +16,9 @@ ln -s /cygdrive/c/ /c
 - xmllint
 - openssh  (The Windows ssh/scp requires Windws path for -i.)
 
-# Adjust paths to Windows format in scripts
+# Windows Paths
+
+## Adjust paths to Windows format in scripts
 This is required to pass a path as a parameter to a Windows executable, like ```java.exe```.
 ```
 if [[ $(uname -s) == CYGWIN* ]]; then
@@ -25,6 +27,11 @@ if [[ $(uname -s) == CYGWIN* ]]; then
 fi
 ```
 Note: Double marks (aka squar brackets) is required.
+
+## Open Windows Explorer in a particular directory
+```bash
+explorer `cygpath -d src/test`
+```
 
 # Call from Windows CMD
 

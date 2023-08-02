@@ -6,7 +6,7 @@
 ## What process is using a port?
 PowerShell ***run as Administrator***:
 ```PowerShell
-netstat -anob | Select-String -Pattern "8080" -Context 0,1
+netstat -anob | Select-String -Context 0,1 -Pattern "8080"
 ```
 
 # Screen Record
