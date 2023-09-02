@@ -1,28 +1,236 @@
 **<span style="font-size:3em;color:black">Kubernetes General</span>**
 ***
 
-# Pod
+# Pod (a kind)
 
-A Kubernetes encapsulation of one or more Containers.  (Though in practice it's almost always only one Container.)
+A Kubernetes encapsulation of one or more Containers.  A single instance of an application.
 
-# Replication Controller
+***Cannot*** be edited.  Delete and re-create instead.
+
+In practice it's almost always only one Container per Pod.  If more, then it would be a supporting Container and not a duplicate of the same Container.
+
+## Multi-Container Pods
+Design Patterns:
+1. Adaptor: transform output
+2. Ambassador: proxy a local outgoing connection
+3. Sidecar: enhance or extend
+
+([Reference](https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/))
+
+# Container Resources
+
+Can set "Request" and/or "Limit".
+
+## Enforecement
+
+### CPU
+
+The Container won't be able to use more that the limit.  i.e. Throttled.
+
+### Memory
+
+If the Container uses more than the limit, then it'll be killed.  Reason: ```OOMKilled```.
+
+## LimitRange (a kind)
+
+Set default, max, and min for all newly created Pods in the namespace.
+
+# ResourceQuota (a kind)
+
+Enforce various ***total*** limits at the ***Namespace*** level.  Can be Compute (CPU, Memory), Storage, or Object Count.
+
+
+## Network
+
+All Containers in the same pod share a single 'localhost'.  i.e. If one Container binds to port 80, then no other Container can.  But all Containers in the port can reach that port via "localhost:80".
+
+The Pod's name is also a DNS entry.
+
+# ReplicaSet (a kind)
 
 Keeps right # of Pods running.  Load Balancing and Scaling.
-Older.  Being replaced by ReplicaSet.
 
-# Services
+```kubectl explain rs.spec.selector``` → Match the Pod template's label.
+
+OLD: Replication Controller
+
+# Deployment (a kind)
+
+A wrapper for Pods and ReplicaSets.  Allows "rollout" of a series of changes ***together***, or "rollback" to an old version.    Rollouts have incremental Revisions: 1, 2, 3, ...
+
+https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+
+***Can*** be edited, which causes rollout of a new ReplicaSet.  Or: ```kubectl apply -f deployment.yml```
+
+Update strategies:
+1. ```RollingUpdate``` (default) - "Roll" replacements in batches (configurable size, etc.)
+2. ```Recreate``` - Destroy all old at once, i.e. downtime.
+
+Rollback: ```kubectl rollout undo <Deployment name>```  This changes the # of the Revision rolled back to, to be the next Revision #.
+
+
+# Service (a kind)
 
 Allows communictions to other components, e.g user endpoints, other pods, DBs.  Types:
 1. NodePort
 1. ClusterIP
 1. LoadBalancer
 
+The Service's name is also a DNS entry.
+
+# Job (a kind)
+
+A workload that is meant to perform a specific task, and then exit.
+
+Versus a ReplicaSet, a Job runs a set of Pods (with ```restartPolicy: Never```) to completion.
+
+# CronJob (a kind)
+
+Like Linux crontab.
+
+```spec.schedule``` → crontab syntax
+
+```spec.jobTemplate.spec``` → Matches Job ```spec```
+
 # Secrets
 Not actually very secret, just base64 encoded, so easy to decode.  Some special treatment (only given to pods that request them, not written to disk.)
 
-For things that are really secret use Helm Secrets or HashiCorp Vault.
+The default Kubernetes secrets system just ```base64``` encoded (***not*** encrypted), so development and testing only.
 
-# Upgrade
+For Production secrets use Helm Secrets, HashiCorp Vault (plus [Vault Provider](https://github.com/hashicorp/vault-csi-provider)), [AWS Provider](https://github.com/aws/secrets-store-csi-driver-provider-aws) (a wrapper to AWS Secrets Manager), others...  Or [Enable Encryption at Rest for Secrets](https://kubernetes.io/docs/tasks/administer-cluster/encrypt-data/).
+
+A single "Secret" contains one or more Keys (Key/Value pairs.)
+
+Secrets can be injected into a Container (in a Pod):
+- Environment variables:
+   - all
+   - a specific
+- Volume, with each Key as a file: ```volumes:``` / ```secret:``` / ```secretName:```
+
+An Pod that's created in the Namespace can access any of the Namespace's Secrets.
+
+View (base64 encoded) all values in a secret:
+```
+kubectrl get secret <name> -o yaml
+```
+(In the ```data:``` section.)
+
+# Namespaces
+
+Can of course be created.
+
+## Included at Cluster startup
+
+### default
+Used when no --namespace option is provided.
+### kube-system
+For running Kubernetes, don't touch it.
+### kube-public
+Resources that should be made available to all.
+
+## DNS
+
+Reminder: Each Pod and Service name is also a DNS entry.
+
+FQDN: <Pod/Service Name>.<Namespace>.svc.cluster-domain.example
+
+# Probes
+
+Readiness and Liveness
+
+Types:
+- HTTP
+- TCP
+- Command
+
+Explain: 
+- pod.spec.initContainers.readinessProbe
+- pod.spec.initContainers.livenessProbe
+
+# Scheduling and Eviction
+
+## Taints and Tolerations
+
+A named Taint can be placed on a Node.  Pods that don't have a corresponding named Toleration are subject to the Taint Effect:
+- ```NoSchedule```: A new Pod is not scheduled on the Node.
+- ```PreferNoSchedule```: A new Pod may be scheduled on the Node if it can't be scheduled elsewhere.
+- ```NoExecute```: A new Pod is not scheduled on the Node, and existing Pods are evicted.
+
+## Node Selectors
+
+```nodeSelecter``` lists Key-Value pairs that correspond to Labels for the Node(s) that you want the Pod to run on.  Very simple.
+
+## Node Affinity
+
+More advanced than Node Selectors.  e.g. And, Or, Not, ... Scheduling and/or Execution.
+
+Affinity and anti-Affinity.
+
+
+
+# YAML
+
+Four top-level fields:
+1. apiVersion:
+2. kind:
+3. metadata:
+4. spec:
+
+## Structure
+apiVersion:
+kind: # https://kubernetes.io/docs/concepts/overview/working-with-objects/, options: ```kubectl api-resources```
+metadata:
+   name: <Name>
+   namespace: <Namespace>
+   labels:
+      # User-defined
+      app: myApp
+      type: backEnd
+spec:
+
+## Containers
+
+YAML ```spec``` / ```containers``` / <item> section:
+- ```command:``` (string array) - Override ENTRYPOINT
+- ```args:``` (string array) - Override CMD (not including ENTRYPOINT)
+
+YAML ```spec``` / ```env:``` for Environment Variables:
+- ```name:```
+- ```value:```
+or
+- ```valueFrom:``` a ```configMapKeyRef:``` or a ```secretKeyRef:```
+
+# Security
+
+Docker security settings can all be configured in Kubernetes, at either the Pod or Container level.  (Pod overrides Container.)  YAML: ```securityContext:```.
+
+## Service Account
+
+(Versus a User Account.)
+
+An object that can be created.  You can create a [JWT](https://jwt.io/) that's stored as a Secret.  e.g. For use in the "Authorizaton: Bearer XXX" header in a REST request to the Kubernetes API server.  Before v1.24 the JWT was created implicitly, and didn't expire.
+
+Use the TokenRequest API to get updated JWTs.
+
+There's a ```default``` Service Account, which is has restricted permissions (basic query only.)
+
+# Metrics 
+
+Popular, comprehensive, open-source: [Prometheus](https://prometheus.io/)
+
+## Metric Server
+
+Basic, in-memory storage only (no not historical.)  Optional, not installed by default.  Install from [GitHub](https://github.com/kubernetes-sigs/metrics-server/blob/master/README.md).
+
+Use:
+```
+kubectl top node
+kubectl top pod
+```
+
+# Administration
+
+## Upgrade
 
 https://kubernetes.io/docs/home/, and search for "Upgrade".
 
@@ -40,7 +248,7 @@ To see your options:
 kubeadm upgrade plan
 ```
 
-# Backup & Restore (if you manager yoru Kubernetes service)
+## Backup & Restore (if you managr your Kubernetes service)
 The data directory of the ETCD server.
 
 Backup into a file:

@@ -1,10 +1,16 @@
 **<span style="font-size:3em;color:black">ElasticSearch</span>**
 ***
 
+aka OpenSearch
+
 # Misc
 
 "ElasticSearch Head" Chrome plugin
 
+
+## Managed
+
+https://bonsai.io/
 
 # REST API
 

@@ -42,7 +42,9 @@ Messages with Key=null are sent **round-robin** to Partitions.
 
 ### Key != null
 
-Messages with the **same** (non-null) Key value are sent to the **same** Partition, while you have **same number** of Partitions.  (Determined using a hash, which takes the number of Partitions into account.)  And  
+Messages with the **same** (non-null) Key value are sent to the **same** Partition, while you have **same number** of Partitions.  (Determined using a hash, which takes the number of Partitions into account.)
+
+Choice of Key: For what entity do you want messages to be ordered for?
 
 ## Contents
 - Key (can be null)
@@ -123,9 +125,9 @@ The Offsets or processed Messages are comitted to the Kafka broker.  (Allows re-
 
 A Commit applies to the Consumer Group.  i.e. One Consumer Group commits a message means that it won't re-read the message, but of course other Consumer Groups still can.
 
-Java: By default, automatic At Least Once.
+Java: By default, automatic (```anable.auto.commit=true```) At Least Once.  After ```auto.commit.interval.ms``` has elapsed, calling the next ```poll()``` triggers auto-commit of the previous batch.  (So don't call ```poll()``` again until the previous batch of messages have been processed.)
 
-Can be done manually.
+Alternatively: ```anable.auto.commit=false```, and manually commit the offsets.  i.e. If the processing of messages is asynchronous.
 
 ### At Least Once (But sometimes multiples, preferred)
 - Committed after the Message is processed.
@@ -160,9 +162,7 @@ Replication Factor = 1 (Leader) + # ISRs
 
 _Topic Durability_: A Cluster with a Replication Factor of N can withstand the loss of N-1 Brokers without data loss.
 
-# Zookeeper
-
-Don't use it.  KRaft is the replacement, and has been production-ready since 3.3.1.
+Production: At least two, usually three, not more than four.
 
 # Command Line
 
@@ -172,62 +172,76 @@ When used without ```--group```, a temporary Group is created.
 
 To get all available Messages not yet committed by the Group, use ```--from-beginning```.  (When a temporary Group is used, there will of course not have been any commits for it yet.)
 
-# Java SDKs
+# APIs
 
-Also, unit testing applications: https://kafka.apache.org/documentation/streams/developer-guide/testing.html
+## Official Low Level
 
-## Official Low Level (Connect?)
-
-https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients
+https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients - Producer and Consumer
 
 ### Graceful consumer shutdown
 
-Do this, otherwise re-balancing will be delayed and re-starting the consumer will encounter delays in getting new messages.
+Exit gracefully, otherwise re-balancing will be delayed and re-starting the consumer will encounter delays in getting new messages.
 
 ```java
 
-      final Thread mainThread = Thread.currentThread();
-      Runtime.getRuntime().addShutdownHook(new Thread() {
-         public void run() {
+   // This causes consumer.poll() to throw a WakeupException (extends KafkaException)
+   consumer.wakeup();
+   
+   // i.e. Call it from Runtime.getRuntime().addShutdownHook(...
 
-            // This causes consumer.poll() to throw a WakeupException (extends KafkaException)
-            consumer.wakeup();
-
-            // Wait for the main thread to complete.
-            try {
-               mainThread.join();
-            } catch (InterruptedException e) {
-               e.printStackTrace();
-            }
-         }
-      });
-
-      try {
-      
-         // ....
-         
-         consumer.poll(Duration.ofMillis(1000));
-      }
-      catch (WakeupException e) {
-         // Comsumer is starting to gracefully shutdown...
-      }
-      catch(Exception e) {
-         // Unexpected exception
-      }
-      finally {
-         // Graceful shutdown
-         consumer.close();
-      }
 ```
 
-## Official Streams
+## Extended APIs
 
-https://mvnrepository.com/artifact/org.apache.kafka/kafka-streams
+### Kafka Connect
+Solves:
+- External "Source" → Kafka
+- Kafka → External "Sink"
 
-## Quarkus
-smallrye-reactive-messaging-kafka extension
+100s of pre-written "Connectors" to various existing external systems.  e.g. PostgreSQL, JDBC, HTTP, HTML SSE API, AWS Redshift, AWS S3, ActiveMQ, etc.  See: https://www.confluent.io/hub
 
-# Connect from remote to Kafka Broker running on WSL2
+#### Change Data Capture (CDC)
+
+Monitor a DB for changes → Events
+
+### Kafka Streams
+
+Solves Kafka→Kafka. i.e. Transformation of data
+
+Official: https://mvnrepository.com/artifact/org.apache.kafka/kafka-streams
+
+Quarkus: smallrye-reactive-messaging-kafka extension, and [Overview](https://quarkus.io/guides/kafka)
+
+### KSQL
+
+Perform SQL queries on Kafka data.
+
+## Schema Registry
+
+Schemas change over time.  Kafka Brokers don't verify/parse messages.  Producers and Consumers use the Schema Registry to maintain a common data format.
+
+[Apache Avro](https://avro.apache.org/) is the data serialization framework.  (Others are supported.)  Used to define a binary format, and map it.
+
+How it works: Producer send the schema to the Schema Registry, then send avro data to Kafka (smaller, since it doesn't contain the schema.  Consumers then retrieve the corresponding schema from the Schema Registry, and then can parse the binary data.
+
+Free under Confluent Community License (has restrictions, not open-source, has Enterprise version): [Confluent Schema Registry](https://www.confluent.io/product/confluent-platform/data-compatibility/)
+
+[AWS Glue Schema Registry](https://docs.aws.amazon.com/glue/latest/dg/schema-registry.html)
+
+# Misc
+
+## Log Compaction
+
+Optionally compact multiple Active Segments into fewer Active Segments, by keeping only the latest message for each Key.
+
+Useful when you only care about the last message for each Key.  Only affects Consumers that are "behind", e.g. read "from beginning".  A "realtime" Consumer will still see all the messages.
+
+## Java Unit Testing
+
+https://kafka.apache.org/documentation/streams/developer-guide/testing.html
+
+
+## Connect from remote to Kafka Broker running on WSL2
 In ```server.properties```:
 ```
 listeners=REMOTE://172.18.152.219:9093,LOCAL://127.0.0.1:9092
@@ -236,3 +250,11 @@ listener.security.protocol.map=REMOTE:PLAINTEXT,LOCAL:PLAINTEXT
 inter.broker.listener.name=LOCAL
 ```
 See: https://issues.apache.org/jira/browse/KAFKA-9257 Allow listeners to bind on same port but different interfaces
+
+## Zookeeper
+
+Don't use it.  KRaft is the replacement, and has been production-ready since 3.3.1.
+
+## Multi-Cluster Replication
+
+For geographically distributed sites, where Kafka's Cluster replication would be too slow/costly.  Just a Producer and a Consumer to copy the data, but does ***not*** get the same Offsets.   There are a number of open-source implementations, including MirrorMaker 2 which is part of base Kafka.

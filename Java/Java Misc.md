@@ -155,3 +155,15 @@ Modified from https://commons.apache.org/proper/commons-lang/apidocs/org/apache/
       return org.apache.commons.lang3.builder.ToStringBuilder.reflectionToString(this);
    }
 ```
+
+# Catch Shutdown
+
+```java
+
+   Runtime.getRuntime().addShutdownHook(new Thread() {
+      public void run() {
+
+         // This method gets run.
+      }
+   });
+```

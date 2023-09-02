@@ -59,6 +59,10 @@ PostgreSQL specific:
 ```
 docker run --rm --network=host -v "//c/:/c" postgres pg_dump --format=custom -d db_name --verbose -f "/c/tmp/dump.backup"
 ```
+Busybox (["The Swiss Army knife of Embedded Linux"](https://en.wikipedia.org/wiki/BusyBox)):
+```cmd
+docker run -v //c/:/c --rm -it busybox ash # Shell
+```
 
 # Small
 
@@ -96,3 +100,15 @@ if [ $? != "0" ]; then
    exit 1
 fi
 ```
+
+# Security
+
+Containers are not completely isolated from their hosts (unlike VMs.)  Their atually run directly on the host, but just in their own namespace.  
+
+# Dockerfile
+
+## ENTRYPOINT
+
+Like ```CMD```, except that the ```docker run``` parameters (if present) get ***appended*** to it.  If not present, then the ```CMD``` contents are used.
+
+Overridden by ```docker```'s ```--entrypoint``` parameter.
