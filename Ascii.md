@@ -1,38 +1,14 @@
 **<span style="font-size:3em;color:black">ASCII</span>**
 ***
 
-½
-
-→
-
-←
-
-↑
-
-↓
-
-↪
-
-↔
-
-°
-
-÷
-
-×
-
-∞
-
-✓
-
-✗
-
-Refresh: ⟳
-
-Vertical dots: ⋮
-
-Green circle:🟢    Yellow circle:🟡     Red circle:🔴
-
+| ________ | ________ | ________ |
+| -------- | ------- | ------- |
+| ½ | → | ← |
+| ↑ | ↓ | ↪ |
+| ↔ | ° | ÷ |
+| × | ∞ | ✓ |
+| ✗ | ⟳ | ⋮ |
+| 🟢 | 🟡 | 🔴 |
 
 
 # Misc Resources
@@ -42,7 +18,8 @@ Green circle:🟢    Yellow circle:🟡     Red circle:🔴
    https://graphemica.com/   e.g. https://graphemica.com/search?q=fraction
    
    https://theasciicode.com.ar/
-   
+
+
 # Alternatives
 
 Not ASCII, but useful: https://jbergknoff.github.io/mathjax-sandbox/
