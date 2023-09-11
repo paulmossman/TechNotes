@@ -73,7 +73,7 @@ Taint a Node:
 kubectl taint nodes node1 key1=value1:NoSchedule
 ```
 
-To remove the Taint, use the comand to create it with ```-``` as a suffix.
+To remove a Taint use the command to create it, but with ```-``` as a suffix.
 
 Untaint a Node:
 ```
@@ -96,7 +96,10 @@ kubectl rollout status <Deployment name>
 kubectl rollout history <Deployment name>
 ```
 
-
+# Ingress
+```
+kubectl create ingress ingress-test --rule="store.example.com/checkout*=checkout-service:80"
+```
 
 # Top Level Options
 
@@ -135,6 +138,8 @@ Get a list of all supported resources, including their short names:
 ```
 kubectl api-resources
 ```
+
+Though **not** Ingress Resources...
 
 # dry-run --> YAML
 ```

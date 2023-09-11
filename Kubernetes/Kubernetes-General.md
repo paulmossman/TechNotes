@@ -68,15 +68,72 @@ Update strategies:
 
 Rollback: ```kubectl rollout undo <Deployment name>```  This changes the # of the Revision rolled back to, to be the next Revision #.
 
+# StatefulSet (a kind)
 
-# Service (a kind)
+Similar to Deployment, but Pods are (optionally) created in a specific order.  Each Pod gets a unique ordinal index, which becomes part of the Pod name.  (Versus the random names used in Deployments.)
 
-Allows communictions to other components, e.g user endpoints, other pods, DBs.  Types:
+# Services
+
+Enable communications between various components/users of the application.  Allows communictions to other components, e.g user endpoints, other pods, DBs.  Types:
 1. NodePort
 1. ClusterIP
 1. LoadBalancer
 
-The Service's name is also a DNS entry.
+Each Service has an IP address, and it's name is also a DNS entry.
+
+```Endpoints:```  → All the destinations that traffic could be forwarded to.
+
+## NodePort (a kind)
+
+Listens to a Port on Nodes (in the range 30000-32767), forwards to a port on a Target(s) inside those Nodes.
+
+Hit at http://<Node IP>:<NodePort>
+
+The Target is identified by a ```selector:``` corresponding to label(s).
+
+Multiple Targets → Requests are randomly distributed.
+
+Multiple Nodes in the Cluster → The same port on all the Nodes.  i.e. The NodePort service automatically spans all the Nodes.
+
+## ClusterIP (a kind)
+
+A virtual IP within a Cluster.  (The default ```type:``` for ```Service```.)
+
+## Headless Service
+
+```clusterIP: None```
+
+Creates DNS records for ***each*** Pod, instead of a single DNS and IP that's then load balanced to all Pods.  Use with StatefulSet, and ```serviceName:```.
+
+## LoadBalancer (a kind)
+
+In supported cloud providers.
+
+Basically a NodePort (with port in the range 30000-32767), plus a Load Balancer that forwards to it.
+
+# Ingress
+
+A Layer 7 Load Balancer configurable directly in Kubernetes, with URL path routing and SSL certificates.  (Since port range 30000-32767.)
+
+[Reference](https://kubernetes.io/docs/concepts/services-networking/ingress/)
+
+## Ingress Controller
+
+Implemented using [NGINX](https://www.nginx.com/), [HAProxy](https://www.haproxy.org/), [Traefik Proxy](https://traefik.io/traefik/), or [Istio](https://istio.io/).
+
+Not included in Kubernetes.  You would need to deploy one yourself, (```kind: Deployment```)
+
+Google Cloud: [Google Kubernetes Engine (GKE) Ingress](https://cloud.google.com/kubernetes-engine/docs/concepts/ingress)
+
+Requires a ```ConfigMap``` of configuration, a ```NodePort``` to expose, and a Serviec Account with permissions to access the Kubernetes objects.
+
+## Ingress Resource (a kind)
+
+The configuration in Kubernetes.  Forward to a Service.
+
+```kubectl explain ingress```
+
+Various Controller-specific ```ingress.metadata.annotations``` can be used to control some behaviour, notably re-writing the target path.  For example: [NGINX](https://kubernetes.github.io/ingress-nginx/examples/rewrite/).
 
 # Job (a kind)
 
@@ -92,8 +149,41 @@ Like Linux crontab.
 
 ```spec.jobTemplate.spec``` → Matches Job ```spec```
 
+# NetworkPolicy (a kind)
+
+Applies to Pods using ```podSelector:``` and the Labels on Pods.
+
+By default applies to matching Pods in all namespaces.  Use ```namespaceSelector``` to restrict that.
+
+Use ```ipBlock``` to apply to IPs outside of the Cluster.
+
+Since ```from[]``` and ```to[]``` are arrays, they can have multiple entries.  Multiples of the above can be combined into a single array entry to achieve ***AND***.  Each array entry is ***OR'd*** with the others.
+
+```egress``` and ```ingress``` are also arrays.
+
+policyTypes:
+- \["Ingress"\]
+- \["Egress"\]
+- \["Ingress", "Egress"\]
+
+Enforced by the network solution implemented on the cluster, and not all support it.  (e.g. Flannel does not.)
+
+# PersistentVolume (a kind)
+
+Same types as Pod volume.
+
+## PersistentVolumeClaim (a kind)
+
+A Pod can then "claim" a PersistentVolume, 1:1.  Can match based on request/capacity, or selectors and labels.
+
+A PersistentVolumeClaim is one of the Volume types of a Pod.
+
+### volumeClaimTemplate
+
+Templatize the PersistentVolume and PersistentVolumeClaim creation upon StorageClass in a StatefulSet.
+
 # Secrets
-Not actually very secret, just base64 encoded, so easy to decode.  Some special treatment (only given to pods that request them, not written to disk.)
+Not actually very secret by default, just base64 encoded, so easy to decode.  Some special treatment (only given to pods that request them, not written to disk.)
 
 The default Kubernetes secrets system just ```base64``` encoded (***not*** encrypted), so development and testing only.
 
@@ -165,8 +255,6 @@ A named Taint can be placed on a Node.  Pods that don't have a corresponding nam
 More advanced than Node Selectors.  e.g. And, Or, Not, ... Scheduling and/or Execution.
 
 Affinity and anti-Affinity.
-
-
 
 # YAML
 
