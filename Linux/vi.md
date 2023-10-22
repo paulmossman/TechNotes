@@ -1,9 +1,13 @@
 **<span style="font-size:3em;color:black">vi</span>**
 ***
 
+# Undo
+
+Form Normal Mode, ```u```.
+
 # Visual Mode
 
-Highlight portions of text.
+Highlight lines, from Normal Mode.
 
 Switch into → Ctrl+V
 
@@ -32,5 +36,5 @@ c$
 
 ## Multi-Indent
 
-Highlight line sin Visual Mode, then: ">".
+Highlight lines in Visual Mode, then: ">".
 

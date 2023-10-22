@@ -1,6 +1,14 @@
 **<span style="font-size:3em;color:black">Miscellaneous Linux</span>**
 ***
 
+# Grep
+
+## Grep OR
+
+Option 1: ```grep 'pattern1\|pattern2' file.txt```
+
+Option 2 (RegExp): ```grep -E 'pattern1|pattern2' file.txt```
+
 # Date
 
 ## Set the Date
@@ -10,9 +18,14 @@ sudo date -s "4 DEC 2007 13:45:00"
 ```
 The 1st prints the current date in the format that the 2nd accepts.
 
-## Print YYYY-MM-DD
+## Print
+YYYY-MM-DD:
 ```
 date '+%Y-%m-%d'
+```
+Timestamp:
+```
+date '+%Y%m%d%H%M%S'
 ```
 
 # Networking
@@ -35,8 +48,17 @@ dig -t SRV _sip._udp.yourdomain.com  # e.g. dig -t SRV _sip._udp.int-udp.pingtel
 dig -x <ip_address> | grep -b1 "ANSWER SECTION" | tail -1 | cut -f3 | sed -e "s/.$//g"
  \--> Lookup a DNS name from the IP address.  (only certain shells...)
 ```
+To install: ```yum -y install bind-utils```
 
-INSTALL: ```yum -y install bind-utils```
+
+## Test a TCP/UDP network connection
+TCP (default):
+```
+nc -vzw 3 <Host> <Port>
+```
+Just scans for listening daemons, doesn't actually send any data (-z).
+Timeout of 3s (-w).
+Verbose (-v)
 
 # Scripting 
 

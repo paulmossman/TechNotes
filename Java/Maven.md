@@ -46,7 +46,12 @@ Quiet:
 
 ### Run a main() method
 ```
-mvn --quiet exec:java -Dexec.mainClass="\<Full name of Class with main()\>" -Dexec.args="\<cmd-line arguments\>"
+mvn --quiet exec:java -Dexec.mainClass="<Full name of Class with main()>" -Dexec.args="<cmd-line arguments>"
+```
+
+#### From a class in the test dir
+```
+mvn -Dexec.mainClass="<Full name of Class with main()>" -Dexec.classpathScope=test test-compile exec:java
 ```
 
 ### Use an alternate pom.xml

@@ -14,6 +14,12 @@ Like Linux ```top```
 docker container prune
 ```
 
+## History
+```bash
+docker history <Image Name>
+```
+Show the infor on each layer in the specified Docker image.
+
 # Dangling images
 
 i.e. Images with Name "<none>".

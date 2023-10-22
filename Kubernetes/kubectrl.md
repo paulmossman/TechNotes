@@ -12,6 +12,7 @@ Brief info:
 ```
 kubectl get <all / rs / po / deploy / __>
 ```
+Use ```--no-headers``` to omit headers, which is useful for counting the numebr of items.
 
 Detailed info:
 ```
@@ -41,7 +42,7 @@ Create a Pod:
 ```
 kubectl run <Name> --image=<Image>
 ```
-This of it as ```kubectl create pod```, but note that you don't include ```pod``` with ```run```.  (If you do, then you'll get a Pod named ```pod```.)
+Think of it as ```kubectl create pod```, but note that you don't include ```pod``` with ```run```.  (If you do, then you'll get a Pod named ```pod```.)
 
 With port exposed (vian an implicitly created clusterIP service):
 ```
@@ -50,7 +51,19 @@ kubectl run httpd --image nginx --port=80 --expose=true
 
 Temporary, to run a single command and then delete afterwards:
 ```
-kubectl run tmp --restart=Never --rm -i --image=nginx:alpine -- curl google.com
+kubectl run tmp --restart=Never --rm -i --image nginx:alpine -- curl google.com
+```
+Quickly repeat:
+```
+export tmp="kubectl run tmp --restart=Never -i --rm --image"
+ubuntu@pamocavm:~$ $tmp nginx:alpine -- curl google.com
+```
+
+
+Create a Pod with command:
+```
+kubectl run hello-test --image alpine --command -- sh -c "while true; do echo hello; sleep 10;done"
+kubectl logs pod/hello-test -f
 ```
 
 Explain YAML (including apiVersion):
@@ -85,6 +98,11 @@ Execute a command inside a Container:
 kubectl exec <Container name> -- whoami
 ```
 
+Common example, run an interactive shell:
+```
+kubectl exec -it <Container name> -- sh
+```
+
 Logs:
 ```
 kubectl logs -f <Pod name> <Container name, if 2+ continaers>
@@ -102,6 +120,27 @@ kubectl create ingress ingress-test --rule="store.example.com/checkout*=checkout
 ```
 
 # Top Level Options
+
+Labels:
+```
+--show-labels 
+```
+
+## Context
+List available contexts:
+```
+kubectl config get-contexts
+```
+
+Get the current context:
+```
+kubectl config current-context
+```
+
+Switch the current context:
+```
+kubectl config use-context <Context Name>
+```
 
 ## Namespace
 ```
@@ -194,6 +233,17 @@ kubectl delete replicaset \<ReplicaSet name\>
 kubectl edit replicaset \<ReplicaSet name\>
 
 ```
+
+# Config
+```bash
+kubectl config view
+```
+Default file: ~/.kube/config
+
+```kind: Config```, but not a object that's created.
+
+Certificate authority file "data" content: Must be ```base64``` encoded, not raw.
+
 # Kubernetes YML file
 
 All have 4 sections:
@@ -251,3 +301,17 @@ or from a file change to use:
 ```
    --from-file=secret.properties
 ```
+
+# RBAC
+```bash
+kubectl auth can-i delete nodes
+```
+Check whether the current user can execute the specified action.
+If an Admin then you can also check whether a specified user can execute the specified action.
+
+
+# Namespace-scoped vs. Cluster-scoped Resources
+
+Namespace-scoped: ```kubectl api-resources --namespaced=true```
+
+Cluster-scoped: ```kubectl api-resources --namespaced=false```

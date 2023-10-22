@@ -15,6 +15,7 @@ ln -s /cygdrive/c/ /c
 - wget
 - xmllint
 - openssh  (The Windows ssh/scp requires Windws path for -i.)
+- nc
 
 # Windows Paths
 
@@ -31,6 +32,16 @@ Note: Double marks (aka squar brackets) is required.
 ## Open Windows Explorer in a particular directory
 ```bash
 explorer `cygpath -d src/test`
+```
+
+A useful script:
+```bash
+#!/bin/bash
+OPEN_PATH="."
+if [ "$#" -gt "0" ]; then
+   OPEN_PATH=$1
+fi
+explorer `cygpath -d $OPEN_PATH`
 ```
 
 # Call from Windows CMD

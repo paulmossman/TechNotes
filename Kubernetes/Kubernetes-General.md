@@ -17,11 +17,32 @@ Design Patterns:
 
 ([Reference](https://kubernetes.io/blog/2015/06/the-distributed-system-toolkit-patterns/))
 
+## Network
+
+All Containers in the same pod share a single 'localhost'.  i.e. If one Container binds to port 80, then no other Container can.  But all Containers in the port can reach that port via "localhost:80".
+
+The Pod's name is also a DNS entry.
+
+## Volumes
+
+Each Container can mount the Pod's Volumes.
+
+## Scratch Volume
+(Versus PersistantVolume...)
+
+```yml
+   # (Pod)
+      volumes:
+      - name: scratch
+        emptyDir: {}
+```        
+https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
+
 # Container Resources
 
 Can set "Request" and/or "Limit".
 
-## Enforecement
+## Enforcement
 
 ### CPU
 
@@ -35,16 +56,10 @@ If the Container uses more than the limit, then it'll be killed.  Reason: ```OOM
 
 Set default, max, and min for all newly created Pods in the namespace.
 
-# ResourceQuota (a kind)
+## ResourceQuota (a kind)
 
 Enforce various ***total*** limits at the ***Namespace*** level.  Can be Compute (CPU, Memory), Storage, or Object Count.
 
-
-## Network
-
-All Containers in the same pod share a single 'localhost'.  i.e. If one Container binds to port 80, then no other Container can.  But all Containers in the port can reach that port via "localhost:80".
-
-The Pod's name is also a DNS entry.
 
 # ReplicaSet (a kind)
 
@@ -83,6 +98,10 @@ Each Service has an IP address, and it's name is also a DNS entry.
 
 ```Endpoints:```  → All the destinations that traffic could be forwarded to.
 
+```bash
+k get ep
+```
+
 ## NodePort (a kind)
 
 Listens to a Port on Nodes (in the range 30000-32767), forwards to a port on a Target(s) inside those Nodes.
@@ -99,7 +118,9 @@ Multiple Nodes in the Cluster → The same port on all the Nodes.  i.e. The Node
 
 A virtual IP within a Cluster.  (The default ```type:``` for ```Service```.)
 
-## Headless Service
+Consider creating with ```kubectl expose ...``` instead of ```kubectl create svc ...```, because the former will set the right Selector Labels.
+
+### Headless Service
 
 ```clusterIP: None```
 
@@ -121,7 +142,7 @@ A Layer 7 Load Balancer configurable directly in Kubernetes, with URL path routi
 
 Implemented using [NGINX](https://www.nginx.com/), [HAProxy](https://www.haproxy.org/), [Traefik Proxy](https://traefik.io/traefik/), or [Istio](https://istio.io/).
 
-Not included in Kubernetes.  You would need to deploy one yourself, (```kind: Deployment```)
+Not included in Kubernetes.  You would need to deploy one yourself, (```kind: Deployment```)  
 
 Google Cloud: [Google Kubernetes Engine (GKE) Ingress](https://cloud.google.com/kubernetes-engine/docs/concepts/ingress)
 
@@ -157,14 +178,13 @@ By default applies to matching Pods in all namespaces.  Use ```namespaceSelector
 
 Use ```ipBlock``` to apply to IPs outside of the Cluster.
 
-Since ```from[]``` and ```to[]``` are arrays, they can have multiple entries.  Multiples of the above can be combined into a single array entry to achieve ***AND***.  Each array entry is ***OR'd*** with the others.
+```egress``` and ```ingress``` are arrays of rules, ```NetworkPolicyEgressRule``` and ```NetworkPolicyIngressRule``` respectively.  The rules are ***OR'd***.
 
-```egress``` and ```ingress``` are also arrays.
+Each rule has a ```port``` array and a "peer" array, which is ```from``` (source) for Ingress and ```to``` (destination) for Egress.  
 
-policyTypes:
-- \["Ingress"\]
-- \["Egress"\]
-- \["Ingress", "Egress"\]
+```from[]``` and ```to[]``` are themselves arrays, which can have entries for ```ipBlock```,  ```namespaceSelector```, and/or ```podSelector```.  The entries in these arrays are ***AND'd***.
+
+policyTypes: An array, can contain ```Ingress``` and/or ```Egress```.
 
 Enforced by the network solution implemented on the cluster, and not all support it.  (e.g. Flannel does not.)
 
@@ -172,15 +192,42 @@ Enforced by the network solution implemented on the cluster, and not all support
 
 Same types as Pod volume.
 
+Cluster-scoped.
+
+
 ## PersistentVolumeClaim (a kind)
 
 A Pod can then "claim" a PersistentVolume, 1:1.  Can match based on request/capacity, or selectors and labels.
 
 A PersistentVolumeClaim is one of the Volume types of a Pod.
 
+Namespace-scoped.
+
 ### volumeClaimTemplate
 
 Templatize the PersistentVolume and PersistentVolumeClaim creation upon StorageClass in a StatefulSet.
+
+# Role-based access control (RBAC)
+
+## Role (a kind)
+Has a ```rules:``` section, instead of ```spec:```.
+
+Scoped to a namespace.
+
+### RoleBinding (a kind)
+Attach a Role to a user or set of users, scoped to a namespace.
+
+But ```subjects:``` and ```roleRef:``` sections, instead of ```spec:```.
+
+## ClusterRole (a kind)
+Like Role, except not scoped to a namespace.  i.e. Control access to Cluster-scoped resources.
+
+Has a ```rules:``` section, instead of ```spec:```.
+
+### ClusterRoleBinding (a kind)
+Attach a ClusterRole to a user or set of users, Cluster-scoped.
+
+But ```subjects:``` and ```roleRef:``` sections, instead of ```spec:```.
 
 # Secrets
 Not actually very secret by default, just base64 encoded, so easy to decode.  Some special treatment (only given to pods that request them, not written to disk.)
@@ -223,6 +270,15 @@ Resources that should be made available to all.
 Reminder: Each Pod and Service name is also a DNS entry.
 
 FQDN: <Pod/Service Name>.<Namespace>.svc.cluster-domain.example
+
+# Admissions Controllers
+Allow enforcing certain security items that can't be done through RBAC.  e.g. Change request, restrictions on Docker images pulled, limit event rates, validate/reject requests.
+
+Built-in Admissions Controller that's enabled by default: ```NamespaceLifecycle```.
+
+"Mutating" Admission Controller: Can change the request.  "Validating" Admission Controller: Can check the request, and allow/deny.  (Can be both.)
+
+You can implement your own using: ```MutatingAdmissionWebhook``` or ```ValidatingAdmissionWebhook``` 
 
 # Probes
 
@@ -308,12 +364,19 @@ Popular, comprehensive, open-source: [Prometheus](https://prometheus.io/)
 
 ## Metric Server
 
-Basic, in-memory storage only (no not historical.)  Optional, not installed by default.  Install from [GitHub](https://github.com/kubernetes-sigs/metrics-server/blob/master/README.md).
+Basic in-memory storage only (not historical.)  Optional, not installed by default.  Install from [GitHub](https://github.com/kubernetes-sigs/metrics-server/blob/master/README.md).
 
 Use:
 ```
 kubectl top node
 kubectl top pod
+```
+
+# Interact with the API server
+```bash
+kubectl proxy 8001 &
+curl localhost:8001/apis
+curl localhost:8001/apis/authorization.k8s.io
 ```
 
 # Administration
@@ -336,7 +399,7 @@ To see your options:
 kubeadm upgrade plan
 ```
 
-## Backup & Restore (if you managr your Kubernetes service)
+## Backup & Restore (if you manage your Kubernetes service)
 The data directory of the ETCD server.
 
 Backup into a file:
@@ -359,7 +422,7 @@ service etcd restart
 service kube-apiserver start
 ```
 
-Note, required stcdctl options:
+Note, required etcdctl options:
 ```bash
 --cacert
 --cert
