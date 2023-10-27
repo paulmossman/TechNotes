@@ -156,6 +156,10 @@ The configuration in Kubernetes.  Forward to a Service.
 
 Various Controller-specific ```ingress.metadata.annotations``` can be used to control some behaviour, notably re-writing the target path.  For example: [NGINX](https://kubernetes.github.io/ingress-nginx/examples/rewrite/).
 
+### NGINX
+
+```tls.secretName``` - If the HTTP host in't present in the SSL certificate, then a "Kubernetes Ingress Controller Fake Certificate" is used instead.  See also https://stackoverflow.com/questions/74161348/kubernetes-ingress-not-accepting-the-self-signed-ssl .
+
 # Job (a kind)
 
 A workload that is meant to perform a specific task, and then exit.
@@ -187,6 +191,8 @@ Each rule has a ```port``` array and a "peer" array, which is ```from``` (source
 policyTypes: An array, can contain ```Ingress``` and/or ```Egress```.
 
 Enforced by the network solution implemented on the cluster, and not all support it.  (e.g. Flannel does not.)
+
+A helpful visual tools for building: https://editor.networkpolicy.io/
 
 # PersistentVolume (a kind)
 

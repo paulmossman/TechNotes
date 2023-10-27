@@ -64,6 +64,23 @@ aws ec2 describe-security-groups --output json | jq -r '.SecurityGroups[] |  sel
 ```
 Note: This only list those that have a Tag whose Key is "Name", which is optional.
 
+### Manipulate Security Group Rules
+
+#### Egress/Ingress
+e.g. HTTPS, by CIDR
+```bash
+aws ec2 authorize-security-group-egress --profile ${PROFILE} --region ${REGION} --group-id ${SG} --ip-permissions \
+   IpProtocol=tcp,FromPort=443,ToPort=443,IpRanges='[{CidrIp=0.0.0.0/0,Description="Allow HTTPS"}]'
+
+aws ec2 revoke-security-group-egress --profile ${PROFILE} --region ${REGION} --group-id ${SG} --ip-permissions \
+   IpProtocol=tcp,FromPort=443,ToPort=443,IpRanges='[{CidrIp=0.0.0.0/0}]'
+```
+e.g. SSH, by Security Group
+```bash
+aws ec2 authorize-security-group-egress --profile ${PROFILE} --region ${REGION} --group-id ${SG} --ip-permissions \
+   IpProtocol=tcp,FromPort=22,ToPort=22,UserIdGroupPairs="[{GroupId=${SG},Description=\"Allow SSH from within the SG\"}]"
+```
+
 # EC2
 
 ## Get the ID and Public FQDN of all EC2 instances
@@ -75,6 +92,30 @@ Running only:
 ```bash
 aws ec2 describe-instances --output json | \
    jq -r '.Reservations[].Instances[] | select(.State.Name=="running") | "Instance ID: \(.InstanceId)  Public FQDN: \(.NetworkInterfaces[0].Association.PublicDnsName)" '
+```
+
+## Check if v2 is required for accessing instannce metadata
+Check all instances in a specific Region:
+```bash
+PROFILE=default
+INSTANCE_IDS=`aws ec2 describe-instances --profile ${PROFILE} --region=us-east-1 | jq -r '.Reservations[].Instances[] | select(.State.Name=="running") | .InstanceId'`
+for INSTANCE_ID in ${INSTANCE_IDS}; do
+   echo -n "$INSTANCE_ID - " 
+   aws ec2 describe-instances --instance-ids ${INSTANCE_ID} --query "Reservations[].Instances[].{HttpEndpoint:MetadataOptions.HttpEndpoint,HttpTokens:MetadataOptions.HttpTokens}" --region us-east-1 --profile ${PROFILE} | jq '.[].HttpTokens'
+done
+```
+
+## Launch an EC2 Instance with a Name and Public IP
+```bash
+aws ec2 run-instances --profile=${PROFILE} \
+   --image-id ${AMI_ID} \
+   --instance-type t2.micro \
+   --key-name ${KEY_NAME} \
+   --region us-east-1 \
+   --security-group-ids ${SECURITY_GROUP} \
+   --subnet-id ${SUBNET} \
+   --tag-specifications "ResourceType=instance,Tags=[{Key=Name,Value=${NAME}}]" \
+   --associate-public-ip-address
 ```
 
 # S3
