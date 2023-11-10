@@ -80,7 +80,7 @@ https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-sectio
 ## Use a Parameter
 Alone:
 ```yaml
-Ref: <Parameter Name>
+   !Ref <Parameter Name>
 ```
 
 Into a String:
@@ -137,8 +137,46 @@ Add:
 --capabilities CAPABILITY_NAMED_IAM
 ```
 
+## Aurora Serverless v2 DB cluster
+
+https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-rds-dbcluster.html
+
+
+## SSM for AMI IDs
+
+Parameter with SSM default value:
+
+### Amazon Linux 3
+```yml
+Parameters:
+  LatestAmazon2023AmiId:
+    Description: Region specific image from the Parameter Store
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64
+
+Resources:
+  ...
+    ImageId: !Ref LatestAmazon2023AmiId
+```
+
+### ECS Optimized / Parameter with SSM default value
+```yml
+Parameters:
+  LatestEcsOptimizedAmiId:
+    Description: Region specific image from the Parameter Store
+    Type: 'AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>'
+    Default: /aws/service/ecs/optimized-ami/amazon-linux-2023/recommended/image_id
+
+Resources:
+  ...
+    ImageId: !Ref LatestEcsOptimizedAmiId
+```
 
 # Stack / Template Tools
+
+## AWS Designer (AWS Console)
+
+Does a great job of converting templates between JSON and YML.  Scroll down and select the "Template" tab, then paste either JSON or YML, and use the radio buttons to convert between them.
 
 ## Rain
 
@@ -162,7 +200,6 @@ https://aws.amazon.com/blogs/opensource/accelerate-infrastructure-as-code-develo
 Though see: https://github.com/iann0036/former2/blob/master/RESOURCE_COVERAGE.md   (Not everything is covered.)
 
 https://former2.com/ (But don't put your credentials into a 3rd-party website...)
-
 
 
 ### Run Former2 locally
