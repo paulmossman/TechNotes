@@ -11,10 +11,20 @@
 # Miscellanous Commands
 
 ## Monthly costs
+Requires user to be enabled for cost explorer access.
+
+Note the Start and End dates.  The End date is not included in the results.
+
+Monthly total:
 ```bash
 aws ce get-cost-and-usage --time-period Start=2022-03-01,End=2022-04-01 --granularity MONTHLY --metrics BlendedCost
 ```
-Requires user to be enabled for cost explorer access.
+
+One service for one day:
+```bash
+aws ce get-cost-and-usage --profile fp-RO-PROD --time-period Start=2022-03-01,End=2022-03-02 --granularity DAILY --metrics BlendedCost --filter '{"Dimensions": {"Key":"SERVICE", "Values": ["Amazon Relational Database Service"]}}' | jq -r '.ResultsByTime[0].Total.BlendedCost.Amount'
+```
+
 
 ## Get Account Info
 
