@@ -18,7 +18,7 @@ https://www.ssllabs.com/ssltest/ is a good site for testing TLS protocol/ciphers
 
 https://securityheaders.com/ is a good site for testing security headers.
 
-## Common Wekness Enumberation (CWE)
+## Common Weakness Enumberation (CWE)
 
 For example:
 - [CWE-321: Use of Hard-coded Cryptographic Key](https://cwe.mitre.org/data/definitions/321.html )

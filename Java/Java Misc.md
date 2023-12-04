@@ -2,7 +2,8 @@
 
 ## String compare for value equality
 ```java
-    new String("test").equals("test") // --> true 
+    new String("test").equals("test") // --> true
+    new String("test") == "test" // --> false
 ```
 
 ## Sort using a custom Comparator

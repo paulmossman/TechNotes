@@ -18,6 +18,20 @@ Map<String, Double> entries = Map.ofEntries(
 
 ## Misc
 
+### toArray()
+Primitive:
+```java
+ArrayList<Integer> src = new ArrayList<Integer>();
+...
+int[] result = src.stream().filter(i -> i != null).mapToInt(i -> i).toArray();
+```
+Object:
+```java
+ArrayList<String> src = new ArrayList<String>();
+...
+String[] result = src.toArray(String[]::new);
+```
+
 ### Combine two Streams
 ```java
 Stream<String> combinedStream = Stream.concat(
