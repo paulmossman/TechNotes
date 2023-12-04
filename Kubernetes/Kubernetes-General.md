@@ -23,6 +23,19 @@ All Containers in the same pod share a single 'localhost'.  i.e. If one Containe
 
 The Pod's name is also a DNS entry.
 
+### hostAliases
+
+Add /etc/hosts entries for the Containers in a Pod.
+
+```yaml
+spec:
+  hostAliases:
+  - ip: "10.33.255.111"
+    hostnames:
+    - "example1.local"
+    - "example2.local"
+```
+
 ## Volumes
 
 Each Container can mount the Pod's Volumes.
@@ -271,11 +284,32 @@ For running Kubernetes, don't touch it.
 ### kube-public
 Resources that should be made available to all.
 
-## DNS
+# DNS
 
+## Automatic entries
 Reminder: Each Pod and Service name is also a DNS entry.
 
 FQDN: <Pod/Service Name>.<Namespace>.svc.cluster-domain.example
+
+## ```coredns``` Deployment
+
+This is the DNS server.  It's ConfigMap can be modified.
+
+### Helpful example: Add and arbitrary DNS entry
+
+Edit the ```coredns``` ConfigMap in the ```kube-system``` namespace, and add this before ready / kubernetes:
+```yaml
+     hosts {
+       10.33.255.111 example1.local
+       10.33.255.111 example2.local
+       fallthrough
+     }
+```
+
+Then restart to apply the changes:
+```bash
+kubectl rollout restart deployment/coredns -n kube-system
+```
 
 # Admissions Controllers
 Allow enforcing certain security items that can't be done through RBAC.  e.g. Change request, restrictions on Docker images pulled, limit event rates, validate/reject requests.

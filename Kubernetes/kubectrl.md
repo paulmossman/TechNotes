@@ -95,7 +95,7 @@ kubectl taint nodes node1 key1=value1:NoSchedule-
 
 Execute a command inside a Container:
 ```
-kubectl exec <Container name> -- whoami
+kubectl exec <Pod name> [-c <Container name>, if 2+ containers] -- whoami
 ```
 
 Common example, run an interactive shell:
@@ -105,7 +105,7 @@ kubectl exec -it <Container name> -- sh
 
 Logs:
 ```
-kubectl logs -f <Pod name> <Container name, if 2+ continaers>
+kubectl logs -f <Pod name> <Container name, if 2+ containers>
 ```
 
 # Deployments

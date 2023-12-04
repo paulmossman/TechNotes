@@ -1,6 +1,13 @@
 **<span style="font-size:3em;color:black">Helm</span>**
 ***
 
+# Commands
+
+## List
+
+## 
+
+
 # Create a simple Deployment with a NodePort Service
 ```
 helm create <Chart Name>
@@ -38,4 +45,13 @@ Stop:
 helm uninstall <Deployment Name>
 ```
 
+# Global options
 
+```bash
+-n, --namespace
+-A, --all-namespaces
+```
+
+```bash
+--kubeconfig string
+```
