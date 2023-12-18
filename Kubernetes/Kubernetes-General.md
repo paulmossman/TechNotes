@@ -19,7 +19,7 @@ Design Patterns:
 
 ## Network
 
-All Containers in the same pod share a single 'localhost'.  i.e. If one Container binds to port 80, then no other Container can.  But all Containers in the port can reach that port via "localhost:80".
+All Containers in the same pod share a single 'localhost'.  i.e. If one Container binds to port 80, then no other Container can.  But all Containers in the Pod can reach that port via "localhost:80".
 
 The Pod's name is also a DNS entry.
 
@@ -133,11 +133,19 @@ A virtual IP within a Cluster.  (The default ```type:``` for ```Service```.)
 
 Consider creating with ```kubectl expose ...``` instead of ```kubectl create svc ...```, because the former will set the right Selector Labels.
 
+
+
 ### Headless Service
 
 ```clusterIP: None```
 
 Creates DNS records for ***each*** Pod, instead of a single DNS and IP that's then load balanced to all Pods.  Use with StatefulSet, and ```serviceName:```.
+
+# ports
+
+port: The port that's exposed.  i.e. Clients will send requests to this port.
+targetPort: The port that the Pod (and Container application) will be listening on.
+ 
 
 ## LoadBalancer (a kind)
 

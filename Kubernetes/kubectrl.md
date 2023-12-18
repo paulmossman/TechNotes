@@ -44,9 +44,9 @@ kubectl run <Name> --image=<Image>
 ```
 Think of it as ```kubectl create pod```, but note that you don't include ```pod``` with ```run```.  (If you do, then you'll get a Pod named ```pod```.)
 
-With port exposed (vian an implicitly created clusterIP service):
+With port exposed (via an implicitly created clusterIP service):
 ```
-kubectl run httpd --image nginx --port=80 --expose=true
+kubectl run httpd --image nginx --port=80 --target-port=80 --expose=true
 ```
 
 Temporary, to run a single command and then delete afterwards:
