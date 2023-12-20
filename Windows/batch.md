@@ -16,3 +16,21 @@ echo STDERR 1>&2
 ```
 EXIT /B  2
 ```
+
+### Track start and finished time, with pause.
+```
+@echo off
+
+TITLE %0
+
+SET STARTED_TIME=%TIME%
+
+timeout /t 1 /nobreak
+
+echo.
+echo Started : %STARTED_TIME%
+SET FINISHED_TIME=%TIME%
+echo Finished: %FINISHED_TIME%
+echo.
+
+```

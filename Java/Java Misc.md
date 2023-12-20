@@ -20,6 +20,44 @@
 [Source](https://www.baeldung.com/java-sorting).
 
 
+## Arrays (the class)
+- sort
+- binarySearch (sorted arrays only)
+- equals
+- fill
+- copyOf
+- copyOfRange
+- setAll - uses a generator function
+- stream
+- compare
+- mismatch
+
+## @FunctionalInterface
+```java
+  // Two input arguments, then the return value.
+  BiFunction<Integer, Integer, String> sumAsString = (x, y) -> Integer.toString(x + y);
+  System.out.println(sumAsString.apply(2, 2)); // 4
+
+  // No input argument, only a return value.
+  Supplier<String> suppliedString = () -> "Supplied string";
+  System.out.println(suppliedString.get()); // Supplied string
+
+  // One input argument, no return value.
+  Consumer<String> printlnString = s -> System.out.println(s);
+  Consumer<String> printlnString2 = System.out::println;
+  printlnString2.accept("Accepted string"); // Accepted string
+
+  Predicate<Integer> isEven = i -> i % 2 == 0;
+  System.out.println(isEven.test(2)); // true
+  System.out.println(isEven.test(3)); // false
+  
+  String[] strings = { "A", "B", "C", "D" };
+  BinaryOperator<String> stringConcatinator = (s1, s2) -> s1 + "," + s2;
+  // Note: BinaryOperator<T> extends BiFunction<T, T, T>
+  System.out.println(Arrays.stream(strings).reduce(stringConcatinator).orElse("Empty")); // A,B,C,D
+```
+
+
 ## AES encryption/decryption
 https://www.baeldung.com/java-aes-encryption-decryption
 https://mkyong.com/java/java-aes-encryption-and-decryption
@@ -118,7 +156,7 @@ Modified from https://commons.apache.org/proper/commons-lang/apidocs/org/apache/
    }
 ```
 
-# Catch Shutdown
+## Catch Shutdown
 
 ```java
 

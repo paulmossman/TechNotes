@@ -34,7 +34,7 @@ ___ is a Comparator...
 nothing - Natural Order
 Comparator.reverseOrder() - Reverse natural order
 Comparator.comparingInt(User::getAge) - Object method that returns int
-new Comparator<Integer>() {
+Custom: new Comparator<Integer>() {
         @Override
         public int compare(Integer a, Integer b) {
             return Integer.compare(a, b);
@@ -42,6 +42,24 @@ new Comparator<Integer>() {
     })
 
 
+### Map, Filter, Reduce, and Average
+```java
+int[] numbers = { 100, 20, 30, 50, 90, 121, 150 };
+
+// 185.5
+System.out.println("Sum of the halves of each number >= 100: "
+      + Arrays.stream(numbers).filter(n -> n >= 100).mapToDouble(n -> (double) n / 2).reduce(0, (a, b) -> a + b));
+
+// 0
+System.out.println("Sum of the halves of each number >= 200: "
+      + Arrays.stream(numbers).filter(n -> n >= 200).mapToDouble(n -> (double) n / 2).reduce(0, (a, b) -> a + b));
+
+// 47.5
+System.out.println("Average of all numbers <95: "
+      + Arrays.stream(numbers).filter(n -> {
+         return n < 95;
+      }).average().orElseThrow());
+```
 ## Imports that Eclipse has trouble auto-resolving
 
 import static java.util.stream.Collectors.toSet;
