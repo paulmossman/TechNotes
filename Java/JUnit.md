@@ -30,3 +30,10 @@ e.g. assertEquals(double expected, double actual, double delta)
 ```
 vs. closeTo()
 
+## Array contains, same order
+```java
+import static org.assertj.core.api.Assertions.assertThat;
+...
+ArrayList<String> items = new ArrayList<String>(Arrays.asList("one", "two"));
+assertThat(items).containsExactly("one", "two");
+```

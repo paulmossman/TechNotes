@@ -60,6 +60,46 @@ System.out.println("Average of all numbers <95: "
          return n < 95;
       }).average().orElseThrow());
 ```
+
+## Map and Flat Map
+```java
+List<List<String>> list = Arrays.asList(
+      Arrays.asList("e", "b", "c"),
+      Arrays.asList("c", "d", "a"));
+System.out.println(list);
+// [[a, b, c], [c, d, e]]
+
+System.out.println(list
+      .stream()
+      .flatMap(Collection::stream) // Stream of Lists of Strings -> Stream of Strings
+      .collect(Collectors.toList())); // Stream of Strings -> List of Strings
+// [e, b, c, c, d, a]
+
+System.out.println( list
+          .stream()
+          .flatMap(Collection::stream)
+          .map(String::toUpperCase)
+          .collect(Collectors.toList()));
+// [E, B, C, C, D, A]
+
+System.out.println( list
+          .stream()
+          .flatMap(Collection::stream)
+          .distinct()
+          .map(String::toUpperCase)
+          .collect(Collectors.toList()));
+// [E, B, C, D, A]
+
+System.out.println( list
+          .stream()
+          .flatMap(Collection::stream)
+          .sorted()
+          .distinct()
+          .map(String::toUpperCase)
+          .collect(Collectors.toList()));
+// [A, B, C, D, E]
+```
+
 ## Imports that Eclipse has trouble auto-resolving
 
 import static java.util.stream.Collectors.toSet;
