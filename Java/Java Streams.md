@@ -1,6 +1,22 @@
 # Java Streams
 
+## Overview
+
+
+
 ## Misc
+
+### Various int sources
+```java
+IntStream.range(1, 5).forEach(System.out::print); // 1234
+
+IntStream.rangeClosed(1, 4).forEach(System.out::print); // 1234
+
+Stream.of(1, 2, 3, 4).forEach(System.out::print); // 1234
+
+int nums[] = { 1, 2, 3, 4 };
+Arrays.stream(nums).forEach(System.out::print); // 1234
+```
 
 ### toArray()
 Primitive:
@@ -48,11 +64,15 @@ int[] numbers = { 100, 20, 30, 50, 90, 121, 150 };
 
 // 185.5
 System.out.println("Sum of the halves of each number >= 100: "
-      + Arrays.stream(numbers).filter(n -> n >= 100).mapToDouble(n -> (double) n / 2).reduce(0, (a, b) -> a + b));
+      + Arrays.stream(numbers).filter(n -> n >= 100)
+         .mapToDouble(n -> (double) n / 2)
+         .reduce(0, (a, b) -> a + b));
 
 // 0
 System.out.println("Sum of the halves of each number >= 200: "
-      + Arrays.stream(numbers).filter(n -> n >= 200).mapToDouble(n -> (double) n / 2).reduce(0, (a, b) -> a + b));
+      + Arrays.stream(numbers).filter(n -> n >= 200)
+         .mapToDouble(n -> (double) n / 2)
+         .reduce(0, (a, b) -> a + b));
 
 // 47.5
 System.out.println("Average of all numbers <95: "
@@ -98,6 +118,11 @@ System.out.println( list
           .map(String::toUpperCase)
           .collect(Collectors.toList()));
 // [A, B, C, D, E]
+
+String[][] array = new String[][] { { "e", "b", "c" }, { "c", "d", "a" } };
+System.out.println(Arrays.toString(Stream.of(array).flatMap(Arrays::stream) // Stream of String[] -> Stream of Strings
+      .toArray(String[]::new)));
+// [e, b, c, c, d, a]
 ```
 
 ## Imports that Eclipse has trouble auto-resolving
