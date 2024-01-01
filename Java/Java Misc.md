@@ -32,6 +32,13 @@
 - compare
 - mismatch
 
+### Simple print of a primitive array
+```java
+int nums[] = { 1, 2, 3, 4 };
+System.out.println(Arrays.toString(nums));
+// [1, 2, 3, 4]
+```
+
 ## @FunctionalInterface
 ```java
   // Two input arguments, then the return value.
@@ -43,9 +50,15 @@
   System.out.println(suppliedString.get()); // Supplied string
 
   // One input argument, no return value.
-  Consumer<String> printlnString = s -> System.out.println(s);
   Consumer<String> printlnString2 = System.out::println;
   printlnString2.accept("Accepted string"); // Accepted string
+
+  List<String> acceptedStrings = new ArrayList<String>();
+  Consumer<String> printlnString = s -> acceptedStrings.add(s);
+  printlnString.accept("1");
+  printlnString.accept("2");
+  printlnString.accept("3");
+  System.out.println(acceptedStrings); // [1, 2, 3]
 
   Predicate<Integer> isEven = i -> i % 2 == 0;
   System.out.println(isEven.test(2)); // true
@@ -86,6 +99,47 @@
   System.out.println(multiply.applyAsInt(2, 6)); // 12
 ```
 
+Advanced examples: https://mkyong.com/java8/java-8-bifunction-examples/
+
+### Shorthand
+Equivalents:
+```java
+Function<String, String> f1 = String::toUpperCase;
+Function<String, String> f2 = s -> s.toUpperCase();
+Function<String, String> f3 = new Function<String, String>() {
+   @Override
+   public String apply(String s) {
+      return s.toUpperCase();
+   }
+};
+```
+
+### Composition
+
+#### Simple
+```Function.andThen()``` to string two functions together into a new function.
+
+```java
+   Function<Integer, Integer> addFour = a -> a + 4;
+   Function<Integer, Integer> multiplyByTwo = a -> a * 2;
+   Function<Integer, Integer> addFourThenMultipleByTwo = addFour.andThen(multiplyByTwo);
+
+   System.out.println(addFourThenMultipleByTwo.apply(4)); // 16
+```
+
+#### Predicates have more
+```java
+int ages[] = { 72, 18, 20, 6, 12, 50, 65, 29 };
+
+IntPredicate adult = i -> i >= 18;
+IntPredicate seniorCitizen = i -> i >= 65;
+
+List<Integer> seniorsAndChildren = Arrays.stream(ages)
+   .filter(adult.negate().or(seniorCitizen)).boxed()
+   .collect(Collectors.toList());
+System.out.println(seniorsAndChildren);
+// [ 72, 6, 12, 65 ]
+```
 
 ## AES encryption/decryption
 https://www.baeldung.com/java-aes-encryption-decryption
