@@ -1,6 +1,8 @@
 **<span style="font-size:3em;color:black">IAM</span>**
 ***
 
+Note: https://medium.parttimepolymath.net/no-more-aws-access-keys-13a3c3f2337a
+
 # Permissions
 
 ## Useful Read-only

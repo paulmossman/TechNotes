@@ -54,7 +54,36 @@
   String[] strings = { "A", "B", "C", "D" };
   BinaryOperator<String> stringConcatinator = (s1, s2) -> s1 + "," + s2;
   // Note: BinaryOperator<T> extends BiFunction<T, T, T>
-  System.out.println(Arrays.stream(strings).reduce(stringConcatinator).orElse("Empty")); // A,B,C,D
+  System.out.println(Arrays.stream(strings)
+    .reduce(stringConcatinator).orElse("Empty")); // A,B,C,D
+
+   // BinaryOperator<T> extends BiFunction<T,T,T>
+   // Parameter #2 in reduce(), which calls BiFunction.apply().
+   BinaryOperator<String> combineStrings = (a, b) -> {
+      if (a.isEmpty()) {
+         return b;
+      }
+      if (b.isEmpty()) {
+         return a;
+      }
+      return a + "~" + b;
+   };
+   System.out.println(Stream.of("1", "2", "3", "4").reduce("", combineStrings));
+   // 1~2~3~4
+   
+   BiFunction<Float, Float, Boolean> floatEquals = Float::equals;
+   BiFunction<String, String, Boolean> stringEquals = String::equals;
+
+  // IntBinaryOperator: Operates on primative int only.
+  // i.e. IntBinaryOperator does *not* extend BinaryOperator/BiFunction.
+  IntBinaryOperator add = (i, j) -> i + j;
+  System.out.println(add.applyAsInt(2, 2)); // 4
+
+  IntBinaryOperator subtract = (i, j) -> i - j;
+  System.out.println(subtract.applyAsInt(10, 4)); // 6
+
+  IntBinaryOperator multiply = (i, j) -> i * j;
+  System.out.println(multiply.applyAsInt(2, 6)); // 12
 ```
 
 
