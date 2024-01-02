@@ -2,6 +2,7 @@
 
 ## Initialization
 
+```java
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -11,11 +12,7 @@ Set<String> set = new HashSet<String>(Arrays.asList("a", "b", "c"));
 ArrayList<String> orderedUserVisits = new ArrayList<String>(
                 Arrays.asList("a", "b", "c", "d"));
 
-Map<String, Double> entries = Map.ofEntries(
-   Map.entry("D", 1.5d),
-   Map.entry("E", 3.0d)
-);
-
+```
 
 ## PriorityQueue
 

@@ -1,5 +1,13 @@
 # Java Misc
 
+## Map initialization
+```java
+Map<String, Double> entries = Map.ofEntries(
+   Map.entry("D", 1.5d),
+   Map.entry("E", 3.0d)
+);
+```
+
 ## String compare for value equality
 ```java
     new String("test").equals("test") // --> true
@@ -32,7 +40,7 @@
 - compare
 - mismatch
 
-### Simple print of a primitive array
+### Simple print of a primitive array / Print Array / Print an Array
 ```java
 int nums[] = { 1, 2, 3, 4 };
 System.out.println(Arrays.toString(nums));
