@@ -29,6 +29,10 @@ So of course it's not a FIFO queue.
          System.out.print(sortedQueue.poll() + " ");
       }
       // 2 4 5 6 9
+
+      // *OR*
+      Stream.generate(queue::poll).takeWhile(Objects::nonNull)
+            .forEachOrdered(System.out::println);
 ```
 
 ## HashSet with custom Objects
