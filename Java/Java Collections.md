@@ -39,6 +39,8 @@ So of course it's not a FIFO queue.
 
 If you don't want the default behaviour then you have to override equals(), but then you must also override hashCode().
 
+The general contract for hashCode(): Equal objects must have equal hash codes.
+
 ```java
     @Override
     public boolean equals(Object o) {

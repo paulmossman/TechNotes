@@ -51,7 +51,7 @@ System.out.println(Arrays.toString(nums));
 ```java
   // Two input arguments, then the return value.
   BiFunction<Integer, Integer, String> sumAsString = (x, y) -> Integer.toString(x + y);
-  System.out.println(sumAsString.apply(2, 2)); // 4
+  System.out.println(sumAsString.apply(2, 2)); // "4"
 
   // No input argument, only a return value.
   Supplier<String> suppliedString = () -> "Supplied string";
@@ -113,8 +113,9 @@ Advanced examples: https://mkyong.com/java8/java-8-bifunction-examples/
 Equivalents:
 ```java
 Function<String, String> f1 = String::toUpperCase;
-Function<String, String> f2 = s -> s.toUpperCase();
-Function<String, String> f3 = new Function<String, String>() {
+UnaryOperator<String> f2 = String::toUpperCase;
+Function<String, String> f3 = s -> s.toUpperCase();
+Function<String, String> f4 = new Function<String, String>() {
    @Override
    public String apply(String s) {
       return s.toUpperCase();
