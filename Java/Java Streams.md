@@ -46,16 +46,17 @@ List<String> sortedList = list.stream()
 			.sorted(___)
 			.collect(Collectors.toList());
 ```
-___ is a Comparator...
-nothing - Natural Order
-Comparator.reverseOrder() - Reverse natural order
-Comparator.comparingInt(User::getAge) - Object method that returns int
-Custom: new Comparator<Integer>() {
+___ is a Comparator:
+- nothing - Natural Order
+- Comparator.reverseOrder() - Reverse natural order
+- Comparator.comparingInt(User::getAge) - Object method that returns int
+- Custom:
+```java new Comparator<Integer>() {
         @Override
         public int compare(Integer a, Integer b) {
             return Integer.compare(a, b);
-        }
-    })
+        }})
+```
 
 
 ### Map, Filter, Reduce, and Average
