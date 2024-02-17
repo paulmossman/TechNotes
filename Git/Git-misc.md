@@ -1,6 +1,12 @@
 # Git
 
 
+# Initizalize a new repository
+```bash
+git init
+```
+Call it from inside the folder that's the root of the new repo.
+
 # Cherry-Pick
 Basic:
 ```bash

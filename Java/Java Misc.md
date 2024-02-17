@@ -1,5 +1,15 @@
 # Java Misc
 
+# Date
+```java
+DateFormat formatter = new SimpleDateFormat( "YYYY-MM-dd HH:mm:ss" );
+System.out.println( formatter.format( new Date() ) );
+// 2024-02-03 10:46:50
+```
+HH is 00-23.
+MM is the Month, so don't use it for Minutes.
+DD and D are the day count of the year, so don't use it for Day of the Month.
+
 ## Map initialization
 ```java
 Map<String, Double> entries = Map.ofEntries(
