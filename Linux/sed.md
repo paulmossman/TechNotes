@@ -9,6 +9,11 @@ sed -i ___
 
 ## Useful Examples
 
+Replace all tabs with two sapces:
+```bash
+sed -i -e "s/[\t]/  /g" <file>
+```
+
 Edit a file:
 ```bash
 sed -i -e "s/one/two/g" <file>

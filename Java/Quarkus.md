@@ -74,3 +74,10 @@ Create a class that implements org.eclipse.microprofile.config.spi.ConfigSource.
 List that class (full path) in src/main/resources/META-INF/services/org.eclipse.microprofile.config.spi.ConfigSource.
 
 See also: https://quarkus.io/guides/config-extending-support and https://quarkus.io/guides/config-reference
+
+## JWTs
+
+Verify: https://quarkus.io/guides/security-jwt
+
+Create: https://quarkus.io/guides/security-jwt-build
+

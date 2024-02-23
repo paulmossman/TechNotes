@@ -70,7 +70,7 @@ mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes -Darchetyp
 ```
 https://maven.apache.org/archetypes/maven-archetype-simple/
 
-### Upgrading Qurkus version?
+### Upgrading Quarkus version?
 
 Consult: https://github.com/quarkusio/quarkus/wiki/Migration-Guides
 

@@ -6,6 +6,8 @@ SCRIPTPATH="${SCRIPT%/*}"
 # Limitation: git mv __ __ is not handled. 
 #     e.g.        renamed:    Git.md -> Git-misc.md
 
+# Limitation: .gitignore'd files in new directories *are* included in the backup.
+
 BACKUP_DIR="${SCRIPTPATH}/backups/"`date '+%Y-%m-%d-%H%M'`
 
 pushd /Users/paul/Git-repos/TechNotes > /dev/null
