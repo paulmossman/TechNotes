@@ -190,9 +190,10 @@ for td in ${tds}; do echo "$td" ; aws ecs describe-task-definition --task-defini
 
 ## Get the latest ID of a particular AWS AMI
 ```bash
-aws ssm get-parameters --names /aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id --query "Parameters[]" | jq -r '.[] | select(.Name | contains("ecs/optimized-ami")) | .Value'
+aws ssm get-parameter --name /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64 --query "Parameter.Value"
 ```
+
 ECS-optimized specifically:
 ```bash
-aws ssm get-parameters --names /aws/service/ecs/optimized-ami/amazon-linux-2/recommended
+aws ssm get-parameters --names /aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id --query "Parameters[]" | jq -r '.[] | .Value'
 ```
