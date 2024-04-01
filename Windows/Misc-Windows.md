@@ -46,3 +46,7 @@ Ctrl + C
 Esc
 ```
 
+# Command-line open Windows Explorer
+```PowerShell
+explorer.exe .
+```

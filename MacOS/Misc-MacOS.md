@@ -33,4 +33,8 @@ On the client computer use [RealVNC viewer](https://www.realvnc.com/download/vie
 
 On the server computer enable screen sharing: System Preferences → Sharing → select "Screen Sharing".
 
+# Command-line open Finder
+```bash
+open .
+```
  
