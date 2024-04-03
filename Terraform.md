@@ -3,18 +3,31 @@
 
 # terraform.tfstate ("state") file
 
-Critical.  It keeps track of the state of the Terraform project.  Keep it backed up for Production and/or shared projects.  Online storage (e.g. [AWS S3 backend](https://developer.hashicorp.com/terraform/language/settings/backends/s3)) is ideal.
+Critical.  It keeps track of the state of the Terraform project.  Keep it backed up in a "backend" for Production and/or shared projects.  Online storage (e.g. [AWS S3 backend](https://developer.hashicorp.com/terraform/language/settings/backends/s3)) works well.  (But secure access, enable versioning, encrypt, etc.)
 
-It may contain secrets, so don't store in source control.  And secure access to it if stored in online storage.
+It may contain secrets, so don't store in source control.
 
-Enhanced: Run operations remotely, e.g. Terraform Cloud
+Enhanced: Run operations remotely, e.g. HashiCorp Terraform Cloud.  HashiCorp Vault.
 
 A local file is fine for single-user prototyping and development.
+
+See also "Workspaces".
+
+## State locking
+Prevent multiple users/processes from changing the state at the same time.
+
+Manual unlock: ```terraform force-unlock <Lock ID>```
 
 # CLI Commands
 
 ## init
-Initialize the project in the local directory.  i.e. Download the provider files.  (Does not create/update the terraform.tfstate file.)
+Initialize the project in the local directory.  i.e. Download the provider plugin files.  (Does not create/update the terraform.tfstate file.)
+
+## validate
+Valid Terraform code:
+```bash
+Success! The configuration is valid.
+```
 
 ## plan
 Get a preview of what would be deployed by ```apply```.  Detects drift.  (Does not create/update the terraform.tfstate file.) 
@@ -27,33 +40,74 @@ Apply the changes (by creating missing resources), and update the terraform.tfst
 ## destroy
 Delete all the resources in the project.
 
+Equivalent: ```terraform apply -destroy```
+
 ## refresh
-Update the terraform.tfstate file based on the resources that are actually deployed.  Detects drift.
+Update the terraform.tfstate file based on the resources that are **actually** deployed and configured in Terraform.  Detects drift.
+
+Scenario:
+- ```apply```, to create a VPC in AWS
+- Manually delete that VPC in AWS
+    - At this point the Terraform state file is out-of-sync.
+- ```refresh```
+    - At this point the Terraform state file is in-sync.
+- ```plan``` will show that a VPC will be created
+- ```apply``` will create the VPC
 
 ## inform
 Sometimes a better option than refresh.
 
+## Other CLI commands
+
+### fmt (format)
+Format all the source files, which edits the files.
+
+### taint <resource name>
+Mark the resource as "tainted", so it's replaced on the next ```apply```.
+
+### untaint <resource name>
+Remove the "tainted" mark from a resource.
+
+### import <(Terraform) resource name> <Target ID>
+Capture the resources already created into the Terraform state file.  The resource must already be described in a Terraform source file.
+
+To import an AWS VPC <Target ID> would be the AWS ID of the VPC, for example: ```vpc-0b113a2f734aaf60d```.
+
+Similar, but different: [Former2](https://github.com/iann0036/former2/blob/master/README.md)
+
+### state <cub-command>
+
+#### list [filter]
+List the resources in the Terraform state file.  Resources can be filtered by their nesting hierarchy.
+
+#### pull
+Display the contents of the terraform.tfstate file.
+
+#### mv
+Rename a resource.
+
+#### rm
+Delete a resource from the terraform.tfstate file.  (It does **not** delete the target resource.)
+
+#### push
+Last resort: Fix a big problem fixed in the local state file, this will overwrite it to the remove state file.
+
 ## CLI options
+Each workspace has its own ```terraform.tfstate``` file.  When there are multiple workspaces in a Terraform project they're organized by separate sub-directories in ```terraform.tfstate.d```.
 
 ```-auto-approve```: Skip the "Do you want to perform these actions?" interactive prompt.
 
-# Variables (Input)
+## Workspaces
 
-## The ways to assign a variable a value, in order of precedence:
-1. Command-Line: 
-    - ```-var```
-        - e.g. ```-var="vpc_name=My VPC"```
-    - ```-var-file```
-        - e.g. ```-var-file="devtest.tfvars"```
-        - Simple file syntax: ```vpc_name = "My VPC"```
-3. Automatically from files:
-    - terraform.tfvars [.json]
-    - *.auto.tfvars [.json]
-    - (Same simple file syntax as above.)
-4. Environment Variables that start with ```TF_VAR_```:
-    - e.g. ```export TF_VAR_vpc_name="My VPC"```
-5. Default (```default = "My VPC"```) in the definition.
-6. If none of the above, the CLI will prompt for it.
+```workspace <sub-command>```
+- list
+- new <workspace name>
+- show
+- swap <workspace name>
+- delete <workspace name>
+
+
+# Variables (Input)
 
 ## Define
 ```json
@@ -86,9 +140,10 @@ variable "person_map" {
 }
 ```
 
-If ```default``` is omitted and the variable's value is not supplied on the command-line, then terraform will prompt for it:
+If ```default``` is omitted and the variable's value is not supplied elsewhere, then terraform will prompt for it:
 ```bash
-% terraform apply  
+% terraform apply 
+...
 var.vpc_name
   Enter a value: 
 ```
@@ -100,6 +155,48 @@ resource "aws_vpc" "my_vpc" {
     tags = {
         Name = var.vpc_name
     }
+}
+```
+
+## How to assign a variable a value, in order of precedence:
+
+1. Command-Line:
+    - ```-var```
+        - e.g. ```-var="vpc_name=My VPC"```
+    - ```-var-file```
+        - e.g. ```-var-file=devtest.tfvars```
+        - e.g. ```-var-file=devtest.tfvars.json```
+    - If a variable is defined in **both** of the above, then the one that appears **last** on the command-line takes precedence.
+2. ```auto``` files:
+    - **Any** files with names ending in ```.auto.tfvars``` or ```.auto.tfvars.json```
+        - e.g. ```paul.auto.tfvars```
+        - e.g. ```paul.auto.tfvars.json```
+        - e.g. ```halifax.auto.tfvars```
+    - If a variable is defined in **multiple** auto files, then the one that appears in the file whose name sorts to last takes precedence.  i.e. ```ls *.auto.tfvars* | sort```
+3. ```terraform.tfvars.json``` file
+4. ```terraform.tfvars``` file
+5. Environment Variables: ```TF_VAR_<variable name>```
+    - e.g. ```export TF_VAR_vpc_name="My VPC"```
+6. Default (```default = "My VPC"```) in the variable definition.
+7. If none of the above, the CLI will prompt for it.
+
+(The [Terraform documentation](https://developer.hashicorp.com/terraform/language/values/variables#variable-definition-precedence) doesn't tell the whole story.)
+
+## File syntax
+
+### Simple
+```bash
+vpc_name = "My VPC"
+port = 8080
+egress_ports = [22, 80, 443]
+```
+
+### JSON
+```json
+{
+    "vpc_name": "My VPC",
+    "port": 8080,
+    "egress_ports": [22, 80, 443]
 }
 ```
 
@@ -122,6 +219,22 @@ Reference: [aws_vpc attributes](https://registry.terraform.io/providers/hashicor
 
 # Configuration Language (in JSON)
 [Reference](https://developer.hashicorp.com/terraform/language)
+
+## Backends
+[Available Backends](https://developer.hashicorp.com/terraform/language/settings/backends/configuration#available-backends)
+
+When using a remove backend: State data is only kept in memory, not in files.
+
+### S3
+```json
+terraform {
+    backend "s3" {
+        bucket = "<S3 bucket name>"
+        key    = "<path and filename>"
+        region = "ca-central-1"
+    }
+}
+```
 
 ## Dynamic Blocks
 Warning: Don't overuse them.
@@ -153,6 +266,15 @@ resource "aws_security_group" "web_server" {
 }
 ```
 
+## Built-In Functions
+There are many.  [Reference](https://developer.hashicorp.com/terraform/language/functions)
+Examples:
+- ```max```: Return the largest from a set of numbers.
+- ```index```: Return the index of the specified value in the specified list.
+- ```values```: Return a list of the values from the specified map.
+- ```file```: Return the contents of the specified text file as a string.
+- ```flatten```: Returns a (non-nested) list of elements from the specified list(s), which may include nested lists.
+
 ## Dependencies
 ```json
 resource "aws_db_instance" "my_db" {
@@ -167,14 +289,44 @@ resource "aws_instance" "my_ec2_instance" {
 ## Data Sources
 Load data from an *existing* resource, and access the value like a variable.  See the "Data Sources" section in the provider documentation.
 ```json
-data "aws_ssm_parameter" "recommended_amazon-linux-2" {
+data "aws_ssm_parameter" "recommended-al2023" {
     name = "/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-6.1-x86_64 "
 }
 resource "aws_instance" "my_amazon-linux-2_server" {
-    ami = data.aws_ssm_parameter.recommended_amazon-linux-2.value
+    ami = data.aws_ssm_parameter.recommended-al2023.value
     ...
 ```
 Reference: [Data Source: aws_ssm_parameter](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ssm_parameter)
+
+### Alternate AMI example
+```json
+data "aws_ami" "latest-al2023" {
+    most_recent = true
+    owners = ["amazon"]
+    filter {
+        name = "name"
+        values = ["al2023-ami-2023*"]
+    }
+    filter {
+        name = "architecture"
+        values = ["x86_64"]
+    }
+    filter {
+        name = "root-device-type"
+        values = ["ebs"]
+    }
+    filter {
+        name = "virtualization-type"
+        values = ["hvm"]
+    }
+}
+
+resource "aws_instance" "my_al2023_instance" {
+  ami = data.aws_ami.latest-al2023.id
+  ...
+```
+
+Reference: [Data Source: aws_ami](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami)
 
 ### Filtering
 Given an "aws_vpc" resource named "my_vpc":
@@ -203,5 +355,118 @@ Default_Security_Group_ID = "sg-01c35c03ddb65d0f2"
 ```
 Reference: [Data Source: aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/security_group)
 
-# Provider Documentation
+## Versioning (Modules and Providers)
+The *pessimistic constraint* operator ```~>``` matches only ```>``` increments of the *rightmost* version component, e.g.:
+- ```~> 1.0.5```: Matches 1.0.6, 1.0.7, and 1.0.10 but not 1.1.0, nor 1.0.5, nor 0.9.
+- ```~> 1.2```: Matches 1.3, 1.4, and 1.10, but not 2.0, nor 1.2, nor 0.9.
+
+[Reference](https://developer.hashicorp.com/terraform/language/expressions/version-constraints)
+
+# Modules
+Module: A directory that contains Terraform files, as a block of re-usable code.  Can be local or remote.  These are built on top of the raw Providers.  
+
+## Types
+### Remote
+HashiCorp Terraform Registry [Browse](https://registry.terraform.io/browse/modules)
+
+For example there are AWS modules for VPC, IAM, Security Groups, S3 buckets, etc.
+
+### Local
+On the local machine running Terraform.
+
+## Module Inputs
+Assuming ```resource_name``` is a variable in the module, set the value:
+```json
+module "my_module" {
+    source = "./my_module"
+    resource_name = "The Name"
+}
+```
+
+## Module Outputs
+Reference a module's output:
+```json
+module.<module name>.<output name>
+```
+
+Outputs declared inside modules are **not** automatically pulled through.  It needs to be declared also:
+```json
+output "<variable name, which does not need to be the same>" {
+    value module.<module name>.<variable/data name in the module>
+}
+```
+
+### Module Data
+A module's data cannot be directly access from outside.  Use output instead, for example:
+```json
+data "aws_ami" "latest-al2023" {
+    ...
+}
+output "latest-al2023" {
+    value = data.aws_ami.latest-al2023
+}
+```
+
+Then access it, for example:
+```json
+resource "aws_instance" "myec2" {
+    ami = module.<module name>.latest-al2023.id
+    ...
+```
+
+# Providers
+
+## Documentation
+[All](https://registry.terraform.io/browse/providers) (many)
 - [AWS](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+- [Kubernetes](https://registry.terraform.io/providers/hashicorp/kubernetes/latest)
+- [TLS](https://registry.terraform.io/providers/hashicorp/tls/latest)
+
+## Multi-Provider Setup - Using Alias
+```json
+provider "aws" {
+    region = "ca-central-1"
+    profile = "account1_admin"
+    alias = "montreal-admin"
+}
+provider "aws" {
+    region = "ca-west-1"
+    profile = "account2_limited"
+    alias = "calgary-limited"
+}
+
+resource "aws_vpc" "calgary-vpc" {
+    provider = aws.calgary-limited
+    ...
+```
+
+## Examples
+
+### Create Private TLS CA (Certificate Authority) and Certificates
+See [here](https://amod-kadam.medium.com/create-private-ca-and-certificates-using-terraform-4b0be8d1e86d)
+
+
+## Plugins
+The code for Providers is stored in Plugins.  You can store custom plugins in a local directory.
+
+### Provisioners
+A last restort.  [Reference](https://developer.hashicorp.com/terraform/language/resources/provisioners/syntax)
+
+#### ```file```
+Copies file/directory from the local machine into the new resource.
+```json
+resource "aws_instance" "my_ec2_instance" {
+    ...
+ 
+    provisioner "file" {
+        source = "./tmp.txt"
+        destination = "/etc/installed-tmp.txt"
+    }
+```
+
+### ```local-exec```
+Invokes a command on the local machine, after the remote resource is created.
+
+### ```remote-exec```
+Invokes a command on the remote resource, after it's created.
+
