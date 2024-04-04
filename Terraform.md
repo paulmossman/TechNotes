@@ -18,24 +18,27 @@ Prevent multiple users/processes from changing the state at the same time.
 
 Manual unlock: ```terraform force-unlock <Lock ID>```
 
+# Core Workflow
+1. Write
+2. Plan
+3. Apply
+
 # CLI Commands
 
 ## init
 Initialize the project in the local directory.  i.e. Download the provider plugin files.  (Does not create/update the terraform.tfstate file.)
-
-## validate
-Valid Terraform code:
-```bash
-Success! The configuration is valid.
-```
 
 ## plan
 Get a preview of what would be deployed by ```apply```.  Detects drift.  (Does not create/update the terraform.tfstate file.) 
 
 If everything is up to date: ```No changes. Your infrastructure matches the configuration.```
 
+The ```-target``` option restricts the plan to only a subset of resources.
+
 ## apply
 Apply the changes (by creating missing resources), and update the terraform.tfstate file.  (Creates the terraform.tfstate file if it doesn't exist.)
+
+
 
 ## destroy
 Delete all the resources in the project.
@@ -59,8 +62,17 @@ Sometimes a better option than refresh.
 
 ## Other CLI commands
 
+### console
+Run arbitrary commands in the context of the current project.  But must be restarted to detect changes in files.
+
+### validate
+Valid Terraform code:
+```bash
+Success! The configuration is valid.
+```
+
 ### fmt (format)
-Format all the source files, which edits the files.
+Rewrite all the Terraform files to meet the sytle conventions.
 
 ### taint <resource name>
 Mark the resource as "tainted", so it's replaced on the next ```apply```.
@@ -217,13 +229,13 @@ VPC_ID = "vpc-0cae74324b9642eab"
 ```
 Reference: [aws_vpc attributes](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc#attribute-reference)
 
-# Configuration Language (in JSON)
+# Terraform Language
 [Reference](https://developer.hashicorp.com/terraform/language)
 
 ## Backends
 [Available Backends](https://developer.hashicorp.com/terraform/language/settings/backends/configuration#available-backends)
 
-When using a remove backend: State data is only kept in memory, not in files.
+When using a remote backend: State data is only kept in memory, not in files.
 
 ### S3
 ```json
@@ -451,6 +463,8 @@ The code for Providers is stored in Plugins.  You can store custom plugins in a 
 
 ### Provisioners
 A last restort.  [Reference](https://developer.hashicorp.com/terraform/language/resources/provisioners/syntax)
+
+You can also create a provisioner in the "null" resource, i.e. not conencted to an actual underlying resource.  See: ```[terraform_data](https://www.terraform.io/docs/language/resources/provisioners/null_resource.html)```
 
 #### ```file```
 Copies file/directory from the local machine into the new resource.
