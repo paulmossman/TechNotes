@@ -26,10 +26,10 @@ Manual unlock: ```terraform force-unlock <Lock ID>```
 # CLI Commands
 
 ## init
-Initialize the project in the local directory.  i.e. Download the provider plugin files.  (Does not create/update the terraform.tfstate file.)
+Initialize the project in the local directory.  i.e. Download the provider plugin files.  (Does **not** create/update the terraform.tfstate file.)  Re-run it whenever you modify or change dependencies.
 
 ## plan
-Get a preview of what would be deployed by ```apply```.  Detects drift.  (Does not create/update the terraform.tfstate file.) 
+Get a preview of what would be deployed by ```apply```.  Detects drift.  (Does **not** create/update the terraform.tfstate file.) 
 
 If everything is up to date: ```No changes. Your infrastructure matches the configuration.```
 
@@ -37,8 +37,6 @@ The ```-target``` option restricts the plan to only a subset of resources.
 
 ## apply
 Apply the changes (by creating missing resources), and update the terraform.tfstate file.  (Creates the terraform.tfstate file if it doesn't exist.)
-
-
 
 ## destroy
 Delete all the resources in the project.
@@ -74,6 +72,8 @@ Success! The configuration is valid.
 ### fmt (format)
 Rewrite all the Terraform files to meet the sytle conventions.
 
+Though it cannot handle an opening brace (aka curly bracket, ```{```) being on the next line...
+
 ### taint <resource name>
 Mark the resource as "tainted", so it's replaced on the next ```apply```.
 
@@ -89,33 +89,32 @@ Similar, but different: [Former2](https://github.com/iann0036/former2/blob/maste
 
 ### state <cub-command>
 
-#### list [filter]
+#### list [filter on (Terraform) resource name]
 List the resources in the Terraform state file.  Resources can be filtered by their nesting hierarchy.
 
 #### pull
 Display the contents of the terraform.tfstate file.
 
-#### mv
-Rename a resource.
+#### mv <Old (Terraform) resource name> <Current (Terraform) resource name>
+Rename a resource in the Terraform state file.  The resource must already be renamed in the Terraform source file(s).
 
-#### rm
+#### rm <(Terraform) resource name>
 Delete a resource from the terraform.tfstate file.  (It does **not** delete the target resource.)
 
 #### push
-Last resort: Fix a big problem fixed in the local state file, this will overwrite it to the remove state file.
+Last resort: Fix a big problem fixed in the local state file, this will overwrite it to the remote state file.
 
 ## CLI options
-Each workspace has its own ```terraform.tfstate``` file.  When there are multiple workspaces in a Terraform project they're organized by separate sub-directories in ```terraform.tfstate.d```.
-
 ```-auto-approve```: Skip the "Do you want to perform these actions?" interactive prompt.
 
 ## Workspaces
+Each workspace has its own ```terraform.tfstate``` file.  When there are multiple workspaces in a Terraform project they're organized by separate sub-directories in ```terraform.tfstate.d```.
 
 ```workspace <sub-command>```
 - list
 - new <workspace name>
 - show
-- swap <workspace name>
+- select <workspace name>
 - delete <workspace name>
 
 
@@ -135,7 +134,7 @@ variable "https_port" {
 
 variable "production" {
     # Type: boolean
-    default = true
+    default = true   # Note: No double-quotes.
 }
 
 variable "list_of_different_types" {
@@ -194,7 +193,7 @@ resource "aws_vpc" "my_vpc" {
 
 (The [Terraform documentation](https://developer.hashicorp.com/terraform/language/values/variables#variable-definition-precedence) doesn't tell the whole story.)
 
-## File syntax
+## Variable File syntax
 
 ### Simple
 ```bash
@@ -352,12 +351,12 @@ data "aws_security_group" "default_security_group" {
         name = "group-name"
         values = ["default"]
     }
-    # The two name values: Filter.N from https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSecurityGroups.html
 }
 output "Default_Security_Group_ID" {
     value = data.aws_security_group.default_security_group.id
 }
 ```
+Note: The two filter name values are Filter.N from the [AWS API Reference](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeSecurityGroups.html)
 Result:
 ```bash
 ...
@@ -464,7 +463,8 @@ The code for Providers is stored in Plugins.  You can store custom plugins in a 
 ### Provisioners
 A last restort.  [Reference](https://developer.hashicorp.com/terraform/language/resources/provisioners/syntax)
 
-You can also create a provisioner in the "null" resource, i.e. not conencted to an actual underlying resource.  See: ```[terraform_data](https://www.terraform.io/docs/language/resources/provisioners/null_resource.html)```
+You can also create a provisioner in the "null" resource, i.e. not conencted to an actual underlying resource.  See: [terraform_data](https://www.terraform.io/docs/language/resources/provisioners/null_resource.html)
+You can also create a provisioner in the "null" resource, i.e. not conencted to an actual underlying resource.  See: [terraform_data](https://www.terraform.io/docs/language/resources/provisioners/null_resource.html)
 
 #### ```file```
 Copies file/directory from the local machine into the new resource.
@@ -481,6 +481,12 @@ resource "aws_instance" "my_ec2_instance" {
 ### ```local-exec```
 Invokes a command on the local machine, after the remote resource is created.
 
-### ```remote-exec```
-Invokes a command on the remote resource, after it's created.
+```command``` is the single command to execute.  (Required.)
 
+### ```remote-exec```
+Invokes command(s) on the remote resource, after it's created.
+
+Exactly one of the following is required:
+- ```inline```: The list of command strings.
+- ```script```: String path to a local script that will be copied to the remote and executed.
+- ```scripts```: As above, except a list.  Executed in the order they appear.
