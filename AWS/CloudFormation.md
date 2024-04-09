@@ -52,6 +52,10 @@ check_createstack_status_and_wait () {
 
    wait_stack_create_complete ${STACK_NAME}
 }
+
+
+aws cloudformation create-stack --stack-name ${STACK_NAME} ...
+check_createstack_status_and_wait $? ${STACK_NAME}
 ```
 
 ## How to tell if a resource is part of a Stack
@@ -199,7 +203,7 @@ https://aws.amazon.com/blogs/opensource/accelerate-infrastructure-as-code-develo
 
 Though see: https://github.com/iann0036/former2/blob/master/RESOURCE_COVERAGE.md   (Not everything is covered.)
 
-https://former2.com/ (But don't put your credentials into a 3rd-party website...)
+https://former2.com/ But don't put your credentials into a 3rd-party website!
 
 
 ### Run Former2 locally
@@ -207,4 +211,11 @@ https://former2.com/ (But don't put your credentials into a 3rd-party website...
 https://github.com/iann0036/former2/blob/master/HOSTING.md  (127.0.0.1 doesn't need extension)
 
 https://github.com/iann0036/former2/blob/master/Dockerfile The build and run commands, but set $host_port env var, e.g. 80
+
+i.e.
+```bash
+docker build -t former2_local:1.0 .
+docker run --name former2 -p 80:80 -d former2_local:1.0
+```
+For: http://localhost:80
 
