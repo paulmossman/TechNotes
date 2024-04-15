@@ -1,4 +1,5 @@
 **<span style="font-size:3em;color:black">AWS CLI</span>**
+**<span style="font-size:3em;color:black">AWS CLI</span>**
 ***
 
 [AWS CLI Command Reference](https://awscli.amazonaws.com/v2/documentation/api/latest/index.html)
@@ -36,6 +37,28 @@ aws sts get-caller-identity --output json | jq -r ".Account"
 ### Username
 ```bash
 aws sts get-caller-identity --output json  | grep Arn
+```
+
+# AWS CLI/SDK Profiles - ```configure```
+
+## List profiles
+```bash
+aws configure list-profiles
+```
+
+## Add/update a profile
+```bash
+aws configure --profile easy-aws-privacy-vpn
+```
+
+From a script:
+```bash
+cat << EOF | aws configure --profile easy-aws-privacy-vpn
+${AccessKeyId}
+${SecretAccessKey}
+ca-central-1
+json
+EOF
 ```
 
 # Cognito
@@ -196,4 +219,31 @@ aws ssm get-parameter --name /aws/service/ami-amazon-linux-latest/al2023-ami-ker
 ECS-optimized specifically:
 ```bash
 aws ssm get-parameters --names /aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id --query "Parameters[]" | jq -r '.[] | .Value'
+```
+
+# ACM
+
+## Delete a certificate by name
+```bash
+delete_acm_certificate_by_name () {
+
+    CERT_NAME=$1
+
+    CERT_ARN_OUTPUT=`aws acm list-certificates --query "CertificateSummaryList[?DomainName=='${CERT_NAME}'].CertificateArn"  --output json`
+    
+    echo ${CERT_ARN_OUTPUT} | grep "\[\]"
+    RESULT=$?
+    if [[ "$RESULT" == "0" ]]; then
+        echo "ERROR: Failed to find an ACM certificate named: ${CERT_NAME}" >&2
+    else
+        CERT_ARN=`echo ${CERT_ARN_OUTPUT} | jq -r '.[0]'`
+        aws acm delete-certificate --certificate-arn ${CERT_ARN}
+        RESULT=$?
+        if [ ${RESULT} != "0" ]; then
+            echo "ERROR: Failed to delete ACM certificate: ${CERT_ARN}" >&2
+        fi
+    fi
+}
+
+delete_acm_certificate_by_name "example.certificate.name"
 ```

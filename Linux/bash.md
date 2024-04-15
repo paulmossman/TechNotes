@@ -140,7 +140,15 @@ if [ ${RESULT} != "0" ]; then
 fi
 ```
 
-
+## Cat multiple lines as piped stdin
+```bash
+cat << EOF | aws configure --profile easy-aws-privacy-vpn
+${AccessKeyId}
+${SecretAccessKey}
+ca-central-1
+json
+EOF
+```
 
 ## Cat multiple lines to a file
 ```bash
@@ -170,7 +178,16 @@ Note double square brackets.
 string='My string';
 if [[ "$string" == *My* ]]
 then
-  echo "It's there!";
+  echo "It contains!";
+fi
+```
+
+## String equals
+```bash
+string='My string';
+if [[ "$string" = "My string" ]]
+then
+  echo "It's equal!";
 fi
 ```
 

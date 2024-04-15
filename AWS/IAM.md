@@ -3,6 +3,14 @@
 
 Note: https://medium.parttimepolymath.net/no-more-aws-access-keys-13a3c3f2337a
 
+# Condition
+
+https://docs.aws.amazon.com/IAM/latest/UserGuide/access_tags.html
+
+# Resource
+
+See https://docs.aws.amazon.com/service-authorization/latest/reference/reference.html for definition of ARN formats.  (Some allow use of the resource name, e.g. CF Stack and S3 bucket.)
+
 # Permissions
 
 ## Useful Read-only
