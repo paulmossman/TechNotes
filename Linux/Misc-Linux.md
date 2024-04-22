@@ -27,6 +27,10 @@ Timestamp:
 ```
 date '+%Y%m%d%H%M%S'
 ```
+Time only:
+```
+date +%R
+```
 
 # Networking
 

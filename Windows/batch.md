@@ -1,5 +1,15 @@
 # CMD and Batch
 
+A good resource: https://www.tutorialspoint.com/batch_script/
+
+## Store the stdout of a command in a variable
+```
+for /F %i IN ('date') DO set START_DATE=%i
+echo START_DATE %START_DATE%
+```
+Limitation: Only a single list, so the last line of multi-line output.
+
+
 ## Check the exit status of the previous command
 ```
 echo %errorlevel%
