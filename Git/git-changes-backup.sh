@@ -21,9 +21,9 @@ UNTRACKED_FILES_AND_DIRS=`git status | sed -n -e '/'"${UNTRACKED_CRUMB}"'/,$p' |
 
 # IFS --> Internal Field Separator
 while IFS= read -r fileOrDir; do
-   # Remove leading and trailing whitespace.
-   fileOrDir=`echo ${fileOrDir} | sed 's/^[ \t]*//;s/[ \t]*$//'`
-   
+   # Remove leading and trailing whitespace.  (MacOS compatible.)
+   fileOrDir=`echo ${fileOrDir} | sed -E 's/[ '$'\t'']+$//'`
+
    if [ -d "${fileOrDir}" ]; then
       # A directory with 1+ files.
       UNTRACKED_FILES_IN_DIR=`find "${fileOrDir}" -type f`
@@ -40,8 +40,8 @@ done <<< "$UNTRACKED_FILES_AND_DIRS"
 
 FILES="${UNTRACKED_FILES}"
 while IFS= read -r file; do
-   # Remove leading and trailing whitespace.
-   file=`echo ${file} | sed 's/^[ \t]*//;s/[ \t]*$//'`
+   # Remove leading and trailing whitespace.  (MacOS compatible.)
+   file=`echo ${file} | sed -E 's/[ '$'\t'']+$//'`
 
    if [ -n "$file" ]; then
       FILES="${FILES}
@@ -65,4 +65,3 @@ else
    git branch --show-current > "${BACKUP_DIR}/BRANCH.txt"
    echo Modified and untracked files copied to: ${BACKUP_DIR}
 fi
-

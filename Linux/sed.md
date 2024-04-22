@@ -6,6 +6,7 @@ Make the changes to the file itself, instead of stdout:
 ```bash
 sed -i ___
 ```
+(Note: Mac isn't Linux...  On a Mac you need to specify the extension of a backup file, e.g. ```-i.bak```, otherwise the next parameter will be used.)
 
 ## Useful Examples
 
@@ -42,6 +43,15 @@ echo MOSSMAN | sed -e "s/[A-Z]/\l&/g"
 To include the original search string in the output, use ```&```:
 ```bash
 echo "Fun for Bob." | sed -e "s/Bob/& and Alice/g"
+```
+
+Remove leading and trailing whitespace:
+```bash
+sed -i 's/[ \t]*$//' <file>
+```
+(Note: Mac isn't Linux...  The above removes trailing ts on a Mac.  Below is Mac compatible):
+```bash
+sed -i '' -E 's/[ '$'\t'']+$//' <file>
 ```
 
 Groups:
