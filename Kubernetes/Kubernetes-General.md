@@ -100,7 +100,7 @@ Rollback: ```kubectl rollout undo <Deployment name>```  This changes the # of th
 
 Similar to Deployment, but Pods are (optionally) created in a specific order.  Each Pod gets a unique ordinal index, which becomes part of the Pod name.  (Versus the random names used in Deployments.)
 
-# Services
+# Service (a kind)
 
 Enable communications between various components/users of the application.  Allows communictions to other components, e.g user endpoints, other pods, DBs.  Types:
 1. NodePort
@@ -115,9 +115,17 @@ Each Service has an IP address, and it's name is also a DNS entry.
 k get ep
 ```
 
-## NodePort (a kind)
+Note: Ingress is alternative for access from outside Kubernetes.
 
-Listens to a Port on Nodes (in the range 30000-32767), forwards to a port on a Target(s) inside those Nodes.
+## ports
+
+port: The port that's exposed.  i.e. Clients will send requests to this port.
+targetPort: The port that traffic will be sent to.  i.e. The target Pod (and Container application) will be listening on this port.
+nodePort: For the NodePort/LoadBalancer types, the port that's assigned internally.  Allocated if it's not specified.
+
+## NodePort (a type of Service)
+
+Listens to a Port on all Nodes (in the range 30000-32767), forwards to a port on a Target(s) inside those Nodes.
 
 Hit at http://<Node IP>:<NodePort>
 
@@ -127,13 +135,13 @@ Multiple Targets → Requests are randomly distributed.
 
 Multiple Nodes in the Cluster → The same port on all the Nodes.  i.e. The NodePort service automatically spans all the Nodes.
 
-## ClusterIP (a kind)
+## ClusterIP (a type of Service)
 
-A virtual IP within a Cluster.  (The default ```type:``` for ```Service```.)
+A single stable virtual IP within a Cluster.  (The default ```type:``` for ```Service```.)
 
 Consider creating with ```kubectl expose ...``` instead of ```kubectl create svc ...```, because the former will set the right Selector Labels.
 
-
+The best choice for internal communications.  The IP doesn't change, and is reachable from all Nodes in the Cluster.  But does not facilitate external communication.
 
 ### Headless Service
 
@@ -141,13 +149,7 @@ Consider creating with ```kubectl expose ...``` instead of ```kubectl create svc
 
 Creates DNS records for ***each*** Pod, instead of a single DNS and IP that's then load balanced to all Pods.  Use with StatefulSet, and ```serviceName:```.
 
-# ports
-
-port: The port that's exposed.  i.e. Clients will send requests to this port.
-targetPort: The port that the Pod (and Container application) will be listening on.
- 
-
-## LoadBalancer (a kind)
+## LoadBalancer (a type of Service)
 
 In supported cloud providers.
 
@@ -167,7 +169,7 @@ Not included in Kubernetes.  You would need to deploy one yourself, (```kind: De
 
 Google Cloud: [Google Kubernetes Engine (GKE) Ingress](https://cloud.google.com/kubernetes-engine/docs/concepts/ingress)
 
-Requires a ```ConfigMap``` of configuration, a ```NodePort``` to expose, and a Serviec Account with permissions to access the Kubernetes objects.
+Requires a ```ConfigMap``` of configuration, a ```NodePort``` to expose, and a Service Account with permissions to access the Kubernetes objects.
 
 ## Ingress Resource (a kind)
 
@@ -196,6 +198,8 @@ Like Linux crontab.
 ```spec.jobTemplate.spec``` → Matches Job ```spec```
 
 # NetworkPolicy (a kind)
+
+If none apply to a Pod, then by default there are no ingress or egress restrictions.
 
 Applies to Pods using ```podSelector:``` and the Labels on Pods.
 
@@ -237,7 +241,7 @@ Templatize the PersistentVolume and PersistentVolumeClaim creation upon StorageC
 # Role-based access control (RBAC)
 
 ## Role (a kind)
-Has a ```rules:``` section, instead of ```spec:```.
+Contains rules that define a set of permissions.  Has a ```rules:``` section, instead of ```spec:```.
 
 Scoped to a namespace.
 
@@ -247,9 +251,9 @@ Attach a Role to a user or set of users, scoped to a namespace.
 But ```subjects:``` and ```roleRef:``` sections, instead of ```spec:```.
 
 ## ClusterRole (a kind)
-Like Role, except not scoped to a namespace.  i.e. Control access to Cluster-scoped resources.
+Contains rules that define a set of permissions.  Has a ```rules:``` section, instead of ```spec:```.
 
-Has a ```rules:``` section, instead of ```spec:```.
+Like Role, except not scoped to a namespace.  i.e. Control access to Cluster-scoped resources.
 
 ### ClusterRoleBinding (a kind)
 Attach a ClusterRole to a user or set of users, Cluster-scoped.
@@ -265,10 +269,10 @@ For Production secrets use Helm Secrets, HashiCorp Vault (plus [Vault Provider](
 
 A single "Secret" contains one or more Keys (Key/Value pairs.)
 
-Secrets can be injected into a Container (in a Pod):
+Secrets can be injected into a Container (in a Pod) as:
 - Environment variables:
    - all
-   - a specific
+   - a specific secret
 - Volume, with each Key as a file: ```volumes:``` / ```secret:``` / ```secretName:```
 
 An Pod that's created in the Namespace can access any of the Namespace's Secrets.
@@ -297,11 +301,11 @@ Resources that should be made available to all.
 ## Automatic entries
 Reminder: Each Pod and Service name is also a DNS entry.
 
-FQDN: <Pod/Service Name>.<Namespace>.svc.cluster-domain.example
+FQDN: <Pod/Service Name>.\<Namespace\>.svc.cluster-domain.example
 
 ## ```coredns``` Deployment
 
-This is the DNS server.  It's ConfigMap can be modified.
+This is the DNS server.  Its ConfigMap can be modified.
 
 ### Helpful example: Add and arbitrary DNS entry
 

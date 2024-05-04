@@ -180,7 +180,7 @@ kubectl api-resources
 
 Though **not** Ingress Resources...
 
-# dry-run --> YAML
+# dry-run → YAML
 ```
 kubectl <Options> --dry-run=client -o yaml > deployment.yaml
 ```

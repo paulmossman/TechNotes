@@ -66,12 +66,6 @@ In the ```spec:``` section...
 ```
 
 The Volume must still be mounted in Container(s).
-
-# Volumes
-
-TODO
-
-TODO:  Mount for each Container?
  
 # Node Affinity
 
