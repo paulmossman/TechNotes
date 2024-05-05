@@ -13,23 +13,46 @@
 | Live State | The actual (current) state of the Application in Kubernetes |
 | Sync | The process of transitioning an Application's Live State to match its Target State, by applying changes in Kubernetes |
 | Sync Status | Whether the Application's Live State to match its Target State |
-| Sync Operation Status | Whether the SYnc has succeeded or failed |
+| Sync Operation Status | Whether the Sync has succeeded or failed |
 | Health Status | Of the Application |
-| Application source type | Tool used for building applications (Helm or Kustomize) |
+| Application source type | Tool used for building applications from source |
 | Refresh | Compare the latest Target State versus the Live State, and what is different |
+
+# Architecture
+
+3 main components:
+
+## ArgoCD (API/Web) Server
+gRPC/REST API server, used by the Web UI and ```argocd``` CLI
+
+## ArgoCD Repo Server
+Clones Git repos, and generates Kubernetes manifests.
+
+## ArgoCD Application Controller
+Gets the generated Kubernetes manifests from the Repo Server, and communicates with the Kubernetes API to get the current state and deploy changes.  Also detects out-of-sync.  Also invoked Resource Hooks.
 
 # Funadamental Argo CD CRDs
 
-## Application
+## Application (kind)
 Represents a deployed application instance in an environment.
 
-**source**: Target State (Git)
+**source**: Target State.  (The Git repository URL, path inside the repository, and revision.)
 
 **destination**: The target Kubernetes cluster and namespace.
 
+**project**: The ArgoCD project.
 
-## AppProject
-Represents a logical grouping of applications.
+### Multiple Sources for an Application
+Since v2.6, multiple sources can be combined into a single Application.  (Use ```sources```, instead of ```source```.)
+
+A good use case: A public Helm chart, combined with override Values file from a private Git repository.
+
+## AppProject (kind), aka Project
+Represents a logical grouping of Applications.
+
+Can restrict Git repos, Kubernetes clusters deployed into (and namespaces), Kubernetes resources types deployed.  Can create a Role for the Project's permissions.
+
+A default Project named ```default``` is included.
 
 ## Repository credentials
 The credentials for accessing private Git repositories.
@@ -42,6 +65,12 @@ metadata:
     argocd.argoproj.io/secret-type: repository
 ```
 
+Supports HTTP (username/password), SSH (private key), GitHub (App credentials), or Helm (username/password, TLS certs).
+
+Use a credential template (```argocd.argoproj.io/secret-type: repo-creds```) to re-use the same credentials for multiple repositories.
+
+Reference: https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#repositories
+
 ## Cluster credentials
 The configuration for accessing multiple Kubernetes clusters.
 
@@ -52,6 +81,107 @@ metadata:
   labels:
     argocd.argoproj.io/secret-type: cluster
 ```
+
+# Operations
+
+## Sync
+The "Prune" option deletes old resources.
+
+### Pruning
+
+Deletion of resources no longer defined in the Target State.
+
+### Automated Sync
+
+Optional.
+
+Good use case: CI/CD pipelines don't need access to the Kubernetes cluster.
+
+Required in order to rollback an Application.
+
+#### Automated Pruning
+
+Off by default for Automated Syncing, but can be enabled:
+```yaml
+  syncPolicy:
+    automated:
+      prune: true
+```
+
+#### Automated Self Healing
+
+Making changes into the live Kubernetes cluster will take the Application OutOfSync.  But this (by default) won't trigger Automated Sync, unless Self Healing is enabled:
+```yaml
+  syncPolicy:
+    automated:
+      selfHeal: true
+```
+
+### Creaet Namespace
+```yaml
+  syncOptions:
+    - CreateNamespace=true
+```  
+
+### Other Sync Options
+
+There's an annotation to exempt a Resource from being pruned.
+
+Can disable ```kubectl``` validation, at Application or Resource level.
+
+Selective Sync: Only Sync objects that are OutOfSync, to reduce ArgoCD (API/Web) Server load.
+
+Prune Last: Prune only after all other waves have completed, at Application or Resource level.
+
+Replace Resources instead of applying changes.
+
+Others: https://argo-cd.readthedocs.io/en/stable/user-guide/sync-options
+
+## Tools
+
+ArgoCD can autodetect, based on what files it finds.
+
+### Helm
+Options:
+- Release Name
+- Values file(s)
+- Individual parameters (override from Values file)
+
+Reference: https://argo-cd.readthedocs.io/en/stable/user-guide/helm/
+
+### Kustomize
+Many options.
+
+Reference: https://argo-cd.readthedocs.io/en/stable/user-guide/kustomize/
+
+### Directory of Files
+Options:
+- Recursive detection
+- Include only certain files
+- Exclude certain files
+
+Reference: https://argo-cd.readthedocs.io/en/stable/user-guide/directory/
+
+### YAML
+
+### Jsonnet
+
+Reference: https://argo-cd.readthedocs.io/en/stable/user-guide/jsonnet/
+
+# Tracking Strategies
+
+Reference: https://argo-cd.readthedocs.io/en/stable/user-guide/tracking_strategies/
+
+## Git repository Tracking
+- Commit SHA
+- Tag
+- Branch
+- HEAD
+
+## Helm repository Tracking
+- Specific version
+- Range
+- Latest (can include or not include pre-releases)
 
 # Sync Wave
 Split and order the manifests to be synched into "waves".  For example:
@@ -110,7 +240,7 @@ kubectl get pods -n argocd
 ```
 
 ## Access
-Port forward the API service:
+Port forward the ArgoCD (API/Web) Server service:
 ```bash
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
@@ -156,7 +286,12 @@ data:
     p, role:synconly, applications, sync, */*, allow
     g, developer, role:synconly
 ```
-This defines a role named ```synconly``` that only allows the ```sync``` action, granted to the ```developer``` user.
+This defines a Role named ```synconly``` that only allows the ```sync``` action, granted to the ```developer``` user.
+
+Roles can also be create inside Projects, then create a JWT:
+```bash
+argocd proj role create-token <Project> <Role>
+```
 
 Reference: https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac/ 
 
@@ -164,3 +299,4 @@ Reference: https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac/
 
 Reference: https://argo-cd.readthedocs.io/en/stable/user-guide/commands/argocd/
 
+Option: ```--auth-token```, to specify a JWT create from a Role.
