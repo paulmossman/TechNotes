@@ -38,3 +38,10 @@ On the server computer enable screen sharing: System Preferences → Sharing →
 open .
 ```
  
+# Networking
+
+## What process is using a port?
+```bash
+sudo lsof -i -P | grep LISTEN | grep :8080
+```
+
