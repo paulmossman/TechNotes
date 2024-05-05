@@ -24,7 +24,7 @@ This creates a "\<Chart Name\>" directory.
 By default the ```nginx``` Docker image is used.  Change it via the values.yaml file's ```image.repository``` value.
 
 By default a ClusterIP service will be created, but a NodePort is probably more useful.  Change the values.yaml file's ```service.type``` value to "NodePort".  The allocated NodePort number is random by default.  The ```helm install``` output will show you how to discover it.  (But don't trust the NODE_IP value.)  To specify the NodePort number:
-- In the values.yaml file add ```nodePort: <port #>``` under ```service:```.
+- In the values.yaml file add ```nodePort: <port #>``` under ```service:```.  (Use a value 30000+.)
 - In the templates/service.yaml file add ```nodePort: {{ .Values.service.nodePort }}``` to the ```spec.type.ports:``` section's ```port``` entry.
 
 Start:
@@ -46,6 +46,12 @@ Watch the Pod's logs:
 ```bash
 kubectl logs -f deployment.apps/<Deployment Name>
 ```
+
+Access the Application:
+```bash
+kubectl port-forward svc/<Deployment Name> 8000:80
+```
+Then: http://localhost:8000/
 
 Stop:
 ```bash

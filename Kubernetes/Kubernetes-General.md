@@ -494,3 +494,5 @@ kind create cluster
 ```
 
 (Requires Docker.)
+
+TODO: With Ingress: https://kind.sigs.k8s.io/docs/user/ingress/
