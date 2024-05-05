@@ -1,9 +1,11 @@
 **<span style="font-size:3em;color:black">Kubernetes Sample YAML</span>**
 ***
 
-There doesn't seem to be web-based reference documentation on the options of YAML files, just a number of examples: https://kubernetes.io/docs/tasks/ and https://kubernetes.io/docs/concepts/.
+Online reference documentation: https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#api-groups
 
-But: ```kubectl explain RESOURCE```, for example:
+Examples: https://kubernetes.io/docs/tasks/ and https://kubernetes.io/docs/concepts/.
+
+Useful: ```kubectl explain RESOURCE```, for example:
 ```
 $ kubectl explain pod.spec.affinity
 KIND:       Pod

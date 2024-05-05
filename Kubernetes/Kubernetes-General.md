@@ -481,3 +481,14 @@ Note, required etcdctl options:
 --endpoints=[127.0.0.1:2379]
 --key
 ```
+
+# Setup a Cluster with Kind
+
+https://kind.sigs.k8s.io/docs/user/quick-start/
+
+Then:
+```bash
+kind create cluster
+```
+
+(Requires Docker.)

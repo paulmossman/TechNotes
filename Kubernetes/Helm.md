@@ -3,9 +3,16 @@
 
 # Commands
 
-## List
-
-## 
+```bash
+helm search hub \<Keyword\> # Artifact Hub or your own hub instance
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo list
+helm search repo \<Keyword\> # repositories (managed with 'helm repo' commands)
+helm install \<Release name\> \<Chart name\>  # Install a release
+helm list # Show installed packages
+helm uninstall \<Release name\> # Uninstall a release
+helm pull --untar \<Chart name\> # Download, un-tar, but don't install
+```
 
 
 # Create a simple Deployment with a NodePort Service
