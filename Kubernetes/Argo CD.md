@@ -116,10 +116,51 @@ kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
 Keep this running, and open a new terminal.
 
-Get the Admin password:
+Get the Admin Password:
 ```bash
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d ; echo
 ```
 
 Access the UI at https://localhost:8080, and click through the TLS warning.  The Username is ```admin```.
+
+Log in to the argocd CLI:
+```bash
+argocd login --insecure --grpc-web localhost:8080 --username admin --password \<Admin Password\>
+```
+
+# Configuration
+
+## Add a User
+```bash
+kubectl edit cm argocd-cm -n argocd
+```
+Then (for username "developer") add:
+```yaml
+data:
+  accounts.developer: login
+```
+Then set the password:
+```bash
+argocd account update-password --account developer --new-password \<Password\>
+```
+
+### RBAC rules
+```bash
+kubectl edit cm argocd-rbac-cm -n argocd
+```
+Then add:
+```yaml
+data:
+  policy.default: role:readonly
+  policy.csv: |
+    p, role:synconly, applications, sync, */*, allow
+    g, developer, role:synconly
+```
+This defines a role named ```synconly``` that only allows the ```sync``` action, granted to the ```developer``` user.
+
+Reference: https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac/ 
+
+# ```argocd``` CLI
+
+Reference: https://argo-cd.readthedocs.io/en/stable/user-guide/commands/argocd/
 
