@@ -120,7 +120,9 @@ Note: Ingress is alternative for access from outside Kubernetes.
 ## ports
 
 port: The port that's exposed.  i.e. Clients will send requests to this port.
+
 targetPort: The port that traffic will be sent to.  i.e. The target Pod (and Container application) will be listening on this port.
+
 nodePort: For the NodePort/LoadBalancer types, the port that's assigned internally.  Allocated if it's not specified.
 
 ## NodePort (a type of Service)
