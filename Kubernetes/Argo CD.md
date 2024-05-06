@@ -12,7 +12,7 @@
 | Target State | The desired Application state, stored in Git |
 | Live State | The actual (current) state of the Application in Kubernetes |
 | Sync | The process of transitioning an Application's Live State to match its Target State, by applying changes in Kubernetes |
-| Sync Status | Whether the Application's Live State to match its Target State |
+| Sync Status | Whether the Application's Live State metches its Target State |
 | Sync Operation Status | Whether the Sync has succeeded or failed |
 | Health Status | Of the Application |
 | Application source type | Tool used for building applications from source |
@@ -54,7 +54,7 @@ Can restrict Git repos, Kubernetes clusters deployed into (and namespaces), Kube
 
 A default Project named ```default``` is included.
 
-## ApplicationSet
+## ApplicationSet (kind)
 Represents a logical grouping of Applications, but support for multiple clusters and/or multi-tenant clusters.
 
 Has generators to provide parameters that can be used in the Application templates:
@@ -94,20 +94,17 @@ metadata:
     argocd.argoproj.io/secret-type: cluster
 ```
 
-By defaul ArgoCD can use the cluster that it's deployed to.
+By default ArgoCD can use the cluster that it's deployed to.
 
 # Operations
 
 ## Sync
-The "Prune" option deletes old resources.
 
-### Pruning
+### Option: Prune
 
 Deletion of resources no longer defined in the Target State.
 
-### Automated Sync
-
-Optional.
+### Option: Automated Sync
 
 Good use case: CI/CD pipelines don't need access to the Kubernetes cluster.
 
@@ -131,7 +128,7 @@ Making changes into the live Kubernetes cluster will take the Application OutOfS
       selfHeal: true
 ```
 
-### Creaet Namespace
+### Option: Create Namespace
 ```yaml
   syncOptions:
     - CreateNamespace=true
@@ -208,7 +205,7 @@ Apply order:
 3. Kubernetes Kind (starting with Namespace)
 4. Alphabetical name
 
-i.e. All waves in the PreSync Phase are completed, and then the first wave of the Sync Phase is started.
+i.e. All Waves in the PreSync Phase are completed, and then the first Wave of the Sync Phase is started.
 
 ## Sync Wave
 Split and order the manifests to be synched into "waves".  For example:
@@ -244,13 +241,6 @@ metadata:
     annotations:
         argocd.argoproj.io/hook: PostSync
         argocd.argoproj.io/hook-delete-policy: HookSucceeded
-```
-
-# ```argocd``` CLI tool
-```bash
-argocd app create \<Name\> --repo \<Repo URL\> --path \<Path in Repo\> --dest-server \<Kubernetes Cluster URL\> --dest-namespace \<Kubernetes Namespace\>
-argocd app sync \<Name\>
-
 ```
 
 # Plugins
@@ -329,6 +319,12 @@ argocd proj role create-token <Project> <Role>
 Reference: https://argo-cd.readthedocs.io/en/stable/operator-manual/rbac/ 
 
 # ```argocd``` CLI
+
+Examples:
+```bash
+argocd app create \<Name\> --repo \<Repo URL\> --path \<Path in Repo\> --dest-server \<Kubernetes Cluster URL\> --dest-namespace \<Kubernetes Namespace\>
+argocd app sync \<Name\>
+```
 
 Reference: https://argo-cd.readthedocs.io/en/stable/user-guide/commands/argocd/
 

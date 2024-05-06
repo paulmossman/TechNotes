@@ -12,7 +12,7 @@ Brief info:
 ```
 kubectl get <all / rs / po / deploy / __>
 ```
-Use ```--no-headers``` to omit headers, which is useful for counting the numebr of items.
+Use ```--no-headers``` to omit headers, which is useful for counting the number of items.
 
 Detailed info:
 ```
@@ -71,11 +71,6 @@ Explain YAML (including apiVersion):
 kubectl explain <rs / po / deploy / deploy.spec / __> [--recursive]
 ```
 
-List of resources (aka objects) that can be explained:
-```
-kubectl api-resources
-```
-
 Edit an existing (running) Resource:
 ```
 kubectl edit <rs / po / deploy / __> [Name]
@@ -95,7 +90,7 @@ kubectl taint nodes node1 key1=value1:NoSchedule-
 
 Execute a command inside a Container:
 ```
-kubectl exec <Pod name> [-c <Container name>, if 2+ containers] -- whoami
+kubectl exec <Pod name> [-c <Container name, if 2+ containers>] -- whoami
 ```
 
 Common example, run an interactive shell:
@@ -105,7 +100,7 @@ kubectl exec -it <Container name> -- sh
 
 Logs:
 ```
-kubectl logs -f <Pod name> <Container name, if 2+ containers>
+kubectl logs -f <Pod name> [<Container name, if 2+ containers>]
 ```
 
 # Deployments
@@ -160,6 +155,8 @@ kubectl config set-context $(kubectl config current-context) --namespace=my-name
 ## Output Format
 ```
 -o json
+
+-o jsonpath <JSONPath>
 
 -o wide  # Extra info
 

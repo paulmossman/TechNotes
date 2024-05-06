@@ -372,9 +372,10 @@ Four top-level fields:
 1. apiVersion:
 2. kind:
 3. metadata:
-4. spec:
+4. spec:  (usually)
 
 ## Structure
+```yaml
 apiVersion:
 kind: # https://kubernetes.io/docs/concepts/overview/working-with-objects/, options: ```kubectl api-resources```
 metadata:
@@ -385,6 +386,7 @@ metadata:
       app: myApp
       type: backEnd
 spec:
+```
 
 ## Containers
 
