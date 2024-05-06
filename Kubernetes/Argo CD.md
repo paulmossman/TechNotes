@@ -54,10 +54,22 @@ Can restrict Git repos, Kubernetes clusters deployed into (and namespaces), Kube
 
 A default Project named ```default``` is included.
 
+## ApplicationSet
+Represents a logical grouping of Applications, but support for multiple clusters and/or multi-tenant clusters.
+
+Has generators to provide parameters that can be used in the Application templates:
+- List
+- Cluster
+- Git
+- Matrix (combines two other generators)
+- others (Reference: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Generators/)
+
+Use Case (Cluster generator): Deploy an application into the "staging" cluster using HEAD, and into the "production" cluster using the "stable" branch.
+
 ## Repository credentials
 The credentials for accessing private Git repositories.
 
-Kubernetes Secrets and/or ConfigMaps, with a specific label:
+Kubernetes Secret (and/or ConfigMap?), with a specific label:
 ```yaml
 metadata:
   ...
@@ -81,6 +93,8 @@ metadata:
   labels:
     argocd.argoproj.io/secret-type: cluster
 ```
+
+By defaul ArgoCD can use the cluster that it's deployed to.
 
 # Operations
 
@@ -172,6 +186,8 @@ Reference: https://argo-cd.readthedocs.io/en/stable/user-guide/jsonnet/
 
 Reference: https://argo-cd.readthedocs.io/en/stable/user-guide/tracking_strategies/
 
+For both: ```targetRevision:```.
+
 ## Git repository Tracking
 - Commit SHA
 - Tag
@@ -183,27 +199,44 @@ Reference: https://argo-cd.readthedocs.io/en/stable/user-guide/tracking_strategi
 - Range
 - Latest (can include or not include pre-releases)
 
-# Sync Wave
+
+# Sync
+
+Apply order:
+1. Sync Phase
+2. Sync Wave (lowest first)
+3. Kubernetes Kind (starting with Namespace)
+4. Alphabetical name
+
+i.e. All waves in the PreSync Phase are completed, and then the first wave of the Sync Phase is started.
+
+## Sync Wave
 Split and order the manifests to be synched into "waves".  For example:
 ```yaml
 metadata:
     annotations:
         argocd.argoproj.io/sync-wave: "2"
 ```
-"0" is the default.  Values can be negative or positive.
+"0" is the default.  Values can be negative or positive.  Default delay of 2s between waves.
 
-# Resource Hooks
+## Sync Phases
+1. PreSync
+2. Sync
+3. PostSync
+
+## Resource Hooks
 Run resources (usually Pods/Jobs) at various points during a Sync operation:
-- PreSync
-- Sync (after PreSync)
-- PostSync (after Sync)
+- Phases:
+    - PreSync
+    - Sync (after PreSync)
+    - PostSync (after Sync)
 - SyncFail (if Sync failed)
 - Skip (don't appy the manifest)
 
-Deletion policy (optional):
-- HookSucceeded
-- HookFailed
-- BeforeHookCreation 
+Deletion policy for the Resources (optional):
+- HookSucceeded: Deleted after hooks succeeds
+- HookFailed: Deleted if the hook fails.
+- BeforeHookCreation: Existing is deleted before a new is created.  (default)
 
 For example:
 ```yaml
