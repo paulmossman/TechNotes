@@ -115,7 +115,7 @@ Each Service has an IP address, and it's name is also a DNS entry.
 k get ep
 ```
 
-Note: Ingress is alternative for access from outside Kubernetes.
+Note: Ingress is what allows access from outside Kubernetes, allowing ports <30000.
 
 ## ports
 
@@ -129,7 +129,7 @@ nodePort: For the NodePort/LoadBalancer types, the port that's assigned internal
 
 Listens to a Port on all Nodes (in the range 30000-32767), forwards to a port on a Target(s) inside those Nodes.
 
-Hit at http://<Node IP>:<NodePort>
+Hit at http://\<Node IP\>:\<NodePort\>
 
 The Target is identified by a ```selector:``` corresponding to label(s).
 
@@ -183,7 +183,7 @@ Various Controller-specific ```ingress.metadata.annotations``` can be used to co
 
 ### NGINX
 
-```tls.secretName``` - If the HTTP host in't present in the SSL certificate, then a "Kubernetes Ingress Controller Fake Certificate" is used instead.  See also https://stackoverflow.com/questions/74161348/kubernetes-ingress-not-accepting-the-self-signed-ssl .
+```tls.secretName``` - If the HTTP host isn't present in the SSL certificate, then a "Kubernetes Ingress Controller Fake Certificate" is used instead.  See also https://stackoverflow.com/questions/74161348/kubernetes-ingress-not-accepting-the-self-signed-ssl .
 
 # Job (a kind)
 
@@ -430,7 +430,8 @@ kubectl top pod
 ```bash
 kubectl proxy 8001 &
 curl localhost:8001/apis
-curl localhost:8001/apis/authorization.k8s.io
+curl localhost:8001/apis/apps/v1
+curl localhost:8001/apis/authorization.k8s.io/v1
 ```
 
 # Administration
