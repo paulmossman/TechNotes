@@ -20,19 +20,15 @@ Like a sorted Set (e.g. TreeSet), except that it *allows* duplicates.
 So of course it's not a FIFO queue.
 
 ```java
-      List<Integer> A = new ArrayList<Integer>(Arrays.asList(4, 6, 2, 9, 5));
+      List<Integer> A = new ArrayList<Integer>(Arrays.asList(4, 6, 2, 9, 5, 2));
       Queue<Integer> sortedQueue = new PriorityQueue<Integer>(A);
       System.out.println(sortedQueue);
-      // Note: [2, 5, 4, 9, 6] *not* sorted
+      // Note: [2, 5, 2, 9, 6, 4] is not sorted, nor is it the initial order.
 
       while (sortedQueue.size() != 0) {
          System.out.print(sortedQueue.poll() + " ");
       }
-      // 2 4 5 6 9
-
-      // *OR*
-      Stream.generate(queue::poll).takeWhile(Objects::nonNull)
-            .forEachOrdered(System.out::println);
+      // 2 2 4 5 6 9
 ```
 
 ## HashSet with custom Objects

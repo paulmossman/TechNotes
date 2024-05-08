@@ -66,7 +66,7 @@ mvn help:evaluate -Dexpression=settings.localRepository
 
 ### Simple archetype project
 ```
-mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-simple -DarchetypeVersion=1.4
+mvn archetype:generate -DarchetypeGroupId=org.apache.maven.archetypes -DarchetypeArtifactId=maven-archetype-simple
 ```
 https://maven.apache.org/archetypes/maven-archetype-simple/
 
