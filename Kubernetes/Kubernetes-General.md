@@ -325,15 +325,6 @@ Then restart to apply the changes:
 kubectl rollout restart deployment/coredns -n kube-system
 ```
 
-# Admissions Controllers
-Allow enforcing certain security items that can't be done through RBAC.  e.g. Change request, restrictions on Docker images pulled, limit event rates, validate/reject requests.
-
-Built-in Admissions Controller that's enabled by default: ```NamespaceLifecycle```.
-
-"Mutating" Admission Controller: Can change the request.  "Validating" Admission Controller: Can check the request, and allow/deny.  (Can be both.)
-
-You can implement your own using: ```MutatingAdmissionWebhook``` or ```ValidatingAdmissionWebhook``` 
-
 # Probes
 
 Readiness and Liveness
@@ -435,6 +426,38 @@ curl localhost:8001/apis
 curl localhost:8001/apis/apps/v1
 curl localhost:8001/apis/authorization.k8s.io/v1
 ```
+
+# Admissions Controllers
+Allow enforcing certain security items that can't be done through RBAC.  e.g. Change request, restrictions on Docker images pulled, limit event rates, validate/reject requests.
+
+Built-in Admissions Controller that's enabled by default: ```NamespaceLifecycle```.
+
+Types:
+- "Mutating" Admission Controller: Can change the request.  
+- "Validating" Admission Controller: Can check the request, and allow/deny.
+- Both of the above.
+
+Many are built into ```kube-apiserver```, see: https://kubernetes.io/docs/reference/access-authn-authz/admission-controllers/#what-does-each-admission-controller-do
+
+You can implement your own using: ```MutatingAdmissionWebhook``` or ```ValidatingAdmissionWebhook```
+
+# Cluster Architecture
+
+Reference: https://kubernetes.io/docs/concepts/architecture/
+
+## Controllers
+
+Controllers track 1+ Kubernetes Resources, and are responsible for making the current state match the desired state (```spec:```).  They run in a "control loop".  To do this a Controller might:
+- perform the action directly; and/or
+- (more commonly) send messages to the API Server (kube-apiserver).
+
+### Custom Controllers
+
+Write your own, or 3rd-party.
+
+### Operator Pattern
+
+A specialized Controller used to manage a custom resource.
 
 # Administration
 
