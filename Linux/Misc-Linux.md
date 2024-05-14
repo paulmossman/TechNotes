@@ -64,6 +64,19 @@ Just scans for listening daemons, doesn't actually send any data (-z).
 Timeout of 3s (-w).
 Verbose (-v)
 
+## Local IP4 address
+Simple:
+```bash
+hostname -I
+```
+
+Complex:
+```bash
+ip address show dev eth0 | grep "inet " | cut -c10- | cut -f1 -d/
+```
+
+Also ```ifconfig``` may be an option, but it's often not installed by default.
+
 # Scripting 
 
 ## Arbitrary path
