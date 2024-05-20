@@ -139,6 +139,7 @@ Function<String, String> f4 = new Function<String, String>() {
 ```Function.andThen()``` to string two functions together into a new function.
 
 ```java
+   // Parameter #1 is the input type, and parameter #2 is the return type.
    Function<Integer, Integer> addFour = a -> a + 4;
    Function<Integer, Integer> multiplyByTwo = a -> a * 2;
    Function<Integer, Integer> addFourThenMultipleByTwo = addFour.andThen(multiplyByTwo);
