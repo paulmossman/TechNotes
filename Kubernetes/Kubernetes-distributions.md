@@ -1,0 +1,17 @@
+**<span style="font-size:3em;color:black">Kubernetes Distributions</span>**
+***
+
+# Minikube
+Start on Mac, with Ingress:
+```bash
+minikube start --memory=7841 --cpus=3 --kubernetes-version=v1.20.2 --driver=docker
+minikube addons enable ingress
+```
+
+# k3s
+
+Lightweight Kubernetes: https://k3s.io/
+
+## k3d
+
+A lightweight wrapper to run k3s in Docker: https://k3d.io/
