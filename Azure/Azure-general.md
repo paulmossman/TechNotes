@@ -3,9 +3,9 @@
 
 # PIM (Privileged Identity Management)
 
-Not actually part of Azure.  Used by Azure, but also other services.
+Not actually part of Azure.  (Part of Microsoft Entra ID.)  Used by Azure, but also other services.
 
 "Manage, control, and monitor access to important resources in your organization", Reference: https://learn.microsoft.com/en-us/entra/id-governance/privileged-identity-management/pim-configure
 
 # Hierarchy
-- Account → Tenant → Subscription → Resource Group → Resource
+Account → Tenant → Subscription → Resource Group → Resource
