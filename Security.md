@@ -24,3 +24,6 @@ For example:
 - [CWE-321: Use of Hard-coded Cryptographic Key](https://cwe.mitre.org/data/definitions/321.html )
 - [CWE-200: Exposure of Sensitive Information to an Unauthorized Actor](https://cwe.mitre.org/data/definitions/200.html)
 
+## Have I Been Pwned? (affected by a data breach)
+
+https://haveibeenpwned.com/
