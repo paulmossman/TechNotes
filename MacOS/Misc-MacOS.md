@@ -1,12 +1,28 @@
 **<span style="font-size:3em;color:black">Misc macOS</span>**
 ***
 
-# Paste without formatting
+# Keyboard Shortcuts
+
+## Paste without formatting
 ```
 Option + Command + Shift + V
 ```
 Helpful: Option + Shift in one hand.  Then it's a normal Command + V in the other hand.
 
+## Lock Screen
+```
+Ctrl + Command + Q 
+```
+
+## See all open windows (Mission Control)
+```
+Ctrl + ↑
+```
+
+## See all open windows for the current app
+```
+Ctrl + ↓
+```
 
 # Screen record on Mac with internal audio → BlackHole
 

@@ -45,7 +45,7 @@ docker run .... --network="host"
 
 ## Publish Port
 ```bash
-docker run .... -p 8080:80
+docker run -p 8080:80 <image>
 ```
 The first port is Docker host, the second port is Docker container.
 
@@ -86,6 +86,12 @@ docker run --name alpine-today --rm -it alpine
 ```bash
 docker exec -it <mycontainer> bash
 ```
+
+## Run indefinitely and detached
+```bash
+docker run -d alpine tail -f /dev/null
+```
+
 
 ## Using a Docker environment variable from a command required a shell.
 

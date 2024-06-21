@@ -1,11 +1,12 @@
 **<span style="font-size:3em;color:black">jq</span>**
 ***
-It's like sed for JSON data.
+It's like sed/awk/grep for JSON.  (Not strictly Linux-only...)
 
 See also:
 - [Tutorial](https://stedolan.github.io/jq/tutorial/)
 - [Manual](https://stedolan.github.io/jq/manual/)
 - [Try Online](https://jqplay.org/)
+- [Official manual](https://jqlang.github.io/jq/manual/)
 
 # Miscellaneous
 
@@ -130,4 +131,14 @@ echo { \"array\": [{\"id\": \"A\"},{\"id\": \"B\"}]} | jq '(.array[] | select(.i
     }
   ]
 }
+```
+
+### Delete an attribute
+See the [jq docs, with examples](https://jqlang.github.io/jq/manual/#del).
+
+### In-place Edit
+
+Jq can't in-place edit a file (i.e. like sed's ```-i```), but this works:
+```bash
+cat file.json | jq '.paul = "edited"' | tee file.json > /dev/null
 ```
