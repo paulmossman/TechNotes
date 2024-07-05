@@ -2,8 +2,11 @@
 
 ## What is my IP address?
 ```
-curl http://checkip.amazonaws.com/
+curl checkip.amazonaws.com
+curl ipv4.icanhazip.com
+curl ifconfig.me -w "\n"
 ```
+(There are others.)
 
 (There are others that do the same.)
 

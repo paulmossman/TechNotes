@@ -95,6 +95,29 @@ B
 C
 ```
 
+## Access environment variables
+```bash
+export NEW_VALUE="new"
+echo "{ \"A\": \"old\" }" | jq '.A = env.NEW_VALUE'
+{
+  "A": "new"
+}
+```
+(Versus ```\"${NEW_VALUE}\"```, which requires using double-quotes around the whole expression, whcih is not .)
+
+## Combine multiple JSON into one
+```bash
+{ echo "{ \"array\": [ {\"A\": 1}, {\"A\": 2} ] }" ; \
+    echo "{ \"array\": [ {\"A\": 3}, {\"A\": 4} ] }" } \
+    | jq --slurp 'map(.array[].A)'
+[
+  1,
+  2,
+  3,
+  4
+]
+```
+
 ## Manipulate JSON
 
 See also: https://geeksocket.in/posts/manipulate-json-jq/
@@ -142,3 +165,7 @@ Jq can't in-place edit a file (i.e. like sed's ```-i```), but this works:
 ```bash
 cat file.json | jq '.paul = "edited"' | tee file.json > /dev/null
 ```
+
+### Add and element to the end of an array
+
+https://stackoverflow.com/questions/42245288/add-new-element-to-existing-json-array-with-jq

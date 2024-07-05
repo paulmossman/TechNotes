@@ -20,7 +20,7 @@ docker history <Image Name>
 ```
 Show the infor on each layer in the specified Docker image.
 
-# Dangling images
+## Dangling images
 
 i.e. Images with Name "<none>".
 
@@ -124,3 +124,14 @@ Containers are not completely isolated from their hosts (unlike VMs.)  Their atu
 Like ```CMD```, except that the ```docker run``` parameters (if present) get ***appended*** to it.  If not present, then the ```CMD``` contents are used.
 
 Overridden by ```docker```'s ```--entrypoint``` parameter.
+
+# Architecture
+
+## containerd
+
+High-level industry-standard container runtime.  Implements Open Container Initiative (OCI)-compliant runtimes, between OS and Docker.
+
+A standalone CNCF project.
+
+Good post: https://www.docker.com/blog/containerd-vs-docker/
+
