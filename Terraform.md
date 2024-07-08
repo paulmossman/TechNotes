@@ -368,8 +368,8 @@ Reference: [Data Source: aws_security_group](https://registry.terraform.io/provi
 
 ## Versioning (Modules and Providers)
 The *pessimistic constraint* operator ```~>``` matches only ```>``` increments of the *rightmost* version component, e.g.:
-- ```~> 1.0.5```: Matches 1.0.6, 1.0.7, and 1.0.10 but not 1.1.0, nor 1.0.5, nor 0.9.
-- ```~> 1.2```: Matches 1.3, 1.4, and 1.10, but not 2.0, nor 1.2, nor 0.9.
+- ```~> 1.0.5```: Matches 1.0.5, 1.0.6, and 1.0.10 but not 1.1.0, nor 1.0.4, nor 0.9.
+- ```~> 1.2```: Matches 1.2, 1.3, 1.4, and 1.10, but not 2.0, nor 1.1, nor 0.9.
 
 [Reference](https://developer.hashicorp.com/terraform/language/expressions/version-constraints)
 
