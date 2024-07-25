@@ -1,4 +1,5 @@
-# Git
+**<span style="font-size:3em;color:black">Git</span>**
+***
 
 
 # Initizalize a new repository
@@ -67,6 +68,21 @@ git fetch origin develop:develop
 ```
 Then you can git merge the branch.
 
+# Log
+
+Commit hash, details, and message.
+
+## Follow (a file)
+```bash
+git log --follow <file>
+```
+Log of changes to the file.
+
+```bash
+git log --patch --follow <file>
+```
+Also show the diff for each change.
+
 # Diff
 
 ## Diff two branches
@@ -85,6 +101,14 @@ git diff remotes/origin/develop remotes/origin/master
 
 # Miscellaneous
 
+## .gitmodule
+
+Filesystem magic for a Git repo to "include" a clone of another Git repo.
+
+Examples: https://git-scm.com/docs/gitmodules#_examples
+
+Pull the latest commit in the branch: `git submodule update --remote`
+
 ## For Unix line endings
 Use a `.gitattributes` file:
 ```
@@ -99,3 +123,14 @@ git remote -v
 
 ## Three Git Configurations that Should Be the Default
 https://spin.atomicobject.com/2020/05/05/git-configurations-default/
+
+## SSH Agent
+e.g.:
+```
+# GitHub
+Host github.com
+AddKeysToAgent yes
+UseKeychain yes
+IdentityFile ~/.ssh/id_rsa_github
+```
+

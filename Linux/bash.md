@@ -102,6 +102,12 @@ Note: The ```2>&1``` must be *after* the stdout redirection.
 
 ## One-liners
 
+### Trim trailing newline(s)
+```bash
+$ echo "fun\n\n" | tr -d "\n"
+fun$
+```
+
 ### Run a single command until it succeeds
 ```bash
 until redis-cli PING; do sleep 1; done
@@ -130,6 +136,9 @@ ls -l | xargs
 ```
 
 # Misc script snippets
+
+## Error upon use of un-set variables
+`set -u`
 
 ## If the exit status of a command isn't success, then exit with that same status
 ```bash

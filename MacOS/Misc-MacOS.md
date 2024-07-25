@@ -53,7 +53,11 @@ On the server computer enable screen sharing: System Preferences → Sharing →
 ```bash
 open .
 ```
- 
+
+# Magnet: Organize your windows
+
+https://magnet.crowdcafe.com/ ($5)
+
 # Networking
 
 ## What process is using a port?

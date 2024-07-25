@@ -15,6 +15,14 @@ Upgrade: ```brew upgrade wget```
 
 Uninstall: ```brew remove wget```
 
+# Glossary
+
+Official: https://docs.brew.sh/Formula-Cookbook#homebrew-terminology
+
+**tap**: A source of formulae
+
+**Cellar**: Where Homebrew installs things (query: `brew --cellar`)
+
 # Install (and uninstall) an older version of a fomula
 ```bash
 brew tap-new $USER/local-podman
@@ -23,3 +31,9 @@ brew search /podman/
 brew install podman@5.0.3
 brew remove podman@5.0.3
 ```
+
+# Custom Formula
+
+[Add Software to Homebrew](https://docs.brew.sh/Adding-Software-to-Homebrew) - This is aimed at submitting to `homebrew-core`, but much is relevant.` 
+
+[Ruby Formula (superclass) doc](https://rubydoc.brew.sh/Formula)

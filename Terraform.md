@@ -367,6 +367,23 @@ Default_Security_Group_ID = "sg-01c35c03ddb65d0f2"
 Reference: [Data Source: aws_security_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/security_group)
 
 ## Versioning (Modules and Providers)
+
+### Dependency Lock File
+
+Always: `.terraform.lock.hcl`
+
+Locks **only** Provider versions, **not** Module versions.
+
+Upon `terraform init` the latest version for each Provider that matches its contraints are selected and "locked" into `.terraform.lock.hcl`.  Every `apply` will then always use the "locked" Provider versions, until:
+```bash
+terraform init -upgrade
+```
+
+Versus Modules: Every `apply` (TODO: or `plan`?) will use the latest version for each that matches its contraints.
+
+[Reference](https://developer.hashicorp.com/terraform/language/files/dependency-lock)
+
+### Pessimistic Constraint Operator
 The *pessimistic constraint* operator ```~>``` matches only ```>``` increments of the *rightmost* version component, e.g.:
 - ```~> 1.0.5```: Matches 1.0.5, 1.0.6, and 1.0.10 but not 1.1.0, nor 1.0.4, nor 0.9.
 - ```~> 1.2```: Matches 1.2, 1.3, 1.4, and 1.10, but not 2.0, nor 1.1, nor 0.9.

@@ -1,6 +1,9 @@
-# sed
+**<span style="font-size:3em;color:black">Sed</span>**
+***
 
-## General
+(Not strictly Linux-only...)
+
+# General
 
 Make the changes to the file itself, instead of stdout:
 ```bash
@@ -8,7 +11,7 @@ sed -i ___
 ```
 (Note: Mac isn't Linux...  On a Mac you need to specify the extension of a backup file, e.g. ```-i.bak```, otherwise the next parameter will be used.)
 
-## Useful Examples
+# Useful Examples
 
 Replace all tabs with two sapces:
 ```bash
@@ -42,7 +45,8 @@ echo MOSSMAN | sed -e "s/[A-Z]/\l&/g"
 
 To include the original search string in the output, use ```&```:
 ```bash
-echo "Fun for Bob." | sed -e "s/Bob/& and Alice/g"
+$ echo "Fun for Bob." | sed -e "s/Bob/& and Alice/g"
+Fun for Bob and Alice.
 ```
 
 Remove leading and trailing whitespace:
@@ -54,8 +58,17 @@ sed -i 's/[ \t]*$//' <file>
 sed -i '' -E 's/[ '$'\t'']+$//' <file>
 ```
 
-Groups:
+## Groups
 ```bash
-echo "npm:@xlts.dev/angular@1.9.0" | sed -e 's/npm:@xlts.dev\/\(.*\)@1.9.0/npm:@xlts.dev\/\1@1.9.1/g'
+$ echo "npm:@xlts.dev/angular@1.9.0" | sed -e 's/npm:@xlts.dev\/\(.*\)@1.9.0/npm:@xlts.dev\/\1@1.9.1/g'
+npm:@xlts.dev/angular@1.9.1
 ```
-This is just one group (```\1```), but you can have more.  The text to match can be more complex than ```.*```.
+Above is just one group (```\1```), but you can have more.  The text to match can be more complex than ```.*```.
+
+Replace `~>3.X` / `~> 3.X` with `=>3.X, <4.0`:
+```bash
+$ echo "version = \"~>3.120"\" | sed "s/\(\~>[ ]*\)\(3\.[0-9]*\)/>=\2, <4.0/g"
+version = ">=3.120, <4.0"
+$ echo "version = \"~> 3.120"\" | sed "s/\(\~>[ ]*\)\(3\.[0-9]*\)/>=\2, <4.0/g"
+version = ">=3.120, <4.0"
+```
