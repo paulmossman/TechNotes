@@ -135,3 +135,24 @@ A standalone CNCF project.
 
 Good post: https://www.docker.com/blog/containerd-vs-docker/
 
+# Docker Hub
+
+## Digests
+
+Index digest vs Manifest digest
+
+e.g. https://hub.docker.com/layers/bitwarden/self-host/2024.7.2-beta/images/sha256-746f057421a8fec924662325395d7de53d524799ee56c9dd3078336ff8e91c20?context=explore
+
+Index digest: sha256:73ce...
+
+Manifest digests:
+- **linux/amd64**: sha256:746f...
+- **linux/arm74**: sha256:20d3...
+```bash
+docker pull bitwarden/self-host:2024.7.2-beta
+...
+docker image ls --digests  bitwarden/self-host
+REPOSITORY            TAG             DIGEST           IMAGE ID       CREATED       SIZE
+bitwarden/self-host   2024.7.2-beta   sha256:20d3...   b5a485c3c35a   11 days ago   1.01GB
+bitwarden/self-host   2024.7.2-beta   sha256:73ce...   b5a485c3c35a   11 days ago   1.01GB
+```

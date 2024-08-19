@@ -327,7 +327,7 @@ kubectl rollout restart deployment/coredns -n kube-system
 
 # Probes
 
-Readiness and Liveness
+Startup, Readiness, and Liveness
 
 Types:
 - HTTP
@@ -337,6 +337,16 @@ Types:
 Explain: 
 - pod.spec.initContainers.readinessProbe
 - pod.spec.initContainers.livenessProbe
+- pod.spec.initContainers.startupProbe
+
+Documentation: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/  Note: "https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/"
+
+Liveness and Readiness probes don't run until the Startup probe (if configured) passes.  But 
+
+From its name, Readiness might seem like it's only checked on startup.  But it actually runs during the whole lifecycle.
+
+Liveness vs. Readiness: A failed Readiness probe will remove the container matching service endpoints, but not restart it.  A repeatedly failing Liveness probe will restart a container.
+
 
 # Scheduling and Eviction
 

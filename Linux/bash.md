@@ -15,6 +15,10 @@ echo into a priviledged file:
 echo "<USERNAME> ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers
 ```
 
+Overwrite the whole file:
+```bash
+cat file.json | jq '.' | tee file.json > /dev/null
+```
 
 # Command-line Arguments
 - number of arguments: $#

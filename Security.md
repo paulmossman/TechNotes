@@ -12,11 +12,23 @@
 
    https://en.wikipedia.org/wiki/Principle_of_least_privilege
 
-## Web Security Scans
+## Security Scans
+
+Useful reference: https://badssl.com
+
+### Web-based (Must be internet accessible)
 
 https://www.ssllabs.com/ssltest/ is a good site for testing TLS protocol/ciphers.
 
 https://securityheaders.com/ is a good site for testing security headers.
+
+### Tools (Can be run locally)
+
+https://github.com/rbsec/sslscan - TLS protocol/ciphers
+```bash
+docker run --rm -ti sslscan:sslscan /sslscan <URL>
+```
+
 
 ## Common Weakness Enumberation (CWE)
 

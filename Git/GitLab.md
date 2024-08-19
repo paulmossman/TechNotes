@@ -10,7 +10,7 @@ e.g.
     - Add `+` to include the title, e.g. `#6+`.
 - Merge request: `!50`, `namespace/project!50`
 
-Actions: https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically
+Issues Actions: https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically
 e.g.
 ```
 Closes #45
@@ -18,6 +18,13 @@ Related to #17
 Related to !50
 Related to namespace/project!50
 ```
+
+MR Actions:
+```
+/approve
+/merge
+```
+(Though you need to do the above two separately.)
 
 # Pipeline
 

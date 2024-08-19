@@ -7,6 +7,8 @@
 
 ```-i``` → Show protocol response headers.
 
+```-s``` → Silent (no progress bar)
+
 # Miscellaneous
 
 ## POST data from a file

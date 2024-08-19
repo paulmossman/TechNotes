@@ -20,6 +20,19 @@ cat tmp.json | jq '.'
 -r
 ```
 
+## Exit status
+Documentation: `--exit-status / -e:` "Sets the exit status of jq to 0 if the last output value was neither false nor null, 1 if the last output value was either false or null, or 4 if no valid result was ever produced."
+
+Example:
+```bash
+$ JSON="{ \"array\": [{\"id\": \"A\"},{\"id\": \"B\"}]}"
+$ echo $JSON | jq -e '.array[] | select(.id=="A")' > /dev/null ; echo $?
+0
+$ echo $JSON | jq -e '.array[] | select(.id=="Z")' > /dev/null ; echo $?
+4
+```
+
+
 ## Array entries output onto a single line (--compact-output)
 ```bash
 aws ecs list-task-definitions | jq -c '.taskDefinitionArns[]'
@@ -51,18 +64,34 @@ aws ec2 describe-instances --output json | \
    jq -r '.Reservations[].Instances | "Instance ID: \(.[0].InstanceId)  State: \(.[0].State.Name)  Public FQDN: \(.[0].NetworkInterfaces[0].Association.PublicDnsName)" '
 ```
 
+## When the key contains `.`
+Use double-quotes:
+```bash
+curl -s https://ghcr.io/v2/homebrew/core/opentofu/manifests/1.7.3 \
+   --header Authorization:\ Bearer\ QQ== \
+   --header Accept:\ application/vnd.oci.image.index.v1\+json | \
+   jq '.manifests[] | .annotations."org.opencontainers.image.ref.name"'
+
+"1.7.3.arm64_monterey"
+"1.7.3.arm64_sonoma"
+"1.7.3.arm64_ventura"
+"1.7.3.monterey"
+"1.7.3.sonoma"
+"1.7.3.ventura"
+"1.7.3.x86_64_linux"
+```
 
 ## Select an array element by one of the object's values
 Exact match:
 ```bash
-$ echo { \"array\": [{\"id\": \"A\"},{\"id\": \"B\"}]} | jq '.array[] | select(.id=="A")'
+$ echo "{ \"array\": [{\"id\": \"A\"},{\"id\": \"B\"}]}" | jq '.array[] | select(.id=="A")'
 {
   "id": "A"
 }
 ```
 Contains:
 ```bash
-$ echo { \"array\": [{\"id\": \"AA\"},{\"id\": \"AB\"},{\"id\": \"BA\"}]} | jq '.array[] | select(.id | contains("B"))'
+$ echo "{ \"array\": [{\"id\": \"AA\"},{\"id\": \"AB\"},{\"id\": \"BA\"}]}" | jq '.array[] | select(.id | contains("B"))'
 {
   "id": "AB"
 }
