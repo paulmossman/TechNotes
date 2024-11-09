@@ -18,3 +18,5 @@ Lightweight (minimal) Kubernetes: https://k3s.io/
 ## k3d
 
 A lightweight wrapper to run k3s in Docker: https://k3d.io/
+
+Simple install: https://avilpage.com/2023/03/setup-k8s-anywhere-k3d.html

@@ -188,12 +188,22 @@ echo { \"array\": [{\"id\": \"A\"},{\"id\": \"B\"}]} | jq '(.array[] | select(.i
 ### Delete an attribute
 See the [jq docs, with examples](https://jqlang.github.io/jq/manual/#del).
 
+Combine del and select:
+```
+jq -e 'del(.foo.locations[] | select(.[0]==env.EMAIL and .[1]==env.DEL_LOCATION))'
+```
+
 ### In-place Edit
 
 Jq can't in-place edit a file (i.e. like sed's ```-i```), but this works:
 ```bash
 cat file.json | jq '.paul = "edited"' | tee file.json > /dev/null
 ```
+On MacOS this intermittently results in a blank file.  Alternative:
+```bash
+CONTENT=`cat file.json | jq '.paul = "edited"'` ; echo $CONTENT > file.json
+```
+
 
 ### Add and element to the end of an array
 

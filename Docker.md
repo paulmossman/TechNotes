@@ -72,6 +72,12 @@ docker run -v //c/:/c --rm -it busybox ash # Shell
 
 # Small
 
+## Inspect
+```
+docker inspect `docker ps | grep <container name> | cut -f1 -d" "` | more
+```
+
+
 ## Run, interactive command line, delete upon exit
 ```bash
 docker run --rm -it alpine

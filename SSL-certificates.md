@@ -4,6 +4,7 @@
 
 ### Examine an SSL certificate from a server
 ```bash
+SERVER=...
 echo | openssl s_client -showcerts -servername $SERVER -connect $SERVER:443 2>/dev/null | openssl x509 -inform pem -noout -text
 ```
 See: https://www.openssl.org/
@@ -12,6 +13,17 @@ See: https://www.openssl.org/
 Java keytool:
 ```bash
 keytool -printcert -v -file __.pem
+```
+openssl (PEM):
+```bash
+openssl x509 -text -in __.pem 
+```
+
+openssl (PFX):
+```bash
+openssl pkcs12 -info -in __.pfx
+# OR
+openssl pkcs12 -info -legacy -in __.pfx 
 ```
 
 ### Examine SSL Ciphers supported

@@ -102,6 +102,10 @@ Logs:
 ```
 kubectl logs -f <Pod name> [<Container name, if 2+ containers>]
 ```
+Helpful when the log file itself doesn't have date/time:
+```
+--timestamps
+```
 
 # Deployments
 ```

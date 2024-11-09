@@ -14,7 +14,7 @@
 
 ## Security Scans
 
-Useful reference: https://badssl.com
+Useful reference: https://badssl.com  (Note: https://github.com/chromium/badssl.com/issues/488)
 
 ### Web-based (Must be internet accessible)
 

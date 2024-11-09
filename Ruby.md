@@ -107,6 +107,25 @@ end
 puts fact(ARGV[0].to_i)
 ```
 
+## `net/http` library
+
+TODO
+
+
+### Debug hack
+Don't do this is production...
+```
+Net::HTTP.module_eval do
+    alias_method '__initialize__', 'initialize'
+
+    def initialize(*args,&block)
+    __initialize__(*args, &block)
+    ensure
+    @debug_output = $stderr ### if ENV['HTTP_DEBUG']
+    end
+end
+```
+
 ## MISC
 
 EACH/DO

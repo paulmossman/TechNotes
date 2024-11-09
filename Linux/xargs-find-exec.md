@@ -1,9 +1,16 @@
 # xargs / find exec
 
-# find exec
-Example:
+# find
+
+## find exec
 ```
 find . -name '*.java' -exec grep -H "some text" {} \;
+```
+
+## find multiple filenames
+```
+find . \( -name 'ops.yaml' -or -name 'ops.yml' \)
+find . \( -name 'Dockerfile' -or -name 'Containerfile' \)
 ```
 
 # xargs

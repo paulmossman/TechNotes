@@ -17,3 +17,8 @@ https://www.ipaddressguide.com/ipv6-cidr
 ##  Google Admin Toolbox - Dig
 
 https://toolbox.googleapps.com/apps/dig/
+
+## Geolocation
+
+### MaxMind's GeoLite2 (free)
+See: https://dev.maxmind.com/geoip/geolite2-free-geolocation-data/

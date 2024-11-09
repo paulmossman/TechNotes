@@ -1,6 +1,17 @@
 **<span style="font-size:3em;color:black">Git</span>**
 ***
 
+# Large File Storage (LFS)
+https://github.com/git-lfs/git-lfs/blob/main/README.md
+
+Example:
+```
+git lfs track "*.png"
+```
+Creates `.gitattributes` (commit this file):
+```
+*.png filter=lfs diff=lfs merge=lfs -text
+```
 
 # Initizalize a new repository
 ```bash
@@ -107,7 +118,13 @@ Filesystem magic for a Git repo to "include" a clone of another Git repo.
 
 Examples: https://git-scm.com/docs/gitmodules#_examples
 
-Pull the latest commit in the branch: `git submodule update --remote`
+Create:
+```
+touch .gitmodules
+git submodule add <url> [<path>]
+```
+
+Pull the latest commit in the branch: `git submodule update --remote`.
 
 ## For Unix line endings
 Use a `.gitattributes` file:
