@@ -30,9 +30,10 @@ podman machine init --image docker://quay.io/podman/machine-os:5.0 --cpus 4 --no
 How to check the version of the Podman machine:
 ```bash
 podman machine ssh
+...
 rpm-ostree status
 ```
-(Shows the )
+(Shows the version.)
 
 ## Mac: Uses Apple's virtualization
 Hypervisor

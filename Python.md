@@ -15,6 +15,16 @@ deactivate
 python -m pip install --upgrade pip
 ```
 
+# Elapsed time
+```
+from datetime import datetime
+
+start = datetime.now()
+# Do....
+exec_time = datetime.now() - start
+print(f"Execution time: {exec_time}")
+```
+
 # Scripting 
 
 ## Arbitrary path

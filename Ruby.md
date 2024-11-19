@@ -107,6 +107,11 @@ end
 puts fact(ARGV[0].to_i)
 ```
 
+## SSL
+
+### Handy SSL check script
+https://github.com/rubygems/ruby-ssl-check/blob/master/check.rb
+
 ## `net/http` library
 
 TODO
