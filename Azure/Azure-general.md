@@ -1,12 +1,26 @@
 **<span style="font-size:3em;color:black">Azure General</span>**
 ***
 
+# Azure Portal
+
+## Direct URLs
+A tentant: https://portal.azure.com/\<Tenant ID>
+A Resource Group: https://portal.azure.com/#@${TENANT_ID}/resource/subscriptions/${SUBSCRIPTION_ID}$/resourceGroups/${RG}/overview
+Enterprise Application "Users and groups": https://portal.azure.com/${EA_TENANT_ID}/#view/Microsoft_AAD_IAM/ManagedAppMenuBlade/~/Users/objectId/${EA_OBJECT_ID}/appId/${EA_CLIENT_ID}/preferredSingleSignOnMode~/null/servicePrincipalType/Application/fromNav/
+
 # IAM
 
 ## Roles
 Two types:
 - Active Directory (AD)
 - Role Based Access Control (RBAC)
+
+## Assign a Role - Subscription Scope
+In the # navigate to Home → Subscriptions → the Subscription → Access control (IAM) → Grant access to this resource "Add role assignment" button → (Role) "Privileged administrator roles" tab → (search) the role, select it, "Next" button → (Members) "+ Select members" → (search) the member, select it, "Select" button → "Next" button → (Conditions) What user can do "Allow user to only assign selected roles to selected principals (fewer privileges)", then "+  Select roles and principals" → in "Constrain roles" section, click "Configure" button → "+ Add role" → (search and select) the role → "Save" → "Save" → "Review + assign" button x 2.
+
+### View Role Assignement - Subscription Scope
+In the portal navigate to Home → Subscriptions → the Subscription → Access control (IAM) → "Role assignments" tab → (search) the member.
+
 
 ## PIM (Privileged Identity Management)
 

@@ -61,6 +61,12 @@ json
 EOF
 ```
 
+## Session Token
+Access Keys when using via IAM Identity Center also require a Session Token (limited duration):
+```
+aws configure set aws_session_token <value>
+```
+
 # Cognito
 Why not simply ```cognito``` I don't know...
 ```bash

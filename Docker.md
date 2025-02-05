@@ -70,6 +70,11 @@ Busybox (["The Swiss Army knife of Embedded Linux"](https://en.wikipedia.org/wik
 docker run -v //c/:/c --rm -it busybox ash # Shell
 ```
 
+## Mount host `pwd`
+```
+docker run --rm -it -v $(pwd):/host_pwd busybox
+```
+
 # Small
 
 ## Inspect
@@ -81,6 +86,20 @@ docker inspect `docker ps | grep <container name> | cut -f1 -d" "` | more
 ## Run, interactive command line, delete upon exit
 ```bash
 docker run --rm -it alpine
+```
+
+## Run, some command(s) first, then interactive command line
+```bash
+docker run --rm -it -v $(pwd):/host_pwd \
+  ubuntu /bin/bash \
+  -c 'cd /host_pwd; exec bash'
+```
+
+## Run, start ssh-agent first, then interactive command line
+```bash
+docker run --rm -it -v $(pwd):/host_pwd \
+  jenkins/ssh-agent /bin/bash \
+  -c 'eval $(ssh-agent) > /dev/null; echo $SSH_AUTH_SOCK; exec bash'
 ```
 
 ## Run, with name

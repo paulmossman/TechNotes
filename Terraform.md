@@ -60,6 +60,13 @@ Sometimes a better option than refresh.
 
 ## Other CLI commands
 
+### state
+```
+terraform state list
+terraform state rm 'module.__.this'
+```
+Now removed from TF state, so TF won't try to destroy it.
+
 ### console
 Run arbitrary commands in the context of the current project.  But must be restarted to detect changes in files.
 

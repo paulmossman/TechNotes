@@ -40,6 +40,8 @@ sudo netstat -nap | grep 0:8080
 ```
 (This does not work under WSL.)
 
+Package: `net-tools`
+
 ## DNS SRV - dig
 Look for "ANSWER SECTION"
 

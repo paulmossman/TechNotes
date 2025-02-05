@@ -6,11 +6,17 @@ https://github.com/git-lfs/git-lfs/blob/main/README.md
 
 Example:
 ```
-git lfs track "*.png"
+git lfs track "*.pptx"
 ```
 Creates `.gitattributes` (commit this file):
 ```
-*.png filter=lfs diff=lfs merge=lfs -text
+*.pptx filter=lfs diff=lfs merge=lfs -text
+```
+
+For some file types (e.g. .png) you may need to explicity add that they're
+binary in order for the `-I` option of `git grep` to work properly:
+```
+*.png filter=lfs diff=lfs merge=lfs binary -text
 ```
 
 # Initizalize a new repository

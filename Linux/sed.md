@@ -9,7 +9,17 @@ Make the changes to the file itself, instead of stdout:
 ```bash
 sed -i ___
 ```
-(Note: Mac isn't Linux...  On a Mac you need to specify the extension of a backup file, e.g. ```-i.bak```, otherwise the next parameter will be used.)
+(Note: Mac isn't Linux...  On a Mac you need to specify the extension of a backup file, e.g. ```-i.bak```, otherwise the next parameter will be used.  Or used `gsed`...)
+
+## GNU sed on Mac - `gsed`
+```
+brew install gnu-sed
+```
+
+Many GNU CLI tools:
+```
+brew install coreutils
+```
 
 # Useful Examples
 

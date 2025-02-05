@@ -84,6 +84,20 @@ done
 
 # Misc
 
+## Conditional environment variable use
+If `$MIGHT_BE_EMPTY` isn't empty then use it surrounded by double-quotes, otherwise nothing (not even `""`.)
+```
+${MIGHT_BE_EMPTY:+"${MIGHT_BE_EMPTY}"}
+```
+
+This is useful to prevent `curl: option : blank argument where content is expected`.
+
+## Debugging
+```
+set -x
+```
+Output all commands to stdout.
+
 ## Send both stderr and stdout to a file
 ```bash
 $ ls does-not-exist &> file.txt
@@ -209,7 +223,7 @@ fi
 if [ "$PHONE_TYPE" != "NORTEL" ] && [ "$PHONE_TYPE" != "NEC" ] && [ "$PHONE_TYPE" != "CISCO" ]
 ```
 
-## String not empty - empty string
+## String not empty - empty string - blank string
 ```bash
 if [ -n "$pid" ]; then
   echo "The string is not empty - $pid"

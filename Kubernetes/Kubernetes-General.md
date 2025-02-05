@@ -285,6 +285,11 @@ kubectrl get secret <name> -o yaml
 ```
 (In the ```data:``` section.)
 
+e.g.
+```
+kubectrl get secret credentials | grep password | cut -d":" -f2 | base64 --decode
+```
+
 # Namespaces
 
 Can of course be created.

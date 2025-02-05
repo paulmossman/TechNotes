@@ -26,6 +26,7 @@ https://securityheaders.com/ is a good site for testing security headers.
 
 https://github.com/rbsec/sslscan - TLS protocol/ciphers
 ```bash
+make docker
 docker run --rm -ti sslscan:sslscan /sslscan <URL>
 ```
 

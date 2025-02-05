@@ -5,7 +5,7 @@ A suite of IaC tools: provisioning, config management, and app deployment.
 
 # Misc
 
-## Check for K8s readiness
+## Check for K8s readiness / Register output
 ```
     - name: Wait for k8s Readiness (Node)
       kubernetes.core.k8s_info:
@@ -26,9 +26,23 @@ A suite of IaC tools: provisioning, config management, and app deployment.
             node_readiness.resources | length == 0
 ```
 
-## Debug
+## Run a command against `localhost` / Debug value
+playbook.yaml:
 ```
-fs
+---
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: Run a command
+      ansible.builtin.command: echo "{{ inventory_hostname }}"
+      register: command_output
+    - ansible.builtin.debug: msg="{{ command_output.stdout }}"
+    - ansible.builtin.debug: msg="{{ command_output.stderr }}"
+
+```
+Run:
+```
+ansible-playbook playbook.yaml
 ```
 
 # Ansible Galaxy

@@ -132,7 +132,7 @@ echo "{ \"A\": \"old\" }" | jq '.A = env.NEW_VALUE'
   "A": "new"
 }
 ```
-(Versus ```\"${NEW_VALUE}\"```, which requires using double-quotes around the whole expression, whcih is not .)
+(Versus ```\"${NEW_VALUE}\"```, which requires using double-quotes around the whole expression, which is not ...)
 
 ## Combine multiple JSON into one
 ```bash
@@ -207,4 +207,10 @@ CONTENT=`cat file.json | jq '.paul = "edited"'` ; echo $CONTENT > file.json
 
 ### Add and element to the end of an array
 
-https://stackoverflow.com/questions/42245288/add-new-element-to-existing-json-array-with-jq
+```
+JSON="{ \"array\": [{\"id\": \"A\"},{\"id\": \"B\"}]}"
+echo $JSON | jq '.array[.array | length] |= . + {
+  "id": "C"
+}'
+```
+
