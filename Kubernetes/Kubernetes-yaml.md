@@ -1,4 +1,4 @@
-**<span style="font-size:3em;color:black">Kubernetes Sample YAML</span>**
+**<span style="font-size:3em">Kubernetes Sample YAML</span>**
 ***
 
 Online reference documentation: https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.30/#api-groups
@@ -68,7 +68,7 @@ In the ```spec:``` section...
 ```
 
 The Volume must still be mounted in Container(s).
- 
+
 # Node Affinity
 
 For a Pod, evaluate Labels on the Nodes...
@@ -106,3 +106,15 @@ Types:
 1. requiredDuringSchedulingIgnoredDuringExecution
 2. preferredDuringSchedulingIgnoredDuringExecution
 (More are planned.  i.e. "during execution".)
+
+
+# imagePullPolicy
+
+https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+
+`Always` could better be described as:
+- If the version is a tag (not a digest), then **always** look up the current digest for it from the container image registry.
+- If there's a container image with the digest cached locally, then use it.  (i.e. Do not re-pull an already cached image.)
+- Even when pulling a new container image, don't re-pull image layers that haven't changed.
+
+`IfNotPresent` behaves a lot like `Always`, except that if the tag is a name `IfNotPresent` will not get the current digest for it from the container image registry.  In other words, if a new digest was tagged with the same name, `IfNotPresent` would not pull it, but `Always` would pull it.

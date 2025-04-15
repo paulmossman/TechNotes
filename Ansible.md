@@ -5,6 +5,24 @@ A suite of IaC tools: provisioning, config management, and app deployment.
 
 # Misc
 
+## Print current datetime
+```
+- name: Print start time
+  ansible.builtin.debug:
+    msg: "Start: {{ lookup('pipe', 'date +%Y-%m-%d.%H:%M:%S') }}"
+
+- name: Pause 1 minutes
+  ansible.builtin.pause:
+    minutes: 1
+
+- name: Print end time
+  ansible.builtin.debug:
+    msg: "End: {{ lookup('pipe', 'date +%Y-%m-%d.%H:%M:%S') }}"
+
+```
+
+Note: `ansible_date_time` is set when Ansible gathers facts, so does not change uring the run of the playbook.
+
 ## Check for K8s readiness / Register output
 ```
     - name: Wait for k8s Readiness (Node)
@@ -44,6 +62,37 @@ Run:
 ```
 ansible-playbook playbook.yaml
 ```
+
+## Windows PowerShell, and display output
+```
+- name: Run PowerShell
+  ansible.windows.win_powershell:
+    script: "{{ lookup('file', 'script.ps1') }}"
+  register: script_result
+
+- name: Result
+  ansible.builtin.debug:
+    msg: "{{ script_result }}"
+```
+
+Example ("blank") result:
+```
+  {
+    "changed": true,
+    "debug": [],
+    "error": [],
+    "failed": false,
+    "host_err": "",
+    "host_out": "",
+    "information": [],
+    "output": [],
+    "result": {},
+    "verbose": [],
+    "warning": []
+  }
+```
+`output` is stdout...
+
 
 # Ansible Galaxy
 

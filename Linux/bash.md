@@ -199,7 +199,7 @@ strings=("a" "b" "c")
 for i in "${strings[@]}" ; do echo "$i"; done
 ```
 
-## String contains 
+## String contains
 Note double square brackets.
 ```bash
 string='My string';

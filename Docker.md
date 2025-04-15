@@ -121,9 +121,9 @@ docker run -d alpine tail -f /dev/null
 ## Using a Docker environment variable from a command required a shell.
 
    Works: docker exec -it ccc sh -c 'echo $MY_ENV_VAR'
-   
+
    Doesn't work (for various reasons): docker exec -it ccc echo $MY_ENV_VAR
-   
+
 ## Get the result of a 'docker exec' command
 ```bash
 docker exec -t -i my-container sh -c 'my-command; exit $?'
@@ -140,7 +140,7 @@ fi
 
 # Security
 
-Containers are not completely isolated from their hosts (unlike VMs.)  Their atually run directly on the host, but just in their own namespace.  
+Containers are not completely isolated from their hosts (unlike VMs.)  Their atually run directly on the host, but just in their own namespace.
 
 # Dockerfile
 
@@ -149,6 +149,13 @@ Containers are not completely isolated from their hosts (unlike VMs.)  Their atu
 Like ```CMD```, except that the ```docker run``` parameters (if present) get ***appended*** to it.  If not present, then the ```CMD``` contents are used.
 
 Overridden by ```docker```'s ```--entrypoint``` parameter.
+
+# Misc useful images
+
+## ssh
+```
+docker run -it --rm kroniak/ssh-client ssh root@example.com
+```
 
 # Architecture
 
@@ -159,6 +166,13 @@ High-level industry-standard container runtime.  Implements Open Container Initi
 A standalone CNCF project.
 
 Good post: https://www.docker.com/blog/containerd-vs-docker/
+
+
+## Kernel
+
+`uname -a` from a Docker container shows the kernel information of the Docker host, not the container itself, because Docker containers share the host's kernel.
+
+Consider: `/etc/os-release` for OS details, which will match the Dockerfile/Containerfile origin.
 
 # Docker Hub
 

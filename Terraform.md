@@ -29,7 +29,7 @@ Manual unlock: ```terraform force-unlock <Lock ID>```
 Initialize the project in the local directory.  i.e. Download the provider plugin files.  (Does **not** create/update the terraform.tfstate file.)  Re-run it whenever you modify or change dependencies.
 
 ## plan
-Get a preview of what would be deployed by ```apply```.  Detects drift.  (Does **not** create/update the terraform.tfstate file.) 
+Get a preview of what would be deployed by ```apply```.  Detects drift.  (Does **not** create/update the terraform.tfstate file.)
 
 If everything is up to date: ```No changes. Your infrastructure matches the configuration.```
 
@@ -90,11 +90,13 @@ Remove the "tainted" mark from a resource.
 ### import <(Terraform) resource name> <Target ID>
 Capture the resources already created into the Terraform state file.  The resource must already be described in a Terraform source file.
 
+Azure Portal -> JSON View -> Use "id" for Parameter #2
+
 To import an AWS VPC <Target ID> would be the AWS ID of the VPC, for example: ```vpc-0b113a2f734aaf60d```.
 
 Similar, but different: [Former2](https://github.com/iann0036/former2/blob/master/README.md)
 
-### state <cub-command>
+### state <sub-command>
 
 #### list [filter on (Terraform) resource name]
 List the resources in the Terraform state file.  Resources can be filtered by their nesting hierarchy.
@@ -160,10 +162,10 @@ variable "person_map" {
 
 If ```default``` is omitted and the variable's value is not supplied elsewhere, then terraform will prompt for it:
 ```bash
-% terraform apply 
+% terraform apply
 ...
 var.vpc_name
-  Enter a value: 
+  Enter a value:
 ```
 
 ## Reference a Variable
@@ -398,7 +400,7 @@ The *pessimistic constraint* operator ```~>``` matches only ```>``` increments o
 [Reference](https://developer.hashicorp.com/terraform/language/expressions/version-constraints)
 
 # Modules
-Module: A directory that contains Terraform files, as a block of re-usable code.  Can be local or remote.  These are built on top of the raw Providers.  
+Module: A directory that contains Terraform files, as a block of re-usable code.  Can be local or remote.  These are built on top of the raw Providers.
 
 ## Types
 ### Remote
@@ -495,7 +497,7 @@ Copies file/directory from the local machine into the new resource.
 ```json
 resource "aws_instance" "my_ec2_instance" {
     ...
- 
+
     provisioner "file" {
         source = "./tmp.txt"
         destination = "/etc/installed-tmp.txt"

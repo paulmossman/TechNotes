@@ -122,7 +122,7 @@ kubectl create ingress ingress-test --rule="store.example.com/checkout*=checkout
 
 Labels:
 ```
---show-labels 
+--show-labels
 ```
 
 ## Context
@@ -215,8 +215,8 @@ kubectl get all --all-namespaces -o yaml > all.yml
 ```
 kubectl get pods
 kubectl get pods -o wide  # Include IP and Node
-kubectl get pods \<Pod name\> 
-kubectl get pods --selector key1=value1,key2=value2 # Get by labels
+kubectl get pods \<Pod name\>
+kubectl get pods --selector key1=value1,key2=value2 # Get by labels, not --label
 kubectl delete pod \<Pod name\>
 kubectl get all -o wide
 ```
@@ -250,7 +250,7 @@ Certificate authority file "data" content: Must be ```base64``` encoded, not raw
 All have 4 sections:
  - apiVersion:
  - kind:
- - metadata: 
+ - metadata:
  - spec:
 
 # Create Pod YML

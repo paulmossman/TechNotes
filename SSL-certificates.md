@@ -4,8 +4,7 @@
 
 ### Examine an SSL certificate from a server
 ```bash
-SERVER=...
-echo | openssl s_client -showcerts -servername $SERVER -connect $SERVER:443 2>/dev/null | openssl x509 -inform pem -noout -text
+SERVER=... ; echo | openssl s_client -showcerts -servername $SERVER -connect $SERVER:443 2>/dev/null | openssl x509 -inform pem -noout -text
 ```
 See: https://www.openssl.org/
 
@@ -16,7 +15,7 @@ keytool -printcert -v -file __.pem
 ```
 openssl (PEM):
 ```bash
-openssl x509 -text -in __.pem 
+openssl x509 -text -in __.pem
 ```
 
 openssl (PFX):
@@ -34,7 +33,7 @@ nmap --script ssl-enum-ciphers -p 443 $SERVER
 ```
 #### SSL Labs scan
 See: https://www.ssllabs.com/ssltest/
- 
+
 
 ## Extended Validation
 
