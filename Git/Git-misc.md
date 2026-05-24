@@ -128,6 +128,13 @@ Create:
 ```
 touch .gitmodules
 git submodule add <url> [<path>]
+git submodule update --init
+```
+
+Re-init:
+```
+git submodule deinit -f .  
+git submodule update --init
 ```
 
 Pull the latest commit in the branch: `git submodule update --remote`.

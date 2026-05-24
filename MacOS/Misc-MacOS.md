@@ -1,13 +1,21 @@
 **<span style="font-size:3em;color:black">Misc macOS</span>**
 ***
 
+[TOC]
+
 # Keyboard Shortcuts
+
+## Character Viewer (Emoji & Symbols)
+```
+Control + Command + space
+```
+Click on the upper right icon to expand and see more categories.
 
 ## Paste without formatting
 ```
 Option + Command + Shift + V
 ```
-Helpful: Option + Shift in one hand.  Then it's a normal Command + V in the other hand.
+Helpful: Option + Shift in one hand. Then it's a normal Command + V in the other hand.
 
 ## Lock Screen
 ```
@@ -18,8 +26,9 @@ Ctrl + Command + Q
 ```
 Ctrl + ↑
 ```
+Also: 3 finger swipe **up**.
 
-## See all open windows for the current app
+## See all open windows for the current app (even on other Desktops)
 ```
 Ctrl + ↓
 ```
@@ -45,9 +54,11 @@ And then of course to listen to the recorded audo, switch back to MacBook speake
 
 Note: Not encrypted (so trusted network only)
 
-On the client computer use [RealVNC viewer](https://www.realvnc.com/download/viewer/)
-
 On the server computer enable screen sharing: System Preferences → Sharing → select "Screen Sharing".
+
+On the client computer:
+- MacOS: Enter `vnc://[IP] in Safari, which launches "Screen Sharing".
+- other: [RealVNC viewer](https://www.realvnc.com/download/viewer/)
 
 # Command-line open Finder
 ```bash
@@ -65,3 +76,12 @@ https://magnet.crowdcafe.com/ ($5)
 sudo lsof -i -P | grep LISTEN | grep :8080
 ```
 
+# Sleep
+
+## Avoid
+
+Avoid display sleep, idle sleep, disk sleep, and system sleep:
+
+```bash
+caffeinate -dimsu
+```
