@@ -5,6 +5,14 @@
 
 # Keyboard Shortcuts
 
+## Search for a file by name
+
+MacOS: `Command + P`
+
+Windows / Linux: `Ctrl + P`
+
+Or you open Command Palette and delete the `>`, which switches it to "Quick Open" mode for files.
+
 ## Open file/folder location
 
 ```
