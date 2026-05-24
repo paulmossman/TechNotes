@@ -22,8 +22,6 @@ Open the [Command Palette](#command-palette), type `shell command`, and run the 
 
 `code -r <file>` opens the file in VSCode. If the file's directory is already open in a VSCode session then the file opens there. Otherwise in your most recent VSCode session.
 
-### 
-
 ## Search for a file by name
 
 MacOS: `Command + P`

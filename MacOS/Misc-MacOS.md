@@ -5,6 +5,14 @@
 
 # Keyboard Shortcuts
 
+## Open file/folder location
+
+```
+Command + Shift + G
+```
+
+From the file/folder open dialog, this will bring up an edit box where you can paste/type a path. And it does tab completion.
+
 ## Character Viewer (Emoji & Symbols)
 ```
 Control + Command + space
@@ -60,7 +68,8 @@ On the client computer:
 - MacOS: Enter `vnc://[IP] in Safari, which launches "Screen Sharing".
 - other: [RealVNC viewer](https://www.realvnc.com/download/viewer/)
 
-# Command-line open Finder
+# Command-line `open` Finder
+
 ```bash
 open .
 ```
