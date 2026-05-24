@@ -1,8 +1,6 @@
 **<span style="font-size:3em;color:black">Misc macOS</span>**
 ***
 
-[TOC]
-
 # Keyboard Shortcuts
 
 ## Search for a file by name
