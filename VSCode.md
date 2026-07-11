@@ -6,6 +6,12 @@
 Command/Ctrl + Shift + P
 ```
 
+## Multi-line edit
+
+```
+Command + Option + ↑/↓
+```
+
 ## Auto-save
 
 File → Auto-save
