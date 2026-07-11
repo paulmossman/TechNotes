@@ -92,3 +92,9 @@ Avoid display sleep, idle sleep, disk sleep, and system sleep:
 ```bash
 caffeinate -dimsu
 ```
+
+# Preview app
+
+## Signatures
+
+Sync to other Macs when iCloud Drive is enabled, and Preview is configured to have access.
